@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: @testDataSource.url@
+    username: @dataSource.user@
+    password: @dataSource.password@
+    driver-class-name: org.h2.Driver
+    max-active: 4
+    max-idle: 2
+    max-wait: 10000
+    remove-abandoned: true
+    remove-abandoned-timeout: 60
+    log-abandoned: true
+    validation-query: SELECT 1
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
