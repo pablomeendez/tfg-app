@@ -38,3 +38,6 @@ yarn-error.*
 
 .cursor/
 .vscode/
+coverage/
+tests/components/__snapshots__
+backend/target/
