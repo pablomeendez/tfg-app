@@ -67,6 +67,14 @@ public class Users {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<WeeklySummary> weeklySummaries;
 
+    public Users(String userName, String password, String name, String lastName, String email) {
+        this.userName = userName;
+        this.password = password;
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
