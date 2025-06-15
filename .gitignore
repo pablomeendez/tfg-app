@@ -36,8 +36,8 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+backend/target/
 .cursor/
 .vscode/
 coverage/
 tests/components/__snapshots__
-backend/target/
