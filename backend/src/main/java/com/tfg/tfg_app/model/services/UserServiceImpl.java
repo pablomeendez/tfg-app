@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.tfg.tfg_app.model.common.exceptions.DuplicateInstanceException;
+import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.entities.Users;
 import com.tfg.tfg_app.model.entities.UsersDao;
 import com.tfg.tfg_app.model.services.exceptions.IncorrectLoginException;
+import com.tfg.tfg_app.model.services.exceptions.IncorrectPasswordException;
 
 
 
@@ -70,4 +72,56 @@ public class UserServiceImpl implements UserService {
 
         return user.get();
     }
+
+    @Override
+	@Transactional(readOnly = true)
+	public Users loginFromId(Long id) throws InstanceNotFoundException {
+		return permissionChecker.checkUser(id);
+	}
+
+	/**
+	 * Update profile.
+	 *
+	 * @param id        the id
+	 * @param firstName the first name
+	 * @param lastName  the last name
+	 * @param email     the email
+	 * @return the user
+	 * @throws InstanceNotFoundException the instance not found exception
+	 */
+	@Override
+	public Users updateProfile(Long id, String name, String lastName, String email)
+			throws InstanceNotFoundException {
+
+		Users user = permissionChecker.checkUser(id);
+
+		user.setName(name);
+		user.setLastName(lastName);
+		user.setEmail(email);
+
+		return user;
+
+	}
+
+    	/**
+	 * Change password.
+	 *
+	 * @param id          the id
+	 * @param oldPassword the old password
+	 * @param newPassword the new password
+	 * @throws InstanceNotFoundException  the instance not found exception
+	 * @throws IncorrectPasswordException the incorrect password exception
+	 */
+	@Override
+	public void changePassword(Long id, String oldPassword, String newPassword)
+			throws InstanceNotFoundException, IncorrectPasswordException {
+
+		Users user = permissionChecker.checkUser(id);
+
+		if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+			throw new IncorrectPasswordException();
+		} else {
+			user.setPassword(passwordEncoder.encode(newPassword));
+		}
+	}
 }
