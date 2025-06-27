@@ -67,6 +67,9 @@ public class Users {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<WeeklySummary> weeklySummaries;
 
+    public Users() {
+    }
+
     public Users(String userName, String password, String name, String lastName, String email) {
         this.userName = userName;
         this.password = password;
@@ -132,6 +135,14 @@ public class Users {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public LocalDateTime getCreatedAt() {
