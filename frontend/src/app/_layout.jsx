@@ -1,21 +1,46 @@
-import { Stack } from 'expo-router';
-import { useColorScheme } from 'react-native';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { Stack, usePathname, useRouter } from 'expo-router';
+import { AuthProvider, AuthContext } from '../context/AuthContext';
+import { useContext, useEffect, useRef } from 'react';
 import './../../global.css';
+import { ActivityIndicator, View } from 'react-native';
 
+function RootLayoutContent() {
+    const { isAuthenticated, loading, userToken } = useContext(AuthContext);
+    const router = useRouter();
+    const pathname = usePathname();
+    const hasRedirected = useRef(false);
+
+    useEffect(() => {
+        if (!loading && isAuthenticated && !hasRedirected.current) {
+            if (pathname === '/' || pathname.startsWith('/(auth)')) {
+                hasRedirected.current = true;
+                router.replace('/(tabs)');
+            }
+        }
+    }, [isAuthenticated, loading, pathname, router]);
+
+    if (loading) {
+        return (
+            <View className="flex-1 justify-center items-center">
+                <ActivityIndicator size="large" color="#007AFF" />
+            </View>
+        );
+    }
+
+    return (
+        <Stack screenOptions={{ headerShown: false }}>
+            {isAuthenticated ? (
+                <Stack.Screen name="(tabs)" />
+            ) : (
+                <Stack.Screen name="(auth)" />
+            )}
+        </Stack>
+    );
+}
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen 
-          name="(tabs)" 
-          options={{ 
-            headerShown: false 
-          }} 
-        />
-      </Stack>
-    </ThemeProvider>
-  );
+    return (
+        <AuthProvider>
+            <RootLayoutContent />
+        </AuthProvider>
+    );
 }
