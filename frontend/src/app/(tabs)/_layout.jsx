@@ -31,7 +31,13 @@ export default function TabLayout() {
           tabBarLabel: 'Habits',
         }}
       />
-
+      <Tabs.Screen
+        name="chat"
+        options={{
+          title: 'Chat',
+          tabBarLabel: 'Chat',
+        }}
+      />
       <Tabs.Screen
         name="profile"
         options={{
