@@ -26,10 +26,6 @@ public class HabitEntry {
     private int streak;
 
     @NotNull
-    @Column(nullable = false)
-    private boolean completed;
-
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private Users user;
@@ -70,14 +66,6 @@ public class HabitEntry {
 
     public void setStreak(int streak) {
         this.streak = streak;
-    }
-
-    public boolean isCompleted() {
-        return completed;
-    }
-
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
     }
 
     public Users getUser() {
