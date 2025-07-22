@@ -2,7 +2,6 @@ package com.tfg.tfg_app.model.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import java.util.Set;
 
 @Entity
@@ -17,9 +16,7 @@ public class Mood {
     @Column(nullable = false)
     private String name;
 
-    @NotNull
     @Lob
-    @Column(nullable = false)
     private byte[] image;
 
     @OneToMany(mappedBy = "mood")
