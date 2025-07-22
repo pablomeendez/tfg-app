@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS Users (
 CREATE TABLE IF NOT EXISTS Mood (
     id Long NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    image BLOB NOT NULL
+    image BLOB 
 );
 
 CREATE TABLE IF NOT EXISTS DiaryEntry (
@@ -99,3 +99,4 @@ CREATE TABLE IF NOT EXISTS WeeklySummary (
     CONSTRAINT fk_weekly_summary_mood_trend FOREIGN KEY (moodTrendId) REFERENCES Mood(id)
 );
 
+INSERT INTO Mood(name, image) VALUES ('Happy', null);
