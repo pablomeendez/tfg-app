@@ -1,5 +1,67 @@
 package com.tfg.tfg_app.model.services;
 
-public class DiaryEntryServiceImpl {
-    
+import java.time.LocalDate;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+
+import com.tfg.tfg_app.model.common.exceptions.DuplicateInstanceException;
+import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
+import com.tfg.tfg_app.model.entities.DiaryEntry;
+import com.tfg.tfg_app.model.entities.DiaryEntryDao;
+import com.tfg.tfg_app.model.services.exceptions.DuplicatedEntryException;
+
+@Service
+public class DiaryEntryServiceImpl implements DiaryEntryService {
+
+    @Autowired
+    private DiaryEntryDao diaryEntryDao;
+
+    @Override
+    public DiaryEntry createDiaryEntry(DiaryEntry diaryEntry) throws DuplicateInstanceException, DuplicatedEntryException {
+
+        if (diaryEntry.getUser() == null) {
+            throw new DataIntegrityViolationException(null);
+        }
+        List<DiaryEntry> diaryEntries = diaryEntryDao.findByUserId(diaryEntry.getUser().getId());
+
+        if (diaryEntries.size() > 0 && diaryEntries.get(diaryEntries.size() - 1).getDate().toLocalDate().isEqual(diaryEntry.getDate().toLocalDate())) {
+            throw new DuplicatedEntryException(diaryEntry.getUser().toString(), LocalDate.now());
+        }
+
+        return diaryEntryDao.save(diaryEntry);
+    }
+
+    @Override
+    public DiaryEntry updateDiaryEntry(DiaryEntry diaryEntry) throws InstanceNotFoundException {
+
+        if (!diaryEntryDao.findById(diaryEntry.getId()).isPresent()) {
+            throw new InstanceNotFoundException("Diary entry not found", diaryEntry);
+        }
+
+        return diaryEntryDao.save(diaryEntry);
+    }
+
+    @Override
+    public void deleteDiaryEntry(DiaryEntry diaryEntry) throws InstanceNotFoundException {
+
+        if (!diaryEntryDao.findById(diaryEntry.getId()).isPresent()) {
+            throw new InstanceNotFoundException("Diary entry not found", diaryEntry);
+        }
+
+        diaryEntryDao.delete(diaryEntry);
+    }
+
+    @Override
+    public DiaryEntry getDiaryEntryById(Long id) throws InstanceNotFoundException {
+        return diaryEntryDao.findById(id)
+            .orElseThrow(() -> new InstanceNotFoundException("Diary entry not found", id));
+    }
+
+    @Override
+    public List<DiaryEntry> getDiaryEntriesByUserId(Long userId) {
+        return diaryEntryDao.findByUserId(userId);
+    }
 }

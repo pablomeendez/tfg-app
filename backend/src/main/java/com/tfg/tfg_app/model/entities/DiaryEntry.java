@@ -1,7 +1,7 @@
 package com.tfg.tfg_app.model.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -14,12 +14,9 @@ public class DiaryEntry {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotNull
+    @NotEmpty
     @Column(nullable = false)
-    private String title;
-
-    @NotBlank
-    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
     @NotNull
@@ -39,20 +36,23 @@ public class DiaryEntry {
     @OneToMany(mappedBy = "diaryEntry")
     private Set<Images> images;
 
+    public DiaryEntry() {
+    }
+
+    public DiaryEntry(String content, LocalDateTime date, Users user, Mood mood, Set<Images> images) {
+        this.content = content;
+        this.date = date;
+        this.user = user;
+        this.mood = mood;
+        this.images = images;
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContent() {
