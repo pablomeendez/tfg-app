@@ -23,8 +23,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
     
-    private static final String ADMIN = "ADMIN";
-
     @Autowired
     private JwtFilter jwtFilter;
 
@@ -49,7 +47,10 @@ public class SecurityConfig {
                 .requestMatchers(antMatcher("/api/users/signUp")).permitAll()
                 .requestMatchers(antMatcher("/api/users/login")).permitAll()
                 .requestMatchers(antMatcher("/api/users/loginFromServiceToken")).permitAll()
-                .requestMatchers(antMatcher("/api/users")).hasRole(ADMIN)
+                .requestMatchers(antMatcher("/api/diaryEntry/")).hasRole("USER")
+                .requestMatchers(antMatcher("/api/diaryEntry/create")).hasRole("USER")
+                .requestMatchers(antMatcher("/api/diaryEntry/update/:id")).hasRole("USER")
+                .requestMatchers(antMatcher("/api/diaryEntry/delete/:id")).hasRole("USER")
                 .requestMatchers(antMatcher("/actuator/**")).permitAll()
                 .anyRequest().authenticated()
             )
