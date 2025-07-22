@@ -45,7 +45,7 @@
 			</activation>
 			<properties>
 				<!--  Data source properties -->
-				<dataSource.url>jdbc:h2:mem:tfgApp</dataSource.url>
+				<dataSource.url>jdbc:h2:~/tfgApp</dataSource.url>
 				<testDataSource.url>jdbc:h2:mem:tfgAppTest</testDataSource.url>
 				<dataSource.user>sa</dataSource.user>
 				<dataSource.password></dataSource.password>
