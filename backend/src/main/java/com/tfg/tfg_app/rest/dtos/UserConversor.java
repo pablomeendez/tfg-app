@@ -46,7 +46,6 @@ public class UserConversor {
 	public static final AuthenticatedUserDto toAuthenticatedUserDto(String serviceToken, Users user) {
 
 		return new AuthenticatedUserDto(serviceToken, toUserDto(user));
-
 	}
 }
 

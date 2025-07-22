@@ -3,7 +3,6 @@ package com.tfg.tfg_app.model.services;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.util.List;
 
 import jakarta.transaction.Transactional;
 
