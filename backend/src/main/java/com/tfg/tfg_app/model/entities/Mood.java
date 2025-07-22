@@ -22,9 +22,6 @@ public class Mood {
     @OneToMany(mappedBy = "mood")
     private Set<DiaryEntry> diaryEntries;
 
-    @OneToMany(mappedBy = "moodTrend")
-    private Set<WeeklySummary> weeklySummaries;
-
     public Long getId() {
         return id;
     }
@@ -55,13 +52,5 @@ public class Mood {
 
     public void setDiaryEntries(Set<DiaryEntry> diaryEntries) {
         this.diaryEntries = diaryEntries;
-    }
-
-    public Set<WeeklySummary> getWeeklySummaries() {
-        return weeklySummaries;
-    }
-
-    public void setWeeklySummaries(Set<WeeklySummary> weeklySummaries) {
-        this.weeklySummaries = weeklySummaries;
     }
 }
