@@ -30,11 +30,6 @@ public class HabitEntry {
     @JoinColumn(name = "userId", nullable = false)
     private Users user;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "habitId", nullable = false)
-    private Habit habit;
-
     // Getters y Setters
     public Long getId() {
         return id;
@@ -74,13 +69,5 @@ public class HabitEntry {
 
     public void setUser(Users user) {
         this.user = user;
-    }
-
-    public Habit getHabit() {
-        return habit;
-    }
-
-    public void setHabit(Habit habit) {
-        this.habit = habit;
     }
 }

@@ -34,9 +34,6 @@ public class Habit {
     @OneToMany(mappedBy = "habit")
     private Set<UserHabit> userHabits;
 
-    @OneToMany(mappedBy = "habit")
-    private Set<HabitEntry> habitEntries;
-
     public Long getId() {
         return id;
     }
@@ -83,13 +80,5 @@ public class Habit {
 
     public void setUserHabits(Set<UserHabit> userHabits) {
         this.userHabits = userHabits;
-    }
-
-    public Set<HabitEntry> getHabitEntries() {
-        return habitEntries;
-    }
-
-    public void setHabitEntries(Set<HabitEntry> habitEntries) {
-        this.habitEntries = habitEntries;
     }
 }
