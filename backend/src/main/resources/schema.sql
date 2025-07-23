@@ -61,9 +61,9 @@ CREATE TABLE IF NOT EXISTS HabitEntry (
     date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     streak int NOT NULL DEFAULT 0,
     userId Long NOT NULL,
-    habitId Long NOT NULL,
+    userHabitId Long NOT NULL,
     CONSTRAINT fk_habit_entry_user FOREIGN KEY (userId) REFERENCES Users(id),
-    CONSTRAINT fk_habit_entry_habit FOREIGN KEY (habitId) REFERENCES Habit(id)
+    CONSTRAINT fk_habit_entry_user_habit FOREIGN KEY (userHabitId) REFERENCES UserHabit(id)
 );
 
 
