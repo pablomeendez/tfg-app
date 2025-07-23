@@ -1,5 +1,29 @@
 package com.tfg.tfg_app.model.services;
 
-public class HabitService {
+import java.util.List;
+
+import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
+import com.tfg.tfg_app.model.entities.Habit;
+import com.tfg.tfg_app.model.entities.HabitEntry;
+import com.tfg.tfg_app.model.entities.UserHabit;
+
+public interface HabitService {
+
+    //Habit createHabit(Habit habit);
+
+    //Habit updateHabit(Habit habit);
+
+    //void deleteHabit(Habit habit);
+
+    //Habit getHabitById(Long habitId);
+    
+    List<Habit> getAllHabits();
+
+    UserHabit createUserHabit(Long userId, Long habitId) throws InstanceNotFoundException;
+
+    List<UserHabit> getHabitsByUserId(Long userId) throws InstanceNotFoundException;
+
+    HabitEntry createHabitEntry(Long userId, Long userHabitId) throws InstanceNotFoundException;
+
     
 }
