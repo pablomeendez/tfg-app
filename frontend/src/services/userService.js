@@ -1,23 +1,34 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import apiClient from './apiClient';
-import axios from 'axios';
-
-const removeServiceToken = () => {
-    AsyncStorage.removeItem('userToken')
-    axios.defaults.headers.common['Authorization'] = '';
-}
-
 
 const userService = {
     register: (userName, password, name, lastName, email) => {
-        return apiClient.post('/users/signUp', {userName: userName, password: password, firstName: name, lastName: lastName, email: email});
+        return apiClient.post('/users/signUp', {
+            userName: userName, 
+            password: password, 
+            firstName: name, 
+            lastName: lastName, 
+            email: email
+        });
     },
     login: (userName, password) => {
-        return apiClient.post('/users/login', {userName: userName, password: password});
+        return apiClient.post('/users/login', {
+            userName: userName, 
+            password: password
+        });
     },
-    logout: () => {
-        removeServiceToken();
-    }
+    logout: async () => {
+        await AsyncStorage.removeItem('userToken');
+    },
+    updateProfile: (userId, userData) => {
+        return apiClient.put(`/users/${userId}`, userData);
+    },
+    loginFromServiceToken: async (userId, serviceToken) => {
+        return apiClient.post('/users/loginFromServiceToken', {
+            userId: userId,
+            serviceToken: serviceToken
+        });
+    },
 };
 
 export default userService;
