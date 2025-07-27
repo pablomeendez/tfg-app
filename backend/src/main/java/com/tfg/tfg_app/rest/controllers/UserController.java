@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.tfg.tfg_app.model.common.exceptions.DuplicateInstanceException;
+import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.entities.Users;
 import com.tfg.tfg_app.model.services.UserService;
 import com.tfg.tfg_app.model.services.exceptions.IncorrectLoginException;
@@ -48,7 +51,19 @@ public class UserController {
 
     }
 
-    /**
+	@PutMapping("/{userId}")
+	public AuthenticatedUserDto updateUser(
+			@RequestAttribute Long userId,
+			@Validated({ UserDto.UpdateValidations.class }) @RequestBody UserDto userDto)
+			throws InstanceNotFoundException, DuplicateInstanceException {
+
+		Users user = toUser(userDto);
+		userService.updateProfile(userId, user.getName(), user.getLastName(), user.getEmail(), user.getFirstEntry());
+
+		return toAuthenticatedUserDto(generateServiceToken(user), user);
+	}
+
+	/**
 	 * Login.
 	 *
 	 * @param params the params
@@ -61,6 +76,15 @@ public class UserController {
 		Users user = userService.login(params.getUserName(), params.getPassword());
 
 		return toAuthenticatedUserDto(generateServiceToken(user), user);
+	}
+
+	@PostMapping("/loginFromServiceToken")
+	public AuthenticatedUserDto loginFromServiceToken(@RequestAttribute Long userId,
+			@RequestAttribute String serviceToken) throws InstanceNotFoundException {
+
+		Users user = userService.loginFromId(userId);
+
+		return toAuthenticatedUserDto(serviceToken, user);
 
 	}
 

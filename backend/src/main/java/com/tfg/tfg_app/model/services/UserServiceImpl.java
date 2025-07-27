@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
 	 * @throws InstanceNotFoundException the instance not found exception
 	 */
 	@Override
-	public Users updateProfile(Long id, String name, String lastName, String email)
+	public Users updateProfile(Long id, String name, String lastName, String email, Boolean firstEntry)
 			throws InstanceNotFoundException {
 
 		Users user = permissionChecker.checkUser(id);
@@ -98,8 +98,9 @@ public class UserServiceImpl implements UserService {
 		user.setName(name);
 		user.setLastName(lastName);
 		user.setEmail(email);
+		user.setFirstEntry(firstEntry);
 
-		return user;
+		return userDao.save(user);
 
 	}
 
