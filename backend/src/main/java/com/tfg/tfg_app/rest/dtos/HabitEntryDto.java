@@ -1,16 +1,17 @@
 package com.tfg.tfg_app.rest.dtos;
 
+
 public class HabitEntryDto {
     private Long id;
-    private Long userId;
-    private Long userHabitId;
+    private UserDto user;
+    private UserHabitDto userHabit;
     private String date;
     private int streak;
 
-    public HabitEntryDto(Long id, Long userId, Long userHabitId, String date, int streak) {
+    public HabitEntryDto(Long id, UserDto user, UserHabitDto userHabit, String date, int streak) {
         this.id = id;
-        this.userId = userId;
-        this.userHabitId = userHabitId;
+        this.user = user;
+        this.userHabit = userHabit;
         this.date = date;
         this.streak = streak;
     }
@@ -23,20 +24,20 @@ public class HabitEntryDto {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public UserDto getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(UserDto user) {
+        this.user = user;
     }
 
-    public Long getUserHabitId() {
-        return userHabitId;
+    public UserHabitDto getUserHabit() {
+        return userHabit;
     }
 
-    public void setUserHabitId(Long userHabitId) {
-        this.userHabitId = userHabitId;
+    public void setUserHabit(UserHabitDto userHabit) {
+        this.userHabit = userHabit;
     }
 
     public String getDate() {

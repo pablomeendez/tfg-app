@@ -5,12 +5,14 @@ public class HabitDto {
     private Long id;
     private String name;
     private String description;
+    private CategoryDto category;
     private String imageString;
 
-    public HabitDto(Long id, String name, String description, String imageString) {
+    public HabitDto(Long id, String name, String description, CategoryDto category, String imageString) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.category = category;
         this.imageString = imageString;
     }
 
@@ -36,6 +38,10 @@ public class HabitDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public CategoryDto getCategory() {
+        return category;
     }
 
     public String getImageString() {
