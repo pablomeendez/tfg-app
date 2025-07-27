@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -10,28 +10,31 @@ import { useRouter } from 'expo-router';
 import { AuthContext } from '../../context/AuthContext';
 import useTogglePasswordVisibility from '../../hooks/useTogglePasswordVisibility';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import userService from '../../services/userService';
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { login , logout} = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const router = useRouter();
   const { passwordVisibility, eyeIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
 
   const handleLogin = async () => {
     try {
-      await login(username, password);
-      router.replace('(tabs)');
+      const response = await login(username, password);
+      const user = response.data.user;
+      console.log(user);
+      if (user.firstEntry) {
+        user.firstEntry = false;
+        console.log(user);
+        const updateResponse = await userService.updateProfile(user.id, user);
+        console.log('Profile updated:', updateResponse.data);
+        router.replace('/screens/HabitForm');
+      } else {
+        router.replace('/(tabs)');
+      }
     } catch (e) {
       console.log('Error en handleLogin:', e);
-    }
-  }
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-    } catch (e) {
-      console.log('Error en handleLogout:', e);
     }
   }
 
