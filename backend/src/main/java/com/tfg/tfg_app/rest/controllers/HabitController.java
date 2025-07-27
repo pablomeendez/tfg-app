@@ -3,7 +3,9 @@ package com.tfg.tfg_app.rest.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +37,11 @@ public class HabitController {
         return toUserHabitDto(habitService.createUserHabit(userId, habitId));
     }
 
+    @DeleteMapping("/userHabit/{id}")
+    void deleteUserHabit(@RequestAttribute Long userId, @PathVariable Long id) throws InstanceNotFoundException {
+        habitService.deleteUserHabit(id);
+    }
+
     @GetMapping("/")
     List<UserHabitDto> getHabitsByUserId(@RequestParam Long userId) throws InstanceNotFoundException {
         return toUserHabitDtos(habitService.getHabitsByUserId(userId));
@@ -43,6 +50,16 @@ public class HabitController {
     @PostMapping("/entry")
     HabitEntryDto createHabitEntry(@RequestAttribute Long userId, @RequestBody Long userHabitId) throws InstanceNotFoundException {
         return toHabitEntryDto(habitService.createHabitEntry(userId, userHabitId));
+    }
+
+    @DeleteMapping("/entry/{habitEntryId}")
+    HabitEntryDto deleteHabitEntry(@RequestAttribute Long userId, @PathVariable Long habitEntryId) throws InstanceNotFoundException {
+        return toHabitEntryDto(habitService.deleteHabitEntry(userId, habitEntryId));
+    }
+
+    @GetMapping("/entries")
+    List<HabitEntryDto> getHabitEntriesByUserIdAndHabitId(@RequestAttribute Long userId, @RequestParam Long userHabitId) throws InstanceNotFoundException {
+        return toHabitEntryDtos(habitService.getHabitEntriesByUserIdAndUserHabitId(userId, userHabitId));
     }
 
 }
