@@ -55,6 +55,16 @@ public class HabitServiceImpl implements HabitService {
         return userHabitDao.save(userHabit);
     }
 
+    public void deleteUserHabit(Long userHabitId) throws InstanceNotFoundException {
+        Optional<UserHabit> optUserHabit = userHabitDao.findById(userHabitId);
+
+        if (!optUserHabit.isPresent()) {
+            throw new InstanceNotFoundException("UserHabit with ID " + userHabitId + " not found.", UserHabit.class);
+        }
+
+        userHabitDao.delete(optUserHabit.get());
+    }
+
     public List<UserHabit> getHabitsByUserId(Long userId) throws InstanceNotFoundException {
 
         Users user = userService.loginFromId(userId);
@@ -84,10 +94,40 @@ public class HabitServiceImpl implements HabitService {
         if (lastHabitEntry != null && lastHabitEntry.getDate().toLocalDate().equals(LocalDate.now().minusDays(1))) {
             habitEntry.setStreak(lastHabitEntry.getStreak()+1);
         } else {
-            habitEntry.setStreak(1); // Initialize streak to 1 if no consecutive days
+            habitEntry.setStreak(1);
         }
 
         return habitEntryDao.save(habitEntry);
+    }
+
+    public HabitEntry deleteHabitEntry(Long userId, Long habitEntryId) throws InstanceNotFoundException {
+        Optional<HabitEntry> optHabitEntry = habitEntryDao.findById(habitEntryId);
+
+        if (!optHabitEntry.isPresent()) {
+            throw new InstanceNotFoundException("HabitEntry with ID " + habitEntryId + " not found.", HabitEntry.class);
+        }
+
+        HabitEntry habitEntry = optHabitEntry.get();
+
+        if (!habitEntry.getUser().getId().equals(userId)) {
+            throw new InstanceNotFoundException("User does not own this HabitEntry.", Users.class);
+        }
+
+        habitEntryDao.delete(habitEntry);
+        return habitEntry;
+    }
+    
+    public List<HabitEntry> getHabitEntriesByUserIdAndUserHabitId(Long userId, Long userHabitId) throws InstanceNotFoundException {
+        Users user = userService.loginFromId(userId);
+        Optional<UserHabit> optUserHabit = userHabitDao.findById(userHabitId);
+
+        if (!optUserHabit.isPresent()) {
+            throw new InstanceNotFoundException("UserHabit with ID " + userHabitId + " not found.", UserHabit.class);
+        }
+
+        UserHabit userHabit = optUserHabit.get();
+
+        return habitEntryDao.findByUserIdAndUserHabitId(user.getId(), userHabit.getId());
     }
 
 }

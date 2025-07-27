@@ -21,9 +21,14 @@ public interface HabitService {
 
     UserHabit createUserHabit(Long userId, Long habitId) throws InstanceNotFoundException;
 
+    void deleteUserHabit(Long userHabitId) throws InstanceNotFoundException;
+
     List<UserHabit> getHabitsByUserId(Long userId) throws InstanceNotFoundException;
 
     HabitEntry createHabitEntry(Long userId, Long userHabitId) throws InstanceNotFoundException;
 
+    HabitEntry deleteHabitEntry(Long userId, Long habitEntryId) throws InstanceNotFoundException;
+
+    List<HabitEntry> getHabitEntriesByUserIdAndUserHabitId(Long userId, Long userHabitId) throws InstanceNotFoundException;
     
 }
