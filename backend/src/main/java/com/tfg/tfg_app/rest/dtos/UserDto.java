@@ -36,7 +36,10 @@ public class UserDto {
 	
 	/** The email. */
 	private String email;
-	
+
+	/** The first entry. */
+	private Boolean firstEntry;
+
 	/** The role. */
 	private String role;
 
@@ -55,13 +58,14 @@ public class UserDto {
 	 * @param email the email
 	 * @param role the role
 	 */
-	public UserDto(Long id, String userName, String firstName, String lastName, String email, String role) {
+	public UserDto(Long id, String userName, String firstName, String lastName, String email, Boolean firstEntry, String role) {
 
 		this.id = id;
 		this.userName = userName != null ? userName.trim() : null;
 		this.firstName = firstName.trim();
 		this.lastName = lastName.trim();
 		this.email = email.trim();
+		this.firstEntry = firstEntry;
 		this.role = role;
 	}
 
@@ -182,6 +186,25 @@ public class UserDto {
 	 */
 	public void setEmail(String email) {
 		this.email = email.trim();
+	}
+
+	/**
+	 * Gets the first entry.
+	 *
+	 * @return the first entry
+	 */
+	@NotNull(groups={AllValidations.class, UpdateValidations.class})
+	public Boolean isFirstEntry() {
+		return firstEntry;
+	}
+
+	/**
+	 * Sets the first entry.
+	 *
+	 * @param firstEntry the new first entry
+	 */
+	public void setFirstEntry(Boolean firstEntry) {
+		this.firstEntry = firstEntry;
 	}
 
 	/**

@@ -4,12 +4,12 @@ public class UserHabitDto {
 
     private Long id;
     private Long userId;
-    private Long habitId;
+    private HabitDto habit;
 
-    public UserHabitDto (Long id, Long userId, Long habitId) {
+    public UserHabitDto (Long id, Long userId, HabitDto habit) {
         this.id = id;
         this.userId = userId;
-        this.habitId = habitId;
+        this.habit = habit;
 
     }
 
@@ -29,11 +29,11 @@ public class UserHabitDto {
         this.userId = userId;
     }
 
-    public Long getHabitId() {
-        return habitId;
+    public HabitDto getHabit() {
+        return habit;
     }
 
-    public void setHabitId(Long habitId) {
-        this.habitId = habitId;
+    public void setHabit(HabitDto habit) {
+        this.habit = habit;
     }
 }

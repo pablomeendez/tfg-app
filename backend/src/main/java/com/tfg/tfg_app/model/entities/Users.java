@@ -52,6 +52,9 @@ public class Users {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @Column(nullable = false)
+    private Boolean firstEntry = true;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<DiaryEntry> diaryEntries;
 
@@ -76,6 +79,25 @@ public class Users {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
+    }
+
+    public Users(Long id, String userName, String password, String name, String lastName, String email) {
+        this.id = id;
+        this.userName = userName;
+        this.password = password;
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
+    public Users(Long id, String userName, String password, String name, String lastName, String email, Boolean firstEntry) {
+        this.id = id;
+        this.userName = userName;
+        this.password = password;
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.firstEntry = firstEntry;
     }
 
     @PrePersist
@@ -151,6 +173,14 @@ public class Users {
 
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    public Boolean getFirstEntry() {
+        return firstEntry;
+    }
+
+    public void setFirstEntry(Boolean firstEntry) {
+        this.firstEntry = firstEntry;
     }
 
     public Set<DiaryEntry> getDiaryEntries() {

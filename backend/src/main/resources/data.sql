@@ -1,5 +1,5 @@
-INSERT INTO Users (userName, password, email, name, lastName, createdAt, updatedAt, role) SELECT * FROM (VALUES
-    ('admin', '$2a$10$tAX5UGkz3VvxhLe8.463oOuYMOXGFXB..pZzc2/sXXbOnJ2eWO2NO', 'admin@fd.com', 'admin', 'admin', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 'ADMIN')
+INSERT INTO Users (userName, password, email, name, lastName, createdAt, updatedAt, firstEntry, role) SELECT * FROM (VALUES
+    ('admin', '$2a$10$tAX5UGkz3VvxhLe8.463oOuYMOXGFXB..pZzc2/sXXbOnJ2eWO2NO', 'admin@fd.com', 'admin', 'admin', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, TRUE,'ADMIN')
 ) tmp WHERE NOT EXISTS ( SELECT * FROM Users );
 
 INSERT INTO Category (name) SELECT * FROM (VALUES
