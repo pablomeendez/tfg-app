@@ -14,9 +14,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
+import com.tfg.tfg_app.model.entities.HabitEntry;
+import com.tfg.tfg_app.model.entities.UserTrophy;
 import com.tfg.tfg_app.model.services.HabitService;
+import com.tfg.tfg_app.model.services.TrophyService;
+import com.tfg.tfg_app.model.services.exceptions.TrophyAlreadyGivenException;
 import com.tfg.tfg_app.rest.dtos.HabitDto;
 import com.tfg.tfg_app.rest.dtos.HabitEntryDto;
+import com.tfg.tfg_app.rest.dtos.HabitEntryParamsDto;
+import com.tfg.tfg_app.rest.dtos.HabitEntryWithTrophyDto;
+import com.tfg.tfg_app.rest.dtos.TrophyConversor;
 import com.tfg.tfg_app.rest.dtos.UserHabitDto;
 import static com.tfg.tfg_app.rest.dtos.HabitConversor.*;
 
@@ -26,6 +33,9 @@ public class HabitController {
 
     @Autowired
     private HabitService habitService;
+
+    @Autowired
+    private TrophyService trophyService;
     
     @GetMapping("/all")
     List<HabitDto> getAllHabits(){
@@ -48,8 +58,10 @@ public class HabitController {
     }
 
     @PostMapping("/entry")
-    HabitEntryDto createHabitEntry(@RequestAttribute Long userId, @RequestBody Long userHabitId) throws InstanceNotFoundException {
-        return toHabitEntryDto(habitService.createHabitEntry(userId, userHabitId));
+    HabitEntryWithTrophyDto createHabitEntry(@RequestAttribute Long userId, @RequestBody HabitEntryParamsDto params) throws InstanceNotFoundException, TrophyAlreadyGivenException {
+        HabitEntry habitEntry = habitService.createHabitEntry(userId, params.getUserHabitId(), params.getDiaryEntryId());
+        UserTrophy userTrophy = trophyService.giveUserTrophy(userId, habitEntry.getUserHabit().getHabit().getId(), habitEntry.getStreak());
+        return toHabitEntryWithTrophyDto(habitEntry, userTrophy);
     }
 
     @DeleteMapping("/entry/{habitEntryId}")
