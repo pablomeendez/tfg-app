@@ -22,6 +22,15 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarLabel: 'Home',
+          headerShown: false,
+        }}
+      />
+      <Tabs.Screen
+        name="diary"
+        options={{
+          title: 'Diary',
+          tabBarLabel: 'Diary',
+          headerShown: false, 
         }}
       />
       <Tabs.Screen
@@ -29,6 +38,7 @@ export default function TabLayout() {
         options={{
           title: 'Habits',
           tabBarLabel: 'Habits',
+          headerShown: false,
         }}
       />
       <Tabs.Screen
@@ -36,6 +46,7 @@ export default function TabLayout() {
         options={{
           title: 'Chat',
           tabBarLabel: 'Chat',
+          headerShown: false,
         }}
       />
       <Tabs.Screen
@@ -43,6 +54,7 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarLabel: 'Profile',
+          headerShown: false,
         }}
       />
     </Tabs>
