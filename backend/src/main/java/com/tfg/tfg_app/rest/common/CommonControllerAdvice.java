@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.tfg.tfg_app.model.common.exceptions.DuplicateInstanceException;
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
+import com.tfg.tfg_app.model.services.exceptions.DuplicatedEntryException;
 import com.tfg.tfg_app.model.services.exceptions.IncorrectLoginException;
 import com.tfg.tfg_app.model.services.exceptions.IncorrectPasswordException;
 import com.tfg.tfg_app.model.services.exceptions.PermissionException;
+import com.tfg.tfg_app.model.services.exceptions.TrophyAlreadyGivenException;
 
 import jakarta.validation.ConstraintViolationException;
 
@@ -43,6 +45,8 @@ public class CommonControllerAdvice {
 	private static final String INCORRECT_PASS_EXCEPTION_CODE = "project.exceptions.IncorrectPasswordException";
 
 	private static final String CONSTRAINT_VIOLATION_EXCEPTION_CODE = "project.exceptions.ConstraintViolationException";
+
+	private static final String DUPLICATED_ENTRY_EXCEPTION_CODE = "project.exceptions.DuplicatedEntryException";
 
 	/** The message source. */
 	@Autowired
@@ -173,4 +177,26 @@ public class CommonControllerAdvice {
 
 	}
 
+	@ExceptionHandler(DuplicatedEntryException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ErrorsDto handleDuplicatedEntryException(DuplicatedEntryException exception, Locale locale) {
+
+		String errorMessage = messageSource.getMessage(DUPLICATED_ENTRY_EXCEPTION_CODE, null,
+				DUPLICATED_ENTRY_EXCEPTION_CODE, locale);
+
+		return new ErrorsDto(errorMessage);
+
+	}
+
+	@ExceptionHandler(TrophyAlreadyGivenException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ErrorsDto handleTrophyAlreadyGivenException(TrophyAlreadyGivenException exception, Locale locale) {
+		String errorMessage = messageSource.getMessage("project.exceptions.TrophyAlreadyGivenException",
+				new Object[] { exception.getTrophyId(), exception.getUserId() }, "Trophy already given",
+				locale);
+
+		return new ErrorsDto(errorMessage);
+	}
 }
