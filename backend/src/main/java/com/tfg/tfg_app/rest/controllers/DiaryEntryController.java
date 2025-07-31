@@ -62,8 +62,8 @@ public class DiaryEntryController {
             .orElseThrow(() -> new InstanceNotFoundException("User not found with id: " + userId, userId));
         diaryEntry.setUser(user);
 
-        Mood mood = moodDao.findById(diaryEntryDto.getMoodId())
-            .orElseThrow(() -> new DuplicateInstanceException("Mood not found with id: " + diaryEntryDto.getMoodId(), diaryEntryDto.getMoodId()));
+        Mood mood = moodDao.findById(diaryEntryDto.getMood().getId())
+            .orElseThrow(() -> new DuplicateInstanceException("Mood not found with id: " + diaryEntryDto.getMood().getId(), diaryEntryDto.getMood().getId()));
         diaryEntry.setMood(mood);
 
         DiaryEntry createdDiaryEntry = diaryEntryService.createDiaryEntry(diaryEntry);
@@ -96,8 +96,8 @@ public class DiaryEntryController {
             .orElseThrow(() -> new InstanceNotFoundException("User not found with id: " + userId, userId));
         diaryEntry.setUser(user);
 
-        Mood mood = moodDao.findById(diaryEntryDto.getMoodId())
-            .orElseThrow(() -> new DuplicateInstanceException("Mood not found with id: " + diaryEntryDto.getMoodId(), diaryEntryDto.getMoodId()));
+        Mood mood = moodDao.findById(diaryEntryDto.getMood().getId())
+            .orElseThrow(() -> new DuplicateInstanceException("Mood not found with id: " + diaryEntryDto.getMood().getId(), diaryEntryDto.getMood().getId()));
         diaryEntry.setMood(mood);
 
 
