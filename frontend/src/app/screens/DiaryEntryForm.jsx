@@ -76,18 +76,28 @@ const DiaryEntryForm = () => {
     };
 
     const handleSubmit = async () => {
+        setIsLoading(true);
         try {
-            const response = await diaryEntryService.createDiaryEntry(description, selectedImages, moodId);
-            selectedHabits.forEach(async (userHabitId) => {
-                const habitResponse = await habitService.createHabitEntry(userHabitId, response.data.id);
-                if (habitResponse.data.userTrophy != null) {
-                    Alert.alert("Trophy Earned", `You earned a trophy for completing the habit: ${habitResponse.data.userTrophy.trophy.name}`);
+            const moodIdToUse = moodId ? parseInt(moodId, 10) : 1;
+            
+            const response = await diaryEntryService.createDiaryEntry(description, selectedImages, moodIdToUse);
+            
+            for (const userHabitId of selectedHabits) {
+                try {
+                    const habitResponse = await habitService.createHabitEntry(userHabitId, response.data.id);
+                    if (habitResponse.data.userTrophy != null) {
+                        Alert.alert("Trophy Earned", `You earned a trophy for completing the habit: ${habitResponse.data.userTrophy.trophy.name}`);
+                    }
+                } catch (habitError) {
+                    console.error('Error creating habit entry:', habitError);
                 }
-            });
+            }
+            
             Alert.alert("Success", "Diary entry saved successfully!");
             router.replace('/(tabs)');
         } catch (error) {
             console.error('Error submitting diary entry:', error);
+            Alert.alert("Error", "Failed to save diary entry. Please try again.");
         } finally {
             setIsLoading(false);
         }
@@ -213,15 +223,19 @@ const DiaryEntryForm = () => {
                     <View className="mb-8">
                         <TouchableOpacity 
                             onPress={handleSubmit}
-                            className="bg-green-500 active:bg-green-600 rounded-xl p-4 shadow-lg"
+                            className={`rounded-xl p-4 shadow-lg ${
+                                isLoading 
+                                    ? 'bg-gray-400' 
+                                    : 'bg-green-500 active:bg-green-600'
+                            }`}
                             activeOpacity={0.8}
                             disabled={isLoading}
                         >
                             <View className="flex-row items-center justify-center">
                                 {isLoading ? (
-                                    <MaterialCommunityIcons name="loading" size={24} color="white" className="mr-2" />
+                                    <MaterialCommunityIcons name="loading" size={24} color="white" style={{ marginRight: 8 }} />
                                 ) : (
-                                    <MaterialCommunityIcons name="content-save" size={24} color="white" className="mr-2" />
+                                    <MaterialCommunityIcons name="content-save" size={24} color="white" style={{ marginRight: 8 }} />
                                 )}
                                 <Text className="text-white font-bold text-lg">
                                     {isLoading ? "Saving..." : "Save Diary Entry"}
