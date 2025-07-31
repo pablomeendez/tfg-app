@@ -1,11 +1,11 @@
 import apiClient  from "./apiClient";
 
 const diaryEntryService = {
-    createDiaryEntry: () => {
-        return apiClient.post('/diaryEntry/create');
+    createDiaryEntry: (description, images, moodId) => {
+        return apiClient.post('/diaryEntry/create', {description: description, images: images, moodId: moodId});
     },
-    updateDiaryEntry: (diaryEntryId) => {
-        return apiClient.put(`/diaryEntry/${diaryEntryId}`);
+    updateDiaryEntry: (diaryEntryId, description, images, moodId) => {
+        return apiClient.put(`/diaryEntry/${diaryEntryId}`, {description: description, images: images, moodId: moodId});
     },
 
     deleteDiaryEntry: (diaryEntryId) => {
@@ -13,7 +13,7 @@ const diaryEntryService = {
     },
 
     getDiaryEntries: (userId) => {
-        return apiClient.get(`/diaryEntries/?userId=${userId}`);
+        return apiClient.get(`/diaryEntry/?userId=${userId}`);
     },
 }
 
