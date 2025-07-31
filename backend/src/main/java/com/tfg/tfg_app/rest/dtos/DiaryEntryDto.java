@@ -6,15 +6,15 @@ public class DiaryEntryDto {
     
     private String description;
     private List<byte[]> images;
-    private MoodDto mood;
-
+    private Long moodId;
+ 
     public DiaryEntryDto() {
     }
 
-    public DiaryEntryDto(String description, List<byte[]> images, MoodDto mood) {
+    public DiaryEntryDto(String description, List<byte[]> images, Long moodId) {
         this.description = description;
         this.images = images;
-        this.mood = mood;
+        this.moodId = moodId;
     }
 
     public String getDescription() {
@@ -33,11 +33,11 @@ public class DiaryEntryDto {
         this.images = images;
     }
 
-    public MoodDto getMood() {
-        return mood;
+    public Long getMoodId() {
+        return moodId;
     }
 
-    public void setMood(MoodDto mood) {
-        this.mood = mood;
+    public void setMoodId(Long moodId) {
+        this.moodId = moodId;
     }
 }

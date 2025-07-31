@@ -13,7 +13,7 @@ public class DiaryEntryConversor {
     private DiaryEntryConversor() {}
     
     public static DiaryEntryDto toDiaryEntryDto (DiaryEntry diaryEntry) {
-        return new DiaryEntryDto(diaryEntry.getContent(), diaryEntry.getImages().stream().map(Images::getImageData).collect(Collectors.toList()), toMoodDto(diaryEntry.getMood()));
+        return new DiaryEntryDto(diaryEntry.getContent(), diaryEntry.getImages().stream().map(Images::getImageData).collect(Collectors.toList()), diaryEntry.getMood().getId());
     }
 
     public static MoodDto toMoodDto (Mood mood) {
@@ -34,5 +34,9 @@ public class DiaryEntryConversor {
 
     public static List<ImageDto> toImageDtos(Set<Images> images) {
         return images.stream().map(image -> new ImageDto(image.getId(), image.getImageData(), image.getUploadDate())).collect(Collectors.toList());
+    }
+
+    public static List<MoodDto> toMoodDtos(List<Mood> moods) {
+        return moods.stream().map(DiaryEntryConversor::toMoodDto).collect(Collectors.toList());
     }
 }

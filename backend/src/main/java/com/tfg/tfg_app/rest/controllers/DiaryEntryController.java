@@ -29,8 +29,7 @@ import com.tfg.tfg_app.model.services.DiaryEntryService;
 import com.tfg.tfg_app.model.services.exceptions.DuplicatedEntryException;
 import com.tfg.tfg_app.rest.dtos.DiaryEntryDto;
 import com.tfg.tfg_app.rest.dtos.DiaryEntryResponseDto;
-
-
+import com.tfg.tfg_app.rest.dtos.MoodDto;
 import com.tfg.tfg_app.model.entities.Mood;
 import com.tfg.tfg_app.model.entities.Users;
 
@@ -62,8 +61,8 @@ public class DiaryEntryController {
             .orElseThrow(() -> new InstanceNotFoundException("User not found with id: " + userId, userId));
         diaryEntry.setUser(user);
 
-        Mood mood = moodDao.findById(diaryEntryDto.getMood().getId())
-            .orElseThrow(() -> new DuplicateInstanceException("Mood not found with id: " + diaryEntryDto.getMood().getId(), diaryEntryDto.getMood().getId()));
+        Mood mood = moodDao.findById(diaryEntryDto.getMoodId())
+            .orElseThrow(() -> new DuplicateInstanceException("Mood not found with id: " + diaryEntryDto.getMoodId(), diaryEntryDto.getMoodId()));
         diaryEntry.setMood(mood);
 
         DiaryEntry createdDiaryEntry = diaryEntryService.createDiaryEntry(diaryEntry);
@@ -96,8 +95,8 @@ public class DiaryEntryController {
             .orElseThrow(() -> new InstanceNotFoundException("User not found with id: " + userId, userId));
         diaryEntry.setUser(user);
 
-        Mood mood = moodDao.findById(diaryEntryDto.getMood().getId())
-            .orElseThrow(() -> new DuplicateInstanceException("Mood not found with id: " + diaryEntryDto.getMood().getId(), diaryEntryDto.getMood().getId()));
+        Mood mood = moodDao.findById(diaryEntryDto.getMoodId())
+            .orElseThrow(() -> new DuplicateInstanceException("Mood not found with id: " + diaryEntryDto.getMoodId(), diaryEntryDto.getMoodId()));
         diaryEntry.setMood(mood);
 
 
@@ -125,7 +124,7 @@ public class DiaryEntryController {
     }
 
     @GetMapping("/moods")
-    public List<Mood> getAllMoods() {
-        return moodDao.findAll();
+    public List<MoodDto> getAllMoods() {
+        return toMoodDtos(diaryEntryService.getAllMoods());
     }
 }
