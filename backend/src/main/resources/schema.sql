@@ -102,5 +102,3 @@ CREATE TABLE IF NOT EXISTS WeeklySummary (
     CONSTRAINT fk_weekly_summary_user FOREIGN KEY (userId) REFERENCES Users(id),
     CONSTRAINT fk_weekly_summary_mood_trend FOREIGN KEY (moodTrendId) REFERENCES Mood(id)
 );
-
-INSERT INTO Mood(name, image) VALUES ('Happy', null);
