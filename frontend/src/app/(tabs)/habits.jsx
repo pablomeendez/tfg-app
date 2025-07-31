@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import habitService from '../../services/habitService';
 import HabitCard from '../../components/HabitCard';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Habits() { 
     const [allHabits, setAllHabits] = useState([]);
@@ -72,47 +73,49 @@ export default function Habits() {
     }
 
     return (
-        <ScrollView className="flex-1 p-4">
-            <View className="mb-6">
-                <Text className="text-2xl font-bold text-gray-800 mb-4">
-                    Mis Hábitos
-                </Text>
-                {myHabits.map((userHabit, index) => (
-                    <View key={`my-habit-${index}`}>
-                        <HabitCard habit={allHabits.find(h => h.id === userHabit.habit.id)} />
-                        <View className="flex-row justify-center items-center mt-2">
-                            <TouchableOpacity 
-                                className="bg-red-500 w-9/12 justify-center h-10 rounded-lg" 
-                                onPress={() => {
-                                    handleDeleteHabit(userHabit.id)
-                                }}>
-                                <Text className="text-center text-white font-semibold">Remove</Text> 
-                            </TouchableOpacity>
+        <SafeAreaView className="flex-1 bg-white">
+            <ScrollView className="flex-1 p-4">
+                <View className="mb-6">
+                    <Text className="text-2xl font-bold text-gray-800 mb-4">
+                        Mis Hábitos
+                    </Text>
+                    {myHabits.map((userHabit, index) => (
+                        <View key={`my-habit-${index}`}>
+                            <HabitCard habit={allHabits.find(h => h.id === userHabit.habit.id)} />
+                            <View className="flex-row justify-center items-center mt-2 mb-3">
+                                <TouchableOpacity 
+                                    className="bg-red-500 w-9/12 justify-center h-10 rounded-lg pb-2" 
+                                    onPress={() => {
+                                        handleDeleteHabit(userHabit.id)
+                                    }}>
+                                    <Text className="text-center text-white font-semibold">Remove</Text> 
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                    </View>
-                ))}
-            </View>
+                    ))}
+                </View>
 
-            <View>
-                <Text className="text-2xl font-bold text-gray-800 mb-4">
-                    Todos los Hábitos
-                </Text>
-                {allHabits.map((habit, index) => (
-                    <View key={`my-habit-${index}`}>
-                        <HabitCard habit={habit} />
-                        {myHabits.some(myHabit => myHabit.habit.id === habit.id) ? null : (
-                            <View className="flex-row justify-center items-center mt-2">
-                            <TouchableOpacity 
-                                className="bg-blue-500 w-9/12 justify-center h-10 rounded-lg" 
-                                onPress={() => handleAddHabit(habit.id)}
-                                >
-                                <Text className="text-center text-white font-semibold">Add</Text>
-                            </TouchableOpacity>
+                <View>
+                    <Text className="text-2xl font-bold text-gray-800 mb-4">
+                        Todos los Hábitos
+                    </Text>
+                    {allHabits.map((habit, index) => (
+                        <View className="mb-2" key={`my-habit-${index}`}>
+                            <HabitCard habit={habit} />
+                            {myHabits.some(myHabit => myHabit.habit.id === habit.id) ? null : (
+                                <View className="flex-row justify-center items-center mt-2 mb-2">
+                                    <TouchableOpacity 
+                                        className="bg-blue-500 w-9/12 justify-center h-10 rounded-lg" 
+                                        onPress={() => handleAddHabit(habit.id)}
+                                        >
+                                        <Text className="text-center text-white font-semibold">Add</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            ) }
                         </View>
-                        ) }
-                    </View>
-                ))}
-            </View>
-        </ScrollView>
+                    ))}
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
