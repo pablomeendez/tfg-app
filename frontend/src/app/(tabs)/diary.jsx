@@ -1,9 +1,12 @@
-import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity, FlatList, Modal } from 'react-native';
 import { useState, useEffect } from 'react';
+import { Image } from 'expo-image';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import habitService from '../../services/habitService';
 import diaryEntryService from '../../services/diaryEntryService';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import ImageViewer from '../../components/ImageViewer';
 
 export default function Diary() {
     const [diaryEntries, setDiaryEntries] = useState([]);
@@ -13,6 +16,8 @@ export default function Diary() {
     const [error, setError] = useState(null);
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedEntry, setSelectedEntry] = useState(null);
 
     const months = [
         'January', 'February', 'March', 'April', 'May', 'June',
@@ -34,7 +39,7 @@ export default function Diary() {
             const habitsResponse = await habitService.getHabitsByUser(userId);
             setMyHabits(habitsResponse.data || []);
             
-                const allHabitEntries = [];
+            const allHabitEntries = [];
             for (const userHabit of habitsResponse.data || []) {
                 try {
                     const entriesResponse = await habitService.getHabitEntriesByUserAndUserHabit(userId, userHabit.id);
@@ -83,6 +88,7 @@ export default function Diary() {
         return habitsByDay;
     };
 
+
     const changeMonth = (direction) => {
         if (direction === 'prev') {
             if (selectedMonth === 0) {
@@ -101,23 +107,41 @@ export default function Diary() {
         }
     };
 
-    const renderDayWithHabits = (day, habits) => (
-        <View key={day} className="bg-white rounded-lg p-3 mb-3 shadow-sm">
-            <Text className="text-lg font-semibold text-gray-800 mb-2">
-                {day} of {months[selectedMonth]}
-            </Text>
-            {habits.length > 0 ? (
-                habits.map((habit, index) => (
-                    <View key={index} className="bg-green-50 rounded-lg p-2 mb-1 border-l-4 border-green-500">
-                        <Text className="text-green-800 font-medium">{habit.habitName}</Text>
-                        <Text className="text-green-600 text-xs">{habit.habitCategory}</Text>
-                    </View>
-                ))
-            ) : (
-                <Text className="text-gray-500 italic">No habits completed this day</Text>
-            )}
-        </View>
-    );
+    const renderDayWithHabits = (day, habits) => {
+        const handleDayPress = () => {
+            const foundEntry = diaryEntries.find(entry => {
+                const entryDate = new Date(entry.date);
+                return entryDate.getFullYear() === selectedYear && 
+                       entryDate.getMonth() === selectedMonth && 
+                       entryDate.getDate() === day;
+            });
+            setSelectedEntry(foundEntry || null);
+            setModalVisible(true);
+        };
+
+        return (
+            <TouchableOpacity 
+                key={day} 
+                onPress={handleDayPress}
+                className="bg-white rounded-lg p-3 mb-3 shadow-sm"
+                activeOpacity={0.7}
+            >
+                <Text className="text-lg font-semibold text-gray-800 mb-2">
+                    {day} of {months[selectedMonth]}
+                </Text>
+                {habits.length > 0 ? (
+                    habits.map((habit, index) => (
+                        <View key={index} className="bg-green-50 rounded-lg p-2 mb-1 border-l-4 border-green-500 my-2">
+                            <Text className="text-green-800 font-medium">{habit.habitName}</Text>
+                            <Text className="text-green-600 text-xs">{habit.habitCategory}</Text>
+                        </View>
+                    ))
+                ) : (
+                    <Text className="text-gray-500 italic">No habits completed this day</Text>
+                )}
+            </TouchableOpacity>
+        );
+    };
 
     if (loading) {
         return (
@@ -206,6 +230,100 @@ export default function Diary() {
                     </View>
                 )}
             </ScrollView>
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => setModalVisible(false)}
+                className="bg-opacity-50 border-inherit"
+            >
+                <View className="flex-1 justify-end border-inherit">
+                    <View className="bg-white rounded-t-3xl max-h-4/5">
+                        <View className="p-6">
+                            <View className="flex-row items-center justify-between mb-4">
+                                <Text className="text-2xl font-bold text-gray-800">Diary Entry</Text>
+                                <TouchableOpacity 
+                                    onPress={() => setModalVisible(false)}
+                                    className="bg-gray-100 rounded-full p-2"
+                                >
+                                    <MaterialCommunityIcons name="close" size={24} color="#6B7280" />
+                                </TouchableOpacity>
+                            </View>
+
+                            {selectedEntry ? (
+                                <ScrollView showsVerticalScrollIndicator={false} className="max-h-96">
+                                    <View className="bg-blue-50 rounded-xl p-4 mb-4">
+                                        <View className="flex-row items-center">
+                                            <MaterialCommunityIcons name="calendar" size={20} color="#3B82F6" />
+                                            <Text className="text-blue-800 font-medium ml-2">
+                                                {new Date(selectedEntry.date).toLocaleDateString('en-US', {
+                                                    weekday: 'long',
+                                                    year: 'numeric',
+                                                    month: 'long',
+                                                    day: 'numeric'
+                                                })}
+                                            </Text>
+                                        </View>
+                                    </View>
+
+                                    <View className="bg-purple-50 rounded-xl p-4 mb-4">
+                                        <View className="flex-row items-center">
+                                            <MaterialCommunityIcons name="emoticon" size={20} color="#8B5CF6" />
+                                            <Text className="text-purple-800 font-medium ml-2">
+                                                Mood ID: {selectedEntry.moodId}
+                                            </Text>
+                                        </View>
+                                    </View>
+
+                                    <View className="bg-gray-50 rounded-xl p-4 mb-4">
+                                        <Text className="text-gray-800 font-semibold mb-2">Content:</Text>
+                                        <Text className="text-gray-700 leading-6">
+                                            {selectedEntry.description || 'No content available'}
+                                        </Text>
+                                    </View>
+
+                                    {selectedEntry.images && selectedEntry.images.length > 0 && (
+                                        <View className="bg-green-50 rounded-xl p-4 mb-4">
+                                            <View className="flex-row items-center mb-3">
+                                                <MaterialCommunityIcons name="image-multiple" size={20} color="#10B981" />
+                                                <Text className="text-green-800 font-semibold ml-2">
+                                                    Images ({selectedEntry.images.length})
+                                                </Text>
+                                            </View>
+                                            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                                                <View className="flex-row">
+                                                    {selectedEntry.images.map((image, index) => (
+                                                        <View key={index} className="mr-3">
+                                                            <ImageViewer image={image.imageData} />
+                                                        </View>
+                                                    ))}
+                                                </View>
+                                            </ScrollView>
+                                        </View>
+                                    )}
+
+                                    <View className="bg-yellow-50 rounded-xl p-4">
+                                        <Text className="text-yellow-800 font-semibold mb-2">Entry Details:</Text>
+                                        <Text className="text-yellow-700 text-sm">
+                                            Created: {new Date(selectedEntry.date).toLocaleString()}
+                                        </Text>
+
+                                    </View>
+                                </ScrollView>
+                            ) : (
+                                <View className="items-center py-8">
+                                    <MaterialCommunityIcons name="book-open-variant" size={64} color="#D1D5DB" />
+                                    <Text className="text-gray-500 text-lg mt-4">No diary entry for this day</Text>
+                                    <Text className="text-gray-400 text-center mt-2">
+                                        Only habits were completed on this day
+                                    </Text>
+                                </View>
+                            )}
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </View>
     </SafeAreaView>
 );
