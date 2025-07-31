@@ -1,23 +1,20 @@
 package com.tfg.tfg_app.rest.dtos;
 
 import java.util.List;
-import java.util.Set;
-
-import com.tfg.tfg_app.model.entities.Images;
 
 public class DiaryEntryDto {
     
     private String description;
     private List<byte[]> images;
-    private Long moodId;
+    private MoodDto mood;
 
     public DiaryEntryDto() {
     }
 
-    public DiaryEntryDto(String description, List<byte[]> images, Long moodId) {
+    public DiaryEntryDto(String description, List<byte[]> images, MoodDto mood) {
         this.description = description;
         this.images = images;
-        this.moodId = moodId;
+        this.mood = mood;
     }
 
     public String getDescription() {
@@ -36,11 +33,11 @@ public class DiaryEntryDto {
         this.images = images;
     }
 
-    public Long getMoodId() {
-        return moodId;
+    public MoodDto getMood() {
+        return mood;
     }
 
-    public void setMoodId(Long moodId) {
-        this.moodId = moodId;
+    public void setMood(MoodDto mood) {
+        this.mood = mood;
     }
 }

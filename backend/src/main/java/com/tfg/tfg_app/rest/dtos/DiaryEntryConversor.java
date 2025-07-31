@@ -6,13 +6,18 @@ import java.util.stream.Collectors;
 
 import com.tfg.tfg_app.model.entities.DiaryEntry;
 import com.tfg.tfg_app.model.entities.Images;
+import com.tfg.tfg_app.model.entities.Mood;
 
 public class DiaryEntryConversor {
 
     private DiaryEntryConversor() {}
     
     public static DiaryEntryDto toDiaryEntryDto (DiaryEntry diaryEntry) {
-        return new DiaryEntryDto(diaryEntry.getContent(), diaryEntry.getImages().stream().map(Images::getImageData).collect(Collectors.toList()), diaryEntry.getMood().getId());
+        return new DiaryEntryDto(diaryEntry.getContent(), diaryEntry.getImages().stream().map(Images::getImageData).collect(Collectors.toList()), toMoodDto(diaryEntry.getMood()));
+    }
+
+    public static MoodDto toMoodDto (Mood mood) {
+        return new MoodDto(mood.getId(), mood.getName(), mood.getImage());
     }
 
     public static DiaryEntry toDiaryEntry (DiaryEntryDto diaryEntryDto) {
