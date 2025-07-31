@@ -20,12 +20,16 @@ import com.tfg.tfg_app.model.common.exceptions.DuplicateInstanceException;
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.entities.Category;
 import com.tfg.tfg_app.model.entities.CategoryDao;
+import com.tfg.tfg_app.model.entities.DiaryEntry;
 import com.tfg.tfg_app.model.entities.Habit;
 import com.tfg.tfg_app.model.entities.HabitDao;
 import com.tfg.tfg_app.model.entities.HabitEntry;
 import com.tfg.tfg_app.model.entities.HabitEntryDao;
+import com.tfg.tfg_app.model.entities.Mood;
+import com.tfg.tfg_app.model.entities.MoodDao;
 import com.tfg.tfg_app.model.entities.UserHabit;
 import com.tfg.tfg_app.model.entities.Users;
+import com.tfg.tfg_app.model.services.exceptions.DuplicatedEntryException;
 
 import jakarta.transaction.Transactional;
 
@@ -44,6 +48,9 @@ public class HabitServiceTest {
     private UserService userService;
 
     @Autowired
+    private DiaryEntryService diaryEntryService;
+
+    @Autowired
     private HabitDao habitDao;
 
     @Autowired
@@ -52,12 +59,17 @@ public class HabitServiceTest {
     @Autowired
     private HabitEntryDao habitEntryDao;
 
+    @Autowired
+    private MoodDao moodDao;
+
     private Users testUser;
     private Category testCategory;
     private Habit testHabit;
+    private DiaryEntry testDiaryEntry;
+    private Mood testMood;
 
     @Before
-    public void setUp() throws DuplicateInstanceException {
+    public void setUp() throws DuplicateInstanceException, DuplicatedEntryException {
         // Crear usuario de prueba
         testUser = new Users("testuser", "password123", "Test", "User", "test@example.com");
         userService.signUp(testUser);
@@ -71,9 +83,23 @@ public class HabitServiceTest {
         testHabit = new Habit();
         testHabit.setName("Exercise");
         testHabit.setDescription("Daily exercise routine");
-        testHabit.setImage(new byte[]{1, 2, 3, 4});
+        testHabit.setImage("exercise_image.png"); 
         testHabit.setCategory(testCategory);
         habitDao.save(testHabit);
+
+        // Crear mood de prueba
+        testMood = new Mood();
+        testMood.setName("Happy");
+        testMood.setImage(new byte[]{9, 10, 11, 12});
+        moodDao.save(testMood);
+
+        // Crear diary entry de prueba usando el service
+        testDiaryEntry = new DiaryEntry();
+        testDiaryEntry.setUser(testUser);
+        testDiaryEntry.setMood(testMood);
+        testDiaryEntry.setContent("Test diary entry");
+        testDiaryEntry.setDate(LocalDateTime.now());
+        testDiaryEntry = diaryEntryService.createDiaryEntry(testDiaryEntry);
     }
 
     @Test
@@ -115,7 +141,7 @@ public class HabitServiceTest {
         Habit testHabit2 = new Habit();
         testHabit2.setName("Meditation");
         testHabit2.setDescription("Daily meditation");
-        testHabit2.setImage(new byte[]{5, 6, 7, 8});
+        testHabit2.setImage("meditation_image.png");
         testHabit2.setCategory(testCategory);
         habitDao.save(testHabit2);
         
@@ -137,10 +163,9 @@ public class HabitServiceTest {
 
     @Test
     public void testCreateHabitEntry() throws InstanceNotFoundException {
-        // Primero crear el UserHabit
         UserHabit userHabit = habitService.createUserHabit(testUser.getId(), testHabit.getId());
         
-        HabitEntry habitEntry = habitService.createHabitEntry(testUser.getId(), userHabit.getId());
+        HabitEntry habitEntry = habitService.createHabitEntry(testUser.getId(), userHabit.getId(), testDiaryEntry.getId());
         
         assertNotNull(habitEntry);
         assertNotNull(habitEntry.getId());
@@ -162,10 +187,11 @@ public class HabitServiceTest {
         yesterdayEntry.setUserHabit(userHabit);
         yesterdayEntry.setDate(LocalDateTime.now().minusDays(1));
         yesterdayEntry.setStreak(5);
+        yesterdayEntry.setDiaryEntry(testDiaryEntry);
         habitEntryDao.save(yesterdayEntry);
 
         // Crear entrada de hoy
-        HabitEntry todayEntry = habitService.createHabitEntry(testUser.getId(), userHabit.getId());
+        HabitEntry todayEntry = habitService.createHabitEntry(testUser.getId(), userHabit.getId(), testDiaryEntry.getId());
         
         assertNotNull(todayEntry);
         assertEquals(6, todayEntry.getStreak()); // Debería incrementar el streak
@@ -182,10 +208,10 @@ public class HabitServiceTest {
         oldEntry.setUserHabit(userHabit);
         oldEntry.setDate(LocalDateTime.now().minusDays(2));
         oldEntry.setStreak(5);
+        oldEntry.setDiaryEntry(testDiaryEntry);
         habitEntryDao.save(oldEntry);
 
-        // Crear entrada de hoy
-        HabitEntry todayEntry = habitService.createHabitEntry(testUser.getId(), userHabit.getId());
+        HabitEntry todayEntry = habitService.createHabitEntry(testUser.getId(), userHabit.getId(), testDiaryEntry.getId());
         
         assertNotNull(todayEntry);
         assertEquals(1, todayEntry.getStreak()); // Debería reiniciar el streak
@@ -194,12 +220,12 @@ public class HabitServiceTest {
     @Test
     public void testCreateHabitEntryWithNonExistentUser() {
         assertThrows(InstanceNotFoundException.class, 
-            () -> habitService.createHabitEntry(NON_EXISTENT_ID, NON_EXISTENT_ID));
+            () -> habitService.createHabitEntry(NON_EXISTENT_ID, NON_EXISTENT_ID, testDiaryEntry.getId()));
     }
 
     @Test
     public void testCreateHabitEntryWithNonExistentUserHabit() {
         assertThrows(InstanceNotFoundException.class, 
-            () -> habitService.createHabitEntry(testUser.getId(), NON_EXISTENT_ID));
+            () -> habitService.createHabitEntry(testUser.getId(), NON_EXISTENT_ID, testDiaryEntry.getId()));
     }
 }
