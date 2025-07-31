@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
+import com.tfg.tfg_app.model.entities.DiaryEntry;
+import com.tfg.tfg_app.model.entities.DiaryEntryDao;
 import com.tfg.tfg_app.model.entities.Habit;
 import com.tfg.tfg_app.model.entities.HabitDao;
 import com.tfg.tfg_app.model.entities.HabitEntry;
@@ -25,6 +27,9 @@ public class HabitServiceImpl implements HabitService {
 
     @Autowired
     private HabitEntryDao habitEntryDao;
+
+    @Autowired
+    private DiaryEntryDao diaryEntryDao;
 
     @Autowired
     private UserHabitDao userHabitDao;
@@ -72,7 +77,7 @@ public class HabitServiceImpl implements HabitService {
         return userHabitDao.findByUserId(userId);
     }
 
-    public HabitEntry createHabitEntry(Long userId, Long userHabitIdLong) throws InstanceNotFoundException {
+    public HabitEntry createHabitEntry(Long userId, Long userHabitIdLong, Long diaryEntryId) throws InstanceNotFoundException {
         Users user = userService.loginFromId(userId);
         Optional<UserHabit> optUserHabit = userHabitDao.findById(userHabitIdLong);
 
@@ -82,11 +87,20 @@ public class HabitServiceImpl implements HabitService {
 
         UserHabit userHabit = optUserHabit.get();
 
+        Optional<DiaryEntry> optDiaryEntry = diaryEntryDao.findById(diaryEntryId);
+
+        if (!optDiaryEntry.isPresent()) {
+            throw new InstanceNotFoundException("DiaryEntry with ID " + diaryEntryId + " not found.", DiaryEntry.class);
+        }
+
+        DiaryEntry diaryEntry = optDiaryEntry.get();
+
         HabitEntry habitEntry = new HabitEntry();
 
         habitEntry.setUser(user);
         habitEntry.setUserHabit(userHabit);
         habitEntry.setDate(LocalDateTime.now());
+        habitEntry.setDiaryEntry(diaryEntry);
 
         HabitEntry lastHabitEntry = habitEntryDao.findTopByUserIdOrderByIdDesc(userId);
         
