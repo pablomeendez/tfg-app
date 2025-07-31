@@ -124,4 +124,8 @@ public class DiaryEntryController {
         return toDiaryEntryResponsesDto(diaryEntryService.getDiaryEntriesByUserId(userId));
     }
 
+    @GetMapping("/moods")
+    public List<Mood> getAllMoods() {
+        return moodDao.findAll();
+    }
 }

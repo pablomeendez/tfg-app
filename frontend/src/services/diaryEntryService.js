@@ -15,6 +15,9 @@ const diaryEntryService = {
     getDiaryEntries: (userId) => {
         return apiClient.get(`/diaryEntry/?userId=${userId}`);
     },
+    getAllMoods: () => {
+        return apiClient.get('/diaryEntry/moods');
+    }
 }
 
 export default diaryEntryService;   

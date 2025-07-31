@@ -12,6 +12,8 @@ import com.tfg.tfg_app.model.common.exceptions.DuplicateInstanceException;
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.entities.DiaryEntry;
 import com.tfg.tfg_app.model.entities.DiaryEntryDao;
+import com.tfg.tfg_app.model.entities.Mood;
+import com.tfg.tfg_app.model.entities.MoodDao;
 import com.tfg.tfg_app.model.services.exceptions.DuplicatedEntryException;
 
 @Service
@@ -19,6 +21,9 @@ public class DiaryEntryServiceImpl implements DiaryEntryService {
 
     @Autowired
     private DiaryEntryDao diaryEntryDao;
+
+    @Autowired
+    private MoodDao moodDao;
 
     @Override
     public DiaryEntry createDiaryEntry(DiaryEntry diaryEntry) throws DuplicateInstanceException, DuplicatedEntryException {
@@ -68,5 +73,10 @@ public class DiaryEntryServiceImpl implements DiaryEntryService {
     @Override
     public List<DiaryEntry> getDiaryEntriesByUserId(Long userId) {
         return diaryEntryDao.findByUserId(userId);
+    }
+
+    @Override
+    public List<Mood> getAllMoods() {
+        return moodDao.findAll();
     }
 }
