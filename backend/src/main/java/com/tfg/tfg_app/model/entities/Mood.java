@@ -17,7 +17,7 @@ public class Mood {
     private String name;
 
     @Lob
-    private byte[] image;
+    private String image;
 
     @OneToMany(mappedBy = "mood")
     private Set<DiaryEntry> diaryEntries;
@@ -38,11 +38,11 @@ public class Mood {
         this.name = name;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

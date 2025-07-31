@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS Users (
 CREATE TABLE IF NOT EXISTS Mood (
     id Long NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    image BLOB 
+    image VARCHAR(255)  
 );
 
 CREATE TABLE IF NOT EXISTS DiaryEntry (
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS Habit (
     id Long NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
-    image BLOB NOT NULL,
+    image VARCHAR(255) NOT NULL,
     categoryId Long NOT NULL,
     CONSTRAINT fk_habit_category FOREIGN KEY (categoryId) REFERENCES Category(id)
 );
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS Trophy (
     name VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
     days int NOT NULL,
-    image BLOB NOT NULL
+    image VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS UserTrophy (
