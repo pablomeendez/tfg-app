@@ -121,7 +121,7 @@ public class UserServiceTest {
 		user.setEmail('X' + user.getEmail());
 
 		userService.updateProfile(user.getId(), 'X' + user.getName(), 'X' + user.getLastName(),
-				'X' + user.getEmail());
+				'X' + user.getEmail(), false);
 
 		Users updatedUser = userService.loginFromId(user.getId());
 
@@ -132,7 +132,7 @@ public class UserServiceTest {
 	@Test
 	public void testUpdateProfileWithNonExistentId() {
 		assertThrows(InstanceNotFoundException.class,
-				() -> userService.updateProfile(NON_EXISTENT_ID, "X", "X", "X"));
+				() -> userService.updateProfile(NON_EXISTENT_ID, "X", "X", "X", false));
 	}
 
 	@Test
