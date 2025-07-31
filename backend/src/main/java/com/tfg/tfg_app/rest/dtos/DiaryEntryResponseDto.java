@@ -1,23 +1,28 @@
 package com.tfg.tfg_app.rest.dtos;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 
 public class DiaryEntryResponseDto {
 
     private Long id;
     private String description;
     private LocalDateTime date;
-    private Long userId;
+    private UserDto user;
+    private List<ImageDto> image;
     private Long moodId;
+    
 
     public DiaryEntryResponseDto() {
     }
 
-    public DiaryEntryResponseDto(Long id, String description, LocalDateTime date, Long userId, Long moodId) {
+    public DiaryEntryResponseDto(Long id, String description, LocalDateTime date, UserDto user, List<ImageDto> image, Long moodId) {
         this.id = id;
         this.description = description;
         this.date = date;
-        this.userId = userId;
+        this.user = user;
+        this.image = image;
         this.moodId = moodId;
     }
 
@@ -45,15 +50,23 @@ public class DiaryEntryResponseDto {
         this.date = date;
     }
 
-    public Long getUserId() {
-        return userId;
+    public UserDto getUser() {
+        return user;
     }
 
-    public void setUser(Long userId) {
-        this.userId = userId;
+    public void setUser(UserDto user) {
+        this.user = user;
     }
 
-    public Long getMooId() {
+    public List<ImageDto> getImage() {
+        return image;
+    }
+
+    public void setImage(List<ImageDto> image) {
+        this.image = image;
+    }
+
+    public Long getMoodId() {
         return moodId;
     }
 

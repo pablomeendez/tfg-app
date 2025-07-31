@@ -1,6 +1,6 @@
 package com.tfg.tfg_app.rest.dtos;
 
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import com.tfg.tfg_app.model.entities.Images;
@@ -8,16 +8,14 @@ import com.tfg.tfg_app.model.entities.Images;
 public class DiaryEntryDto {
     
     private String description;
-    private LocalDateTime date;
-    private Set<Images> images;
+    private List<byte[]> images;
     private Long moodId;
 
     public DiaryEntryDto() {
     }
 
-    public DiaryEntryDto(String description, LocalDateTime date, Set<Images> images, Long moodId) {
+    public DiaryEntryDto(String description, List<byte[]> images, Long moodId) {
         this.description = description;
-        this.date = date;
         this.images = images;
         this.moodId = moodId;
     }
@@ -30,19 +28,11 @@ public class DiaryEntryDto {
         this.description = description;
     }
 
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public Set<Images> getImages() {
+    public List<byte[]> getImages() {
         return images;
     }
 
-    public void setImages(Set<Images> images) {
+    public void setImages(List<byte[]> images) {
         this.images = images;
     }
 

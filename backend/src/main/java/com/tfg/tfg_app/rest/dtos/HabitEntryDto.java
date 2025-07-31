@@ -5,13 +5,15 @@ public class HabitEntryDto {
     private Long id;
     private UserDto user;
     private UserHabitDto userHabit;
+    private DiaryEntryDto diaryEntry;
     private String date;
     private int streak;
 
-    public HabitEntryDto(Long id, UserDto user, UserHabitDto userHabit, String date, int streak) {
+    public HabitEntryDto(Long id, UserDto user, UserHabitDto userHabit, DiaryEntryDto diaryEntry, String date, int streak) {
         this.id = id;
         this.user = user;
         this.userHabit = userHabit;
+        this.diaryEntry = diaryEntry;
         this.date = date;
         this.streak = streak;
     }
@@ -38,6 +40,14 @@ public class HabitEntryDto {
 
     public void setUserHabit(UserHabitDto userHabit) {
         this.userHabit = userHabit;
+    }
+
+    public DiaryEntryDto getDiaryEntry() {
+        return diaryEntry;
+    }
+
+    public void setDiaryEntry(DiaryEntryDto diaryEntry) {
+        this.diaryEntry = diaryEntry;
     }
 
     public String getDate() {

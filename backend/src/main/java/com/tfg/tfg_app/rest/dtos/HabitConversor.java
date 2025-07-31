@@ -6,15 +6,24 @@ import com.tfg.tfg_app.model.entities.Category;
 import com.tfg.tfg_app.model.entities.Habit;
 import com.tfg.tfg_app.model.entities.HabitEntry;
 import com.tfg.tfg_app.model.entities.UserHabit;
+import com.tfg.tfg_app.model.entities.UserTrophy;
 
 public class HabitConversor {
 
     public static CategoryDto toCategoryDto(Category category) {
         return new CategoryDto(category.getId(), category.getName());
     }
+
+    public static Category toCategory(CategoryDto categoryDto) {
+        return new Category(categoryDto.getId(), categoryDto.getName());
+    }
     
     public static HabitDto toHabitDto (Habit habit) {
         return new HabitDto(habit.getId(), habit.getName(), habit.getDescription(), toCategoryDto(habit.getCategory()), habit.getImage().toString());
+    }
+
+    public static Habit toHabit(HabitDto habitDto) {
+        return new Habit(habitDto.getId(), habitDto.getName(), habitDto.getDescription(), toCategory(habitDto.getCategory()), habitDto.getImageString());
     }
 
     public static List<HabitDto> toHabitDtos(List<Habit> habits) {
@@ -30,10 +39,19 @@ public class HabitConversor {
     }
 
     public static HabitEntryDto toHabitEntryDto(HabitEntry habitEntry) {
-        return new HabitEntryDto(habitEntry.getId(), UserConversor.toUserDto(habitEntry.getUser()), toUserHabitDto(habitEntry.getUserHabit()), habitEntry.getDate().toString(), habitEntry.getStreak());
+        return new HabitEntryDto(habitEntry.getId(), UserConversor.toUserDto(habitEntry.getUser()), toUserHabitDto(habitEntry.getUserHabit()), DiaryEntryConversor.toDiaryEntryDto(habitEntry.getDiaryEntry()), habitEntry.getDate().toString(), habitEntry.getStreak());
     }
 
     public static List<HabitEntryDto> toHabitEntryDtos(List<HabitEntry> habitEntries) {
         return habitEntries.stream().map(HabitConversor::toHabitEntryDto).toList();
+    }
+
+    public static HabitEntryWithTrophyDto toHabitEntryWithTrophyDto(HabitEntry habitEntry, UserTrophy userTrophy) {
+        HabitEntryDto habitEntryDto = toHabitEntryDto(habitEntry);
+        if (userTrophy == null) {
+            return new HabitEntryWithTrophyDto(habitEntryDto, null);
+        }
+        UserTrophyDto userTrophyDto = TrophyConversor.toUserTrophyDto(userTrophy);
+        return new HabitEntryWithTrophyDto(habitEntryDto, userTrophyDto);
     }
 }
