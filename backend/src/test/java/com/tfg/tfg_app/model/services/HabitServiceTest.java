@@ -90,7 +90,7 @@ public class HabitServiceTest {
         // Crear mood de prueba
         testMood = new Mood();
         testMood.setName("Happy");
-        testMood.setImage(new byte[]{9, 10, 11, 12});
+        testMood.setImage("happy_image.png");
         moodDao.save(testMood);
 
         // Crear diary entry de prueba usando el service

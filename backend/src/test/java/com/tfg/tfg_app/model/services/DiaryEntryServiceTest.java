@@ -56,12 +56,12 @@ public class DiaryEntryServiceTest {
     
         testMood = new Mood();
         testMood.setName("Happy");
-        testMood.setImage(new byte[]{1, 2, 3, 4});
+        testMood.setImage("happy_image.png");
         moodDao.save(testMood);
 
         testMood2 = new Mood();
         testMood2.setName("Sad");
-        testMood2.setImage(new byte[]{1, 2, 3, 4});
+        testMood2.setImage("sad_image.png");
         moodDao.save(testMood2);
     }
 
@@ -358,7 +358,7 @@ public class DiaryEntryServiceTest {
         );
         Mood newMood = new Mood();
         newMood.setName("Sad");
-        newMood.setImage(new byte[]{5, 6, 7, 8});
+        newMood.setImage("sad_image.png");
         moodDao.save(newMood);
 
         entry.setMood(newMood);
