@@ -18,16 +18,13 @@ const apiClient = axios.create({
     },
 });
 
-// Interceptor para agregar el token automáticamente a todas las peticiones
 apiClient.interceptors.request.use(
     async (config) => {
         const token = await AsyncStorage.getItem('userToken');
-        console.log('Token from AsyncStorage:', token); // Debug log
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
-            console.log('Authorization header set:', config.headers.Authorization); // Debug log
         } else {
-            console.log('No token found in AsyncStorage'); // Debug log
+            console.log('No token found in AsyncStorage'); 
         }
         return config;
     },
@@ -36,17 +33,14 @@ apiClient.interceptors.request.use(
     }
 );
 
-// Interceptor para manejar respuestas y errores
 apiClient.interceptors.response.use(
     (response) => {
         return response;
     },
     async (error) => {
-        console.log('API Error:', error.response?.status, error.response?.data); // Debug log
+        console.log('API Error:', error.response?.status, error.response?.data); 
         if (error.response?.status === 401) {
             console.log('401 Unauthorized - Token might be invalid or expired');
-            // Opcional: limpiar el token inválido
-            // await AsyncStorage.removeItem('userToken');
         }
         return Promise.reject(error);
     }
