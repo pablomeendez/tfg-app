@@ -71,6 +71,7 @@ public class Users {
     private Set<WeeklySummary> weeklySummaries;
 
     public Users() {
+        this.firstEntry = true; 
     }
 
     public Users(String userName, String password, String name, String lastName, String email) {
@@ -79,6 +80,7 @@ public class Users {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
+        this.firstEntry = true;
     }
 
     public Users(Long id, String userName, String password, String name, String lastName, String email) {
@@ -104,6 +106,9 @@ public class Users {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+        if (firstEntry == null) {
+            firstEntry = true;
+        }
     }
 
     @PreUpdate
@@ -180,7 +185,7 @@ public class Users {
     }
 
     public void setFirstEntry(Boolean firstEntry) {
-        this.firstEntry = firstEntry;
+        this.firstEntry = firstEntry != null ? firstEntry : true;
     }
 
     public Set<DiaryEntry> getDiaryEntries() {

@@ -28,10 +28,28 @@ public class Trophy {
     @NotNull
     @Lob
     @Column(nullable = false)
-    private byte[] image;
+    private String image;
 
     @OneToMany(mappedBy = "trophy")
     private Set<UserTrophy> userTrophies;
+
+    public Trophy() {
+    }
+
+    public Trophy(String name, String description, int days, String image) {
+        this.name = name;
+        this.description = description;
+        this.days = days;
+        this.image = image;
+    }
+
+    public Trophy(Long id, String name, String description, int days, String image) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.days = days;
+        this.image = image;
+    }
 
     public Long getId() {
         return id;
@@ -65,11 +83,11 @@ public class Trophy {
         this.days = days;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

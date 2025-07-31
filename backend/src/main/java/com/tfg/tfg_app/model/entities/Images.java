@@ -26,6 +26,14 @@ public class Images {
     @JoinColumn(name = "diaryEntryId", nullable = false)
     private DiaryEntry diaryEntry;
 
+    public Images() {
+    }
+
+    public Images(byte[] imageData) {
+        this.imageData = imageData;
+        this.uploadDate = LocalDateTime.now();
+    }
+
     public Long getId() {
         return id;
     }

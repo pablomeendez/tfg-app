@@ -29,8 +29,24 @@ public class HabitEntry {
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private Users user;
+    
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "diaryEntryId", nullable = false)    
+    private DiaryEntry diaryEntry;
 
-    // Getters y Setters
+
+    public HabitEntry() {
+    }   
+
+    public HabitEntry(Users user, UserHabit userHabit, DiaryEntry diaryEntry, LocalDateTime date, int streak) {
+        this.user = user;
+        this.userHabit = userHabit;
+        this.diaryEntry = diaryEntry;
+        this.date = date;
+        this.streak = streak;
+    }
+
     public Long getId() {
         return id;
     }
@@ -69,5 +85,13 @@ public class HabitEntry {
 
     public void setUser(Users user) {
         this.user = user;
+    }
+
+    public DiaryEntry getDiaryEntry() {
+        return diaryEntry;
+    }
+
+    public void setDiaryEntry(DiaryEntry diaryEntry) {
+        this.diaryEntry = diaryEntry;
     }
 }

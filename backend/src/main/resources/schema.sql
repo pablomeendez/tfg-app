@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS Mood (
 CREATE TABLE IF NOT EXISTS DiaryEntry (
     id Long NOT NULL AUTO_INCREMENT PRIMARY KEY,
     userId Long NOT NULL,
-    description VARCHAR(255) NOT NULL,
-    entryDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    content VARCHAR(255) NOT NULL,
+    date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     moodId Long NOT NULL,
     CONSTRAINT fk_diary_entry_user FOREIGN KEY (userId) REFERENCES Users(id),
     CONSTRAINT fk_diary_entry_mood FOREIGN KEY (moodId) REFERENCES Mood(id)
@@ -63,8 +63,10 @@ CREATE TABLE IF NOT EXISTS HabitEntry (
     streak int NOT NULL DEFAULT 0,
     userId Long NOT NULL,
     userHabitId Long NOT NULL,
+    diaryEntryId Long NOT NULL,
     CONSTRAINT fk_habit_entry_user FOREIGN KEY (userId) REFERENCES Users(id),
-    CONSTRAINT fk_habit_entry_user_habit FOREIGN KEY (userHabitId) REFERENCES UserHabit(id)
+    CONSTRAINT fk_habit_entry_user_habit FOREIGN KEY (userHabitId) REFERENCES UserHabit(id),
+    CONSTRAINT fk_habit_entry_diary_entry FOREIGN KEY (diaryEntryId) REFERENCES DiaryEntry(id)
 );
 
 
@@ -82,6 +84,8 @@ CREATE TABLE IF NOT EXISTS UserTrophy (
     obtainedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     userId Long NOT NULL,
     trophyId Long NOT NULL,
+    habitId Long NOT NULL,
+    CONSTRAINT fk_user_trophy_habit FOREIGN KEY (habitId) REFERENCES Habit(id),
     CONSTRAINT fk_user_trophy_user FOREIGN KEY (userId) REFERENCES Users(id),
     CONSTRAINT fk_user_trophy_trophy FOREIGN KEY (trophyId) REFERENCES Trophy(id)
 );

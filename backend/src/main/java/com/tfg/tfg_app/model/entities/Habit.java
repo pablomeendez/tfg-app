@@ -24,7 +24,7 @@ public class Habit {
     @NotNull
     @Lob
     @Column(nullable = false)
-    private byte[] image;
+    private String image;
 
     @NotNull
     @ManyToOne
@@ -33,6 +33,17 @@ public class Habit {
 
     @OneToMany(mappedBy = "habit")
     private Set<UserHabit> userHabits;
+
+    public Habit() {
+    }
+
+    public Habit(Long id, String name, String description, Category category, String image) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.image = image;
+    }
 
     public Long getId() {
         return id;
@@ -58,11 +69,11 @@ public class Habit {
         this.description = description;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

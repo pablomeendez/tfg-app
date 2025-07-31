@@ -36,6 +36,9 @@ public class DiaryEntry {
     @OneToMany(mappedBy = "diaryEntry")
     private Set<Images> images;
 
+    @OneToMany(mappedBy = "diaryEntry")
+    private Set<HabitEntry> habitEntries;
+
     public DiaryEntry() {
     }
 
@@ -93,5 +96,13 @@ public class DiaryEntry {
 
     public void setImages(Set<Images> images) {
         this.images = images;
+    }
+
+    public Set<HabitEntry> getHabitEntries() {
+        return habitEntries;
+    }
+
+    public void setHabitEntries(Set<HabitEntry> habitEntries) {
+        this.habitEntries = habitEntries;
     }
 }
