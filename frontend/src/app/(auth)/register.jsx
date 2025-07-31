@@ -15,11 +15,24 @@ export default function Register() {
     const { passwordVisibility, eyeIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
 
     const handleRegister = async () => {
+        if (!params.username.trim() || !params.password.trim() || !params.name.trim() || !params.lastName.trim() || !params.email.trim()) {
+            Alert.alert('Error', 'Please fill in all fields');
+            return;
+        }
+
+        if (!params.email.includes('@')) {
+            Alert.alert('Error', 'Please enter a valid email address');
+            return;
+        }
+
         try {
             await register(params.username, params.password, params.name, params.lastName, params.email);
-            router.replace('/(auth)');
+            Alert.alert('Success', 'Account created successfully', [
+                { text: 'OK', onPress: () => router.replace('/(auth)') }
+            ]);
         } catch (error) {
-            Alert(error);
+            console.log('Register error:', error);
+            Alert.alert('Registration Failed', 'Could not create account. Please try again.');
         }
     }
       
@@ -27,7 +40,7 @@ export default function Register() {
         <SafeAreaView className="flex-1">
             <View className="flex-1 p-5 justify-center gap-2">
                 <TouchableOpacity className="absolute left-0 top-0 m-4 z-10" onPress={() => router.back()}>
-                    <Text className="text-blue-600 text-lg">Volver</Text>
+                    <Text className="text-blue-600 text-lg">Back</Text>
                 </TouchableOpacity>
                 <Text className="text-2xl font-bold mb-5 text-center">Register</Text>
                     <TextInput

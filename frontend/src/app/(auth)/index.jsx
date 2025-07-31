@@ -20,21 +20,25 @@ export default function Login() {
   const { passwordVisibility, eyeIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
 
   const handleLogin = async () => {
+    if (!username.trim() || !password.trim()) {
+      Alert.alert('Error', 'Please enter username and password');
+      return;
+    }
+
     try {
       const response = await login(username, password);
       const user = response.data.user;
       console.log(user);
       if (user.firstEntry) {
         user.firstEntry = false;
-        console.log(user);
         const updateResponse = await userService.updateProfile(user.id, user);
-        console.log('Profile updated:', updateResponse.data);
         router.replace('/screens/HabitForm');
       } else {
         router.replace('/(tabs)');
       }
     } catch (e) {
       console.log('Error en handleLogin:', e);
+      Alert.alert('Login Failed', 'Invalid username or password');
     }
   }
 
