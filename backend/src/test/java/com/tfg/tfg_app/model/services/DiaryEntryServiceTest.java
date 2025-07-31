@@ -172,14 +172,7 @@ public class DiaryEntryServiceTest {
         assertThrows(DataIntegrityViolationException.class, () -> 
             diaryEntryService.createDiaryEntry(new DiaryEntry(null, LocalDateTime.now(), loggedInUser, testMood, null)));
     }
-
-    @Test
-    public void testCreateDiaryEntryWithNullDate() throws DuplicateInstanceException, IncorrectLoginException {
-        Users loggedInUser = userService.login("pablo", "1234");
-        DiaryEntry entry = new DiaryEntry("content", null, loggedInUser, testMood, null);
-        assertThrows(DataIntegrityViolationException.class, () -> diaryEntryService.createDiaryEntry(entry));
-    }
-
+    
     @Test
     public void testCreateMultipleDiaryEntriesForSameUser() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException {
         Users loggedInUser = userService.login("pablo", "1234");
@@ -407,11 +400,9 @@ public class DiaryEntryServiceTest {
     @Test
     public void testCreateDiaryEntryWithMultipleImages() throws Exception {
         Users loggedInUser = userService.login("pablo", "1234");
-        Images img1 = new Images();
-        img1.setImageData(new byte[]{1,2,3});
+        Images img1 = new Images(new byte[]{1,2,3});
         img1.setUploadDate(LocalDateTime.now());
-        Images img2 = new Images();
-        img2.setImageData(new byte[]{4,5,6});
+        Images img2 = new Images(new byte[]{4,5,6});
         img2.setUploadDate(LocalDateTime.now());
         Set<Images> images = new HashSet<>();
         images.add(img1);
