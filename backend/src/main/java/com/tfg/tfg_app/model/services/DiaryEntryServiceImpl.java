@@ -1,6 +1,7 @@
 package com.tfg.tfg_app.model.services;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,10 @@ public class DiaryEntryServiceImpl implements DiaryEntryService {
             throw new DataIntegrityViolationException(null);
         }
         List<DiaryEntry> diaryEntries = diaryEntryDao.findByUserId(diaryEntry.getUser().getId());
+
+        if (diaryEntry.getDate() == null) {
+            diaryEntry.setDate(LocalDateTime.now());
+        }
 
         if (diaryEntries.size() > 0 && diaryEntries.get(diaryEntries.size() - 1).getDate().toLocalDate().isEqual(diaryEntry.getDate().toLocalDate())) {
             throw new DuplicatedEntryException(diaryEntry.getUser().toString(), LocalDate.now());
