@@ -18,7 +18,7 @@ export default function Index() {
               <Button 
                 title="😃"
                 onPress={() => {
-                  router.push('/screens/DiaryEntryForm', { moodId: 1 });
+                  router.push({pathname:"/screens/DiaryEntryForm", params: { moodId: 1 } });
                 }}
               />
             </View>
