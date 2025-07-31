@@ -16,8 +16,8 @@ const DiaryEntryForm = () => {
     const { userId } = useContext(AuthContext);
     const [myHabits, setMyHabits] = useState([]);
     const localParams = useLocalSearchParams();
-    const globalParams = useGlobalSearchParams();
-    const moodId = localParams.moodId || globalParams.moodId;
+    const moodId = localParams.moodId;
+    const moodName = localParams.moodName;
     const [description, setDescription] = useState("");
     const [selectedImages, setSelectedImages] = useState([]);
     const [selectedHabits, setSelectedHabits] = useState([]);
@@ -78,10 +78,9 @@ const DiaryEntryForm = () => {
     const handleSubmit = async () => {
         setIsLoading(true);
         try {
-            const moodIdToUse = moodId ? parseInt(moodId, 10) : 1;
-            
-            const response = await diaryEntryService.createDiaryEntry(description, selectedImages, moodIdToUse);
-            
+
+            const response = await diaryEntryService.createDiaryEntry(description, selectedImages, moodId);
+
             for (const userHabitId of selectedHabits) {
                 try {
                     const habitResponse = await habitService.createHabitEntry(userHabitId, response.data.id);
@@ -120,7 +119,7 @@ const DiaryEntryForm = () => {
                         <View className="bg-white rounded-xl p-4 mb-6 shadow-sm border border-gray-100">
                             <Text className="text-lg font-semibold text-gray-700 mb-2">Selected Mood</Text>
                             <View className="bg-blue-50 rounded-lg p-3">
-                                <Text className="text-blue-800 font-medium">{moodId}</Text>
+                                <Text className="text-blue-800 font-medium">{moodName}</Text>
                             </View>
                         </View>
                     )}
