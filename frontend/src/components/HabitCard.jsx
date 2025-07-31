@@ -4,7 +4,7 @@ const HabitCard = ({ habit }) => {
 
     return (
         <View>
-            <View className="bg-white rounded-xl shadow-md mt-2 p-4">
+            <View className="bg-white rounded-xl shadow-md p-4">
                 <View className="flex-row items-center justify-between mb-2">
                     <Text className="text-lg font-semibold text-gray-800 flex-1">
                         {habit.name}
