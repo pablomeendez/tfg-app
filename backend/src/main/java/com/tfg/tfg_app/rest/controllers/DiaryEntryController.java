@@ -14,10 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.tfg.tfg_app.rest.dtos.DiaryEntryConversor.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import com.tfg.tfg_app.model.common.exceptions.DuplicateInstanceException;
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.entities.DiaryEntry;
+import com.tfg.tfg_app.model.entities.Images;
 import com.tfg.tfg_app.model.entities.ImagesDao;
 import com.tfg.tfg_app.model.entities.MoodDao;
 import com.tfg.tfg_app.model.entities.UsersDao;
@@ -25,6 +29,8 @@ import com.tfg.tfg_app.model.services.DiaryEntryService;
 import com.tfg.tfg_app.model.services.exceptions.DuplicatedEntryException;
 import com.tfg.tfg_app.rest.dtos.DiaryEntryDto;
 import com.tfg.tfg_app.rest.dtos.DiaryEntryResponseDto;
+
+
 import com.tfg.tfg_app.model.entities.Mood;
 import com.tfg.tfg_app.model.entities.Users;
 
@@ -52,10 +58,6 @@ public class DiaryEntryController {
 
         DiaryEntry diaryEntry = toDiaryEntry(diaryEntryDto);
 
-        if (diaryEntry.getImages() != null || !diaryEntry.getImages().isEmpty()) {
-            // Tengo que mirar como mandar las imágenes
-        }
-
         Users user = usersDao.findById(userId)
             .orElseThrow(() -> new InstanceNotFoundException("User not found with id: " + userId, userId));
         diaryEntry.setUser(user);
@@ -64,7 +66,19 @@ public class DiaryEntryController {
             .orElseThrow(() -> new DuplicateInstanceException("Mood not found with id: " + diaryEntryDto.getMoodId(), diaryEntryDto.getMoodId()));
         diaryEntry.setMood(mood);
 
-        return toDiaryEntryResponseDto(diaryEntryService.createDiaryEntry(diaryEntry));
+        DiaryEntry createdDiaryEntry = diaryEntryService.createDiaryEntry(diaryEntry);
+
+        Set<Images> images = new HashSet<>();
+
+        diaryEntryDto.getImages().forEach(imageBytes -> {
+                Images image = new Images(imageBytes);
+                image.setDiaryEntry(createdDiaryEntry);
+                images.add(imagesDao.save(image));
+        });
+
+        createdDiaryEntry.setImages(images);
+
+        return toDiaryEntryResponseDto(createdDiaryEntry);
     }
 
     @PutMapping("/update/{diaryEntryId}")
