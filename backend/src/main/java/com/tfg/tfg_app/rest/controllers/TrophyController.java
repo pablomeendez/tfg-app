@@ -26,11 +26,6 @@ public class TrophyController {
         return TrophyConversor.toTrophyDtos(trophyService.getAllTrophies());
     }
 
-    @GetMapping("/user")
-    public List<TrophyDto> getTrophiesByUserId(@RequestParam Long userId) {
-        return TrophyConversor.toTrophyDtos(trophyService.getTrophiesByUserId(userId));
-    }
-
     @GetMapping("/userTrophy")
     public List<UserTrophyDto> getUserTrophiesByUser(@RequestParam Long userId) throws InstanceNotFoundException{
         return TrophyConversor.toUserTrophyDtos(trophyService.getUserTrophies(userId));
