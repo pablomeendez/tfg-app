@@ -1,8 +1,9 @@
-import { Text, View, ScrollView, Button, ActivityIndicator } from 'react-native';
+import { Text, View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect, useState } from 'react';
 import diaryEntryService from '../../services/diaryEntryService';
+import { Image } from 'expo-image';
 
 export default function Index() {
 
@@ -48,25 +49,25 @@ export default function Index() {
             ¿How have you been?
           </Text>
           <View className="flex flex-row rounded-xl mt-2">
-            <View className="bg-white rounded-xl m-1">
               {moods.length > 0 ? (
                 moods.map((mood) => (
-                  <Button
-                    key={mood.id}
-                    title={mood.name || `Mood ${mood.id}`}
-                    onPress={() => {
-                      console.log('Navigating with moodId:', mood.id);
-                      router.push({ 
-                        pathname: "/screens/DiaryEntryForm", 
-                        params: { moodId: mood.id, moodName: mood.name } 
+                   <View className="bg-yellow-300 rounded-full m-1" key={mood.id}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        router.push({
+                          pathname: "/screens/DiaryEntryForm",
+                        params: { moodId: mood.id, moodName: mood.name }
                       });
                     }}
-                  />
+                    >
+                    {mood.image ? <Image source={{ uri: mood.image }} style={{ width: 40, height: 40  }} /> : mood.name || `Mood ${mood.id}`}
+                    </TouchableOpacity>
+                  </View>
                 ))
               ) : (
                 <Text className="p-2 text-gray-600">No moods available</Text>
               )}
-            </View>
+            
           </View>
         </View>
       </ScrollView>
