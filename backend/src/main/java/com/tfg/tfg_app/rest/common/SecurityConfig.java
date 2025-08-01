@@ -61,6 +61,7 @@ public class SecurityConfig {
                 .requestMatchers(antMatcher("api/trophies/user")).hasAnyRole("USER", "ADMIN")
                 .requestMatchers(antMatcher("api/trophies/userTrophy")).hasAnyRole("USER", "ADMIN")
                 .requestMatchers(antMatcher("api/trophies/userTrophy/habit")).hasAnyRole("USER", "ADMIN")
+                .requestMatchers(antMatcher("api/weeklySummary/user")).hasAnyRole("USER", "ADMIN")
 
                 .requestMatchers(antMatcher("/actuator/**")).permitAll()
                 .anyRequest().authenticated()
