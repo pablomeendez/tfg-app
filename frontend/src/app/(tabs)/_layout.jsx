@@ -1,5 +1,6 @@
 import { Tabs } from 'expo-router';
 import { useColorScheme } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -23,6 +24,9 @@ export default function TabLayout() {
           title: 'Home',
           tabBarLabel: 'Home',
           headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -30,7 +34,10 @@ export default function TabLayout() {
         options={{
           title: 'Diary',
           tabBarLabel: 'Diary',
-          headerShown: false, 
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="book-open-variant" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -39,6 +46,9 @@ export default function TabLayout() {
           title: 'Habits',
           tabBarLabel: 'Habits',
           headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="check-circle" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -47,14 +57,20 @@ export default function TabLayout() {
           title: 'Trophies',
           tabBarLabel: 'Trophies',
           headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="trophy" size={size} color={color} />
+          ),
         }}
-      />
+      /> 
       <Tabs.Screen
         name="chat"
         options={{
           title: 'Chat',
           tabBarLabel: 'Chat',
           headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="chat" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -63,6 +79,9 @@ export default function TabLayout() {
           title: 'Profile',
           tabBarLabel: 'Profile',
           headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account" size={size} color={color} />
+          ),
         }}
       />
     </Tabs>
