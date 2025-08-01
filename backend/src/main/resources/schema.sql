@@ -94,11 +94,12 @@ CREATE TABLE IF NOT EXISTS WeeklySummary (
     id Long NOT NULL AUTO_INCREMENT PRIMARY KEY,
     date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     habitsCompleted int NOT NULL DEFAULT 0,
-    biggestStreak int NOT NULL DEFAULT 0,
+    biggestStreak Long NOT NULL DEFAULT 0,
     moodTrendId Long NOT NULL,
     totalEntries int NOT NULL DEFAULT 0,
     trophiesObtained int NOT NULL DEFAULT 0,
     userId Long NOT NULL,
+    CONSTRAINT fk_weekly_summary_biggest_streak FOREIGN KEY (biggestStreak) REFERENCES HabitEntry(id),
     CONSTRAINT fk_weekly_summary_user FOREIGN KEY (userId) REFERENCES Users(id),
     CONSTRAINT fk_weekly_summary_mood_trend FOREIGN KEY (moodTrendId) REFERENCES Mood(id)
 );
