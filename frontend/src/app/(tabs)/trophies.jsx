@@ -106,6 +106,9 @@ export default function Trophies() {
                                             <Text className="text-green-600 text-sm font-medium mt-2">
                                                 {userTrophy.trophy.days} day streak completed!
                                             </Text>
+                                            <Text className="text-gray-500 text-xs mt-1">
+                                                Earned on: {new Date(userTrophy.obtainedAt).toLocaleDateString()}
+                                            </Text>
                                         </View>
                                     </View>
                                 </View>
