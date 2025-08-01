@@ -18,6 +18,7 @@ export default function Diary() {
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedEntry, setSelectedEntry] = useState(null);
+    const [moods, setMoods] = useState([]);
 
     const months = [
         'January', 'February', 'March', 'April', 'May', 'June',
@@ -38,6 +39,9 @@ export default function Diary() {
             
             const habitsResponse = await habitService.getHabitsByUser(userId);
             setMyHabits(habitsResponse.data || []);
+
+            const moodsResponse = await diaryEntryService.getAllMoods();
+            setMoods(moodsResponse.data || []);
             
             const allHabitEntries = [];
             for (const userHabit of habitsResponse.data || []) {
@@ -80,13 +84,28 @@ export default function Diary() {
                 habitsByDay[day].push({
                     ...entry,
                     habitName: userHabit.habit?.name || 'Unknown habit',
-                    habitCategory: userHabit.habit?.category?.name || 'No category'
+                    habitCategory: userHabit.habit?.category?.name || 'No category',
+                    habitStreak: entry.streak,
                 });
             }
         });
         
         return habitsByDay;
     };
+
+    const getDiaryEntriesByDay = () =>  {
+        const filteredEntries = filterEntriesByMonth(diaryEntries, 'date');
+        const entriesByDay = {};
+
+        filteredEntries.forEach(entry => {
+            const day = new Date(entry.date).getDate();
+            if (!entriesByDay[day]) {
+                entriesByDay[day] = [];
+            }
+            entriesByDay[day].push(entry);
+        });
+        return entriesByDay;
+    }
 
 
     const changeMonth = (direction) => {
@@ -107,7 +126,7 @@ export default function Diary() {
         }
     };
 
-    const renderDayWithHabits = (day, habits) => {
+    const renderDayWithHabits = (day, habits = []) => {
         const handleDayPress = () => {
             const foundEntry = diaryEntries.find(entry => {
                 const entryDate = new Date(entry.date);
@@ -123,17 +142,22 @@ export default function Diary() {
             <TouchableOpacity 
                 key={day} 
                 onPress={handleDayPress}
-                className="bg-white rounded-lg p-3 mb-3 shadow-sm"
+                className="bg-white rounded-lg p-3 mb-3 shadow-sm border border-gray-100"
                 activeOpacity={0.7}
             >
                 <Text className="text-lg font-semibold text-gray-800 mb-2">
                     {day} of {months[selectedMonth]}
                 </Text>
-                {habits.length > 0 ? (
+                {habits && habits.length > 0 ? (
                     habits.map((habit, index) => (
-                        <View key={index} className="bg-green-50 rounded-lg p-2 mb-1 border-l-4 border-green-500 my-2">
-                            <Text className="text-green-800 font-medium">{habit.habitName}</Text>
-                            <Text className="text-green-600 text-xs">{habit.habitCategory}</Text>
+                        <View key={index} className="flex-1 flex-row gap-4 rounded-lg p-2 mb-1 border-l-4 border-green-500 my-2">
+                            <View>
+                                <Text className="text-green-800 font-medium">{habit.habitName}</Text>
+                                <Text className="text-green-600 text-xs">{habit.habitCategory}</Text>
+                            </View>
+                            <View>
+                                <Text className="text-green-600">Streak: {habit.habitStreak}</Text>
+                            </View>
                         </View>
                     ))
                 ) : (
@@ -166,6 +190,8 @@ export default function Diary() {
         );
     }
 
+    const diaryEntriesByDay = getDiaryEntriesByDay();
+    const daysWithEntries = Object.keys(diaryEntriesByDay).sort((a, b) => parseInt(b) - parseInt(a));
     const habitsByDay = getHabitsCompletedByDay();
     const daysWithHabits = Object.keys(habitsByDay).sort((a, b) => parseInt(b) - parseInt(a));
 
@@ -215,17 +241,17 @@ export default function Diary() {
             </View>
 
             <ScrollView className="flex-1 px-4 mt-4">
-                {daysWithHabits.length > 0 ? (
-                    daysWithHabits.map(day => 
-                        renderDayWithHabits(parseInt(day), habitsByDay[day])
+                {daysWithEntries.length > 0 ? (
+                    daysWithEntries.map(day => 
+                        renderDayWithHabits(parseInt(day), habitsByDay[day] || [])
                     )
                 ) : (
                     <View className="bg-white rounded-lg p-6 mt-4">
                         <Text className="text-center text-gray-500 text-lg">
-                            No habits completed in {months[selectedMonth]} {selectedYear}
+                            No diary entries in {months[selectedMonth]} {selectedYear}
                         </Text>
                         <Text className="text-center text-gray-400 mt-2">
-                            Start completing your habits to see your progress here!
+                            Start writing diary entries to see them here!
                         </Text>
                     </View>
                 )}
@@ -271,7 +297,7 @@ export default function Diary() {
                                         <View className="flex-row items-center">
                                             <MaterialCommunityIcons name="emoticon" size={20} color="#8B5CF6" />
                                             <Text className="text-purple-800 font-medium ml-2">
-                                                Mood ID: {selectedEntry.moodId}
+                                                Mood: {moods.find(mood => mood.id === selectedEntry.moodId)?.name || 'Unknown'}
                                             </Text>
                                         </View>
                                     </View>
