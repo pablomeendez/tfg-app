@@ -144,4 +144,14 @@ public class HabitServiceImpl implements HabitService {
         return habitEntryDao.findByUserIdAndUserHabitId(user.getId(), userHabit.getId());
     }
 
+    public HabitEntry getUserBiggestStreak(Long userId) throws InstanceNotFoundException {
+        Users user = userService.loginFromId(userId);
+        return habitEntryDao.findFirstByUserIdOrderByStreakDesc(user.getId());
+    }
+
+    public List<HabitEntry> getUserHabitsAfterDate(Long userId, LocalDateTime date) throws InstanceNotFoundException {
+        Users user = userService.loginFromId(userId);
+        return habitEntryDao.findByUserIdAndDateBetween(user.getId(), date.minusDays(7), date);
+    }
+
 }

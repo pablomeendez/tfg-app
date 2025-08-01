@@ -1,5 +1,6 @@
 package com.tfg.tfg_app.model.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,11 @@ public class UserServiceImpl implements UserService {
     
     @Autowired
     private UsersDao userDao;
+
+	@Override
+	public List<Users> getAllUsers() {
+		return userDao.findAll();
+	}
 
     /**
 	 * Sign up.

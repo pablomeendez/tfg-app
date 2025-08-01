@@ -111,4 +111,11 @@ public class TrophyServiceImpl implements TrophyService {
         }
         return userTrophyDao.findByUserIdAndHabitId(userId, habitId);
     }
+
+    @Override
+    public List<UserTrophy> getUserTrophiesByUserIdAndDate(Long userId, LocalDateTime date) throws InstanceNotFoundException {
+        Users user = userService.loginFromId(userId);
+
+        return userTrophyDao.findByUserIdAndObtainedAtBetween(userId, date.minusDays(7), date);
+    }
 }

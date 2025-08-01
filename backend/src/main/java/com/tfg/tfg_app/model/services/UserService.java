@@ -1,5 +1,7 @@
 package com.tfg.tfg_app.model.services;
 
+import java.util.List;
+
 import com.tfg.tfg_app.model.common.exceptions.DuplicateInstanceException;
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.entities.Users;
@@ -19,5 +21,7 @@ public interface UserService {
 
     void changePassword(Long id, String oldPassword, String newPassword) 
         throws InstanceNotFoundException, IncorrectPasswordException;
+
+    List<Users> getAllUsers() throws InstanceNotFoundException;
 
 }

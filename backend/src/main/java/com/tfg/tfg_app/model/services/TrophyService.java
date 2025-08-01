@@ -1,5 +1,6 @@
 package com.tfg.tfg_app.model.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
@@ -20,4 +21,6 @@ public interface TrophyService {
     List<UserTrophy> getUserTrophies(Long userId) throws InstanceNotFoundException;
 
     List<UserTrophy> getUserTrophiesByUserIdAndHabitId(Long userId, Long habitId) throws InstanceNotFoundException;
+
+    List<UserTrophy> getUserTrophiesByUserIdAndDate(Long userId, LocalDateTime date) throws InstanceNotFoundException;
 }

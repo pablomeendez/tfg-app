@@ -79,4 +79,14 @@ public class DiaryEntryServiceImpl implements DiaryEntryService {
     public List<Mood> getAllMoods() {
         return moodDao.findAll();
     }
+
+    @Override
+    public DiaryEntry getMostFrequentMood(Long userId, LocalDateTime date) {
+        return diaryEntryDao.findMostFrequentMood(userId, date.minusDays(7), date);
+    }
+
+    @Override
+    public List<DiaryEntry> getDiaryEntriesByUserIdAndDate(Long userId, LocalDateTime date) {
+        return diaryEntryDao.findByUserIdAndDateBetween(userId, date.minusDays(7), date);
+    }
 }

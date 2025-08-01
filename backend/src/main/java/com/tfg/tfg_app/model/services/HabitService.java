@@ -1,5 +1,6 @@
 package com.tfg.tfg_app.model.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
@@ -30,5 +31,9 @@ public interface HabitService {
     HabitEntry deleteHabitEntry(Long userId, Long habitEntryId) throws InstanceNotFoundException;
 
     List<HabitEntry> getHabitEntriesByUserIdAndUserHabitId(Long userId, Long userHabitId) throws InstanceNotFoundException;
+
+    HabitEntry getUserBiggestStreak(Long userId) throws InstanceNotFoundException;
+
+    List<HabitEntry> getUserHabitsAfterDate(Long userId, LocalDateTime date) throws InstanceNotFoundException;
     
 }

@@ -1,5 +1,6 @@
 package com.tfg.tfg_app.model.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.tfg.tfg_app.model.common.exceptions.DuplicateInstanceException;
@@ -21,4 +22,8 @@ public interface DiaryEntryService {
     List<DiaryEntry> getDiaryEntriesByUserId(Long userId);
 
     List<Mood> getAllMoods();
+
+    DiaryEntry getMostFrequentMood(Long userId, LocalDateTime date);
+
+    List<DiaryEntry> getDiaryEntriesByUserIdAndDate(Long userId, LocalDateTime date);
 }
