@@ -42,6 +42,14 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="trophies"
+        options={{
+          title: 'Trophies',
+          tabBarLabel: 'Trophies',
+          headerShown: false,
+        }}
+      />
+      <Tabs.Screen
         name="chat"
         options={{
           title: 'Chat',
