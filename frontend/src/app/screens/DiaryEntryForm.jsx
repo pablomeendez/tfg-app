@@ -95,8 +95,24 @@ const DiaryEntryForm = () => {
             Alert.alert("Success", "Diary entry saved successfully!");
             router.replace('/(tabs)');
         } catch (error) {
-            console.error('Error submitting diary entry:', error);
-            Alert.alert("Error", "Failed to save diary entry. Please try again.");
+            
+            if (error.response && error.response.status === 400) {
+                const errorData = error.response.data;
+                const globalError = errorData?.globalError;
+                
+                console.log('Global error:', globalError);
+                console.log('Full error data:', JSON.stringify(errorData, null, 2));
+                
+                if (globalError === "project.exceptions.DuplicatedEntryException") {
+                    Alert.alert("Duplicate Entry Error", "This entry already exists. You have already submitted a diary entry for today.");
+                } else {
+                    Alert.alert("Validation Error", globalError || JSON.stringify(errorData) || "There was a problem with your input. Please check and try again.");
+                }
+            } else if (error.response && error.response.status === 500) {
+                Alert.alert("Server Error", "There was an internal server error. Please try again later.");
+            } else {
+                Alert.alert("Error", `Failed to save diary entry. Error: ${error.message}. Please check your connection and try again.`);
+            }
         } finally {
             setIsLoading(false);
         }
