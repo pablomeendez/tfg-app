@@ -9,7 +9,7 @@ public interface HabitEntryDao extends JpaRepository<HabitEntry, Long> {
 
     HabitEntry findTopByUserIdOrderByIdDesc(Long userId);
 
-    List<HabitEntry> findByUserIdAndUserHabitId(Long userId, Long userHabitId);
+    List<HabitEntry> findByUserIdAndHabitId(Long userId, Long habitId);
 
     HabitEntry findFirstByUserIdOrderByStreakDesc(Long userId);
 

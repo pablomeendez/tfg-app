@@ -14,8 +14,8 @@ public class HabitEntry {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "userHabitId", nullable = false)
-    private UserHabit userHabit;
+    @JoinColumn(name = "habitId", nullable = false)
+    private Habit habit;
 
     @NotNull
     @Column(nullable = false)
@@ -39,9 +39,9 @@ public class HabitEntry {
     public HabitEntry() {
     }   
 
-    public HabitEntry(Users user, UserHabit userHabit, DiaryEntry diaryEntry, LocalDateTime date, int streak) {
+    public HabitEntry(Users user, Habit habit, DiaryEntry diaryEntry, LocalDateTime date, int streak) {
         this.user = user;
-        this.userHabit = userHabit;
+        this.habit = habit;
         this.diaryEntry = diaryEntry;
         this.date = date;
         this.streak = streak;
@@ -55,12 +55,12 @@ public class HabitEntry {
         this.id = id;
     }
 
-    public UserHabit getUserHabit() {
-        return userHabit;
+    public Habit getHabit() {
+        return habit;
     }
 
-    public void setUserHabit(UserHabit userHabit) {
-        this.userHabit = userHabit;
+    public void setHabit(Habit habit) {
+        this.habit = habit;
     }
 
     public LocalDateTime getDate() {

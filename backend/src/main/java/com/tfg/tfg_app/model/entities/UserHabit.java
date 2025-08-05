@@ -2,7 +2,6 @@ package com.tfg.tfg_app.model.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import java.util.Set;
 
 @Entity
 @Table(name = "UserHabit")
@@ -22,8 +21,7 @@ public class UserHabit {
     @JoinColumn(name = "habitId", nullable = false)
     private Habit habit;
 
-    @OneToMany(mappedBy = "userHabit")
-    private Set<HabitEntry> habitEntries;
+
 
     public Long getId() {
         return id;
@@ -49,11 +47,4 @@ public class UserHabit {
         this.habit = habit;
     }
 
-    public Set<HabitEntry> getHabitEntries() {
-        return habitEntries;
-    }
-
-    public void setHabitEntries(Set<HabitEntry> habitEntries) {
-        this.habitEntries = habitEntries;
-    }
 }
