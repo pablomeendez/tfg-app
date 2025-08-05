@@ -24,7 +24,6 @@ export default function AllWeeklySummaries() {
         setLoading(true);
         const response = await weeklySummaryService.getWeeklySummaryByUserId(userId);
         if (response && response.data) {
-          // Ordenar por fecha, más reciente primero
           const sortedSummaries = response.data.sort((a, b) => 
             new Date(b.date) - new Date(a.date)
           );
@@ -54,7 +53,6 @@ export default function AllWeeklySummaries() {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      {/* Header */}
       <View className="flex-row items-center justify-between p-4 border-b border-gray-200">
         <TouchableOpacity 
           onPress={() => router.back()}
