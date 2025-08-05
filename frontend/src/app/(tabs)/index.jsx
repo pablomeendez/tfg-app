@@ -1,5 +1,5 @@
 import { Text, View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { useRouter } from 'expo-router';
+import {  useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect, useState, useContext } from 'react';
 import diaryEntryService from '../../services/diaryEntryService';
@@ -21,7 +21,6 @@ export default function Index() {
       try {
         setLoading(true);
         
-        // Fetch moods
         const moodsResponse = await diaryEntryService.getAllMoods();
         if (moodsResponse && moodsResponse.data) {
           setMoods(moodsResponse.data);
@@ -29,22 +28,18 @@ export default function Index() {
           setMoods([]);
         }
 
-        // Fetch weekly summary if user is logged in
         if (userId) {
           console.log("Fetching weekly summary for user:", userId);
           try {
             const summaryResponse = await weeklySummaryService.getWeeklySummaryByUserId(userId);
-            console.log("Weekly summary response:", summaryResponse);
             if (summaryResponse && summaryResponse.data && summaryResponse.data.length > 0) {
               // Get the most recent summary
               setWeeklySummary(summaryResponse.data[summaryResponse.data.length - 1]);
-              console.log("Set weekly summary:", summaryResponse.data[summaryResponse.data.length - 1]);
             } else {
-              console.log("No weekly summary data found");
               setWeeklySummary(null);
             }
           } catch (summaryError) {
-            console.log("Error fetching weekly summary:", summaryError);
+            console.log("Error fetching weekly summary:", summaryError);  
             setWeeklySummary(null);
           }
         } else {
@@ -73,7 +68,6 @@ export default function Index() {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView>
-        {/* Selector de humor */}
         <View className="flex flex-col bg-gray-300 h-28 rounded-md m-3 shadow items-center">
           <Text className="text-xl pt-2">
             ¿How have you been?
