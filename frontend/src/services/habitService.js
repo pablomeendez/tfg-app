@@ -19,8 +19,8 @@ const habitService = {
     deleteHabitEntry: (habitEntryId) => {
         return apiClient.delete(`/habits/entry/${habitEntryId}`);
     },
-    getHabitEntriesByUserAndUserHabit: (userId, userHabitId) => {
-        return apiClient.get(`/habits/entries?userHabitId=${userHabitId}`);
+    getHabitEntriesByUserAndUserHabit: (userId, habitId) => {
+        return apiClient.get(`/habits/entries?habitId=${habitId}`);
     }
 }
 

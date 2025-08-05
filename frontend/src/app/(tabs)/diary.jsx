@@ -46,10 +46,10 @@ export default function Diary() {
             const allHabitEntries = [];
             for (const userHabit of habitsResponse.data || []) {
                 try {
-                    const entriesResponse = await habitService.getHabitEntriesByUserAndUserHabit(userId, userHabit.id);
+                    const entriesResponse = await habitService.getHabitEntriesByUserAndUserHabit(userId, userHabit.habit.id);
                     allHabitEntries.push(...(entriesResponse.data || []));
                 } catch (err) {
-                    console.warn(`Error fetching entries for habit ${userHabit.id}:`, err);
+                    console.warn(`Error fetching entries for habit ${userHabit.habit.id}:`, err);
                 }
             }
             setHabitEntries(allHabitEntries);
@@ -79,7 +79,7 @@ export default function Diary() {
                 habitsByDay[day] = [];
             }
             
-            const userHabit = myHabits.find(uh => uh.id === entry.userHabit.id);
+            const userHabit = myHabits.find(uh => uh.habit.id === entry.habit.id);
             if (userHabit) {
                 habitsByDay[day].push({
                     ...entry,
