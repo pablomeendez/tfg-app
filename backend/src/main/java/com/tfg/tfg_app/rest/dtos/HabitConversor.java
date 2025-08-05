@@ -39,7 +39,7 @@ public class HabitConversor {
     }
 
     public static HabitEntryDto toHabitEntryDto(HabitEntry habitEntry) {
-        return new HabitEntryDto(habitEntry.getId(), UserConversor.toUserDto(habitEntry.getUser()), toUserHabitDto(habitEntry.getUserHabit()), DiaryEntryConversor.toDiaryEntryDto(habitEntry.getDiaryEntry()), habitEntry.getDate().toString(), habitEntry.getStreak());
+        return new HabitEntryDto(habitEntry.getId(), UserConversor.toUserDto(habitEntry.getUser()), toHabitDto(habitEntry.getHabit()), DiaryEntryConversor.toDiaryEntryDto(habitEntry.getDiaryEntry()), habitEntry.getDate().toString(), habitEntry.getStreak());
     }
 
     public static List<HabitEntryDto> toHabitEntryDtos(List<HabitEntry> habitEntries) {

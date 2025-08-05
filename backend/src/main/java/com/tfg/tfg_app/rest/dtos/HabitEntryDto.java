@@ -4,15 +4,15 @@ package com.tfg.tfg_app.rest.dtos;
 public class HabitEntryDto {
     private Long id;
     private UserDto user;
-    private UserHabitDto userHabit;
+    private HabitDto habit;
     private DiaryEntryDto diaryEntry;
     private String date;
     private int streak;
 
-    public HabitEntryDto(Long id, UserDto user, UserHabitDto userHabit, DiaryEntryDto diaryEntry, String date, int streak) {
+    public HabitEntryDto(Long id, UserDto user, HabitDto habit, DiaryEntryDto diaryEntry, String date, int streak) {
         this.id = id;
         this.user = user;
-        this.userHabit = userHabit;
+        this.habit = habit;
         this.diaryEntry = diaryEntry;
         this.date = date;
         this.streak = streak;
@@ -34,12 +34,12 @@ public class HabitEntryDto {
         this.user = user;
     }
 
-    public UserHabitDto getUserHabit() {
-        return userHabit;
+    public HabitDto getHabit() {
+        return habit;
     }
 
-    public void setUserHabit(UserHabitDto userHabit) {
-        this.userHabit = userHabit;
+    public void setHabit(HabitDto habit) {
+        this.habit = habit;
     }
 
     public DiaryEntryDto getDiaryEntry() {
