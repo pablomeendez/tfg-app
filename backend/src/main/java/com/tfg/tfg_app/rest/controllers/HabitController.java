@@ -23,7 +23,6 @@ import com.tfg.tfg_app.rest.dtos.HabitDto;
 import com.tfg.tfg_app.rest.dtos.HabitEntryDto;
 import com.tfg.tfg_app.rest.dtos.HabitEntryParamsDto;
 import com.tfg.tfg_app.rest.dtos.HabitEntryWithTrophyDto;
-import com.tfg.tfg_app.rest.dtos.TrophyConversor;
 import com.tfg.tfg_app.rest.dtos.UserHabitDto;
 import static com.tfg.tfg_app.rest.dtos.HabitConversor.*;
 
@@ -60,7 +59,7 @@ public class HabitController {
     @PostMapping("/entry")
     HabitEntryWithTrophyDto createHabitEntry(@RequestAttribute Long userId, @RequestBody HabitEntryParamsDto params) throws InstanceNotFoundException, TrophyAlreadyGivenException {
         HabitEntry habitEntry = habitService.createHabitEntry(userId, params.getUserHabitId(), params.getDiaryEntryId());
-        UserTrophy userTrophy = trophyService.giveUserTrophy(userId, habitEntry.getUserHabit().getHabit().getId(), habitEntry.getStreak());
+        UserTrophy userTrophy = trophyService.giveUserTrophy(userId, habitEntry.getHabit().getId(), habitEntry.getStreak());
         return toHabitEntryWithTrophyDto(habitEntry, userTrophy);
     }
 
@@ -70,8 +69,8 @@ public class HabitController {
     }
 
     @GetMapping("/entries")
-    List<HabitEntryDto> getHabitEntriesByUserIdAndHabitId(@RequestAttribute Long userId, @RequestParam Long userHabitId) throws InstanceNotFoundException {
-        return toHabitEntryDtos(habitService.getHabitEntriesByUserIdAndUserHabitId(userId, userHabitId));
+    List<HabitEntryDto> getHabitEntriesByUserIdAndHabitId(@RequestAttribute Long userId, @RequestParam Long habitId) throws InstanceNotFoundException {
+        return toHabitEntryDtos(habitService.getHabitEntriesByUserIdAndHabitId(userId, habitId));
     }
 
 }
