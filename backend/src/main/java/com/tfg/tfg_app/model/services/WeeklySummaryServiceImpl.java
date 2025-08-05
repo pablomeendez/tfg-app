@@ -32,7 +32,7 @@ public class WeeklySummaryServiceImpl implements WeeklySummaryService {
     @Autowired
     private TrophyService trophyService;
 
-    @Scheduled(cron = "00 * * * * *")
+    @Scheduled(cron = "00 55 23 * * SUN")
     public void generateWeeklySummariesForAllUsers() {
         try {
             List<Users> allUsers = userService.getAllUsers(); // Necesitarás implementar este método
@@ -58,8 +58,18 @@ public class WeeklySummaryServiceImpl implements WeeklySummaryService {
         int habitsCompleted = habitService.getUserHabitsAfterDate(userId, date).size();
         int totalEntries = diaryEntryService.getDiaryEntriesByUserIdAndDate(userId, date).size();
         int trophiesEarned = trophyService.getUserTrophiesByUserIdAndDate(userId, date).size();
+
         HabitEntry biggestStreak = habitService.getUserBiggestStreak(userId);
+
+        if (biggestStreak == null) {
+            biggestStreak = new HabitEntry(); 
+        }
+
         Mood moodTrend = diaryEntryService.getMostFrequentMood(userId, date).getMood();
+
+        if (moodTrend == null) {
+            moodTrend = new Mood(); 
+        }
 
         return weeklySummaryDao.save(new WeeklySummary(habitsCompleted, totalEntries, trophiesEarned, biggestStreak, user, moodTrend, date));
     }

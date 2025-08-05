@@ -30,7 +30,7 @@ public interface HabitService {
 
     HabitEntry deleteHabitEntry(Long userId, Long habitEntryId) throws InstanceNotFoundException;
 
-    List<HabitEntry> getHabitEntriesByUserIdAndUserHabitId(Long userId, Long userHabitId) throws InstanceNotFoundException;
+    List<HabitEntry> getHabitEntriesByUserIdAndHabitId(Long userId, Long habitId) throws InstanceNotFoundException;
 
     HabitEntry getUserBiggestStreak(Long userId) throws InstanceNotFoundException;
 

@@ -98,7 +98,7 @@ public class HabitServiceImpl implements HabitService {
         HabitEntry habitEntry = new HabitEntry();
 
         habitEntry.setUser(user);
-        habitEntry.setUserHabit(userHabit);
+        habitEntry.setHabit(userHabit.getHabit());
         habitEntry.setDate(LocalDateTime.now());
         habitEntry.setDiaryEntry(diaryEntry);
 
@@ -130,18 +130,11 @@ public class HabitServiceImpl implements HabitService {
         habitEntryDao.delete(habitEntry);
         return habitEntry;
     }
-    
-    public List<HabitEntry> getHabitEntriesByUserIdAndUserHabitId(Long userId, Long userHabitId) throws InstanceNotFoundException {
+
+    public List<HabitEntry> getHabitEntriesByUserIdAndHabitId(Long userId, Long habitId) throws InstanceNotFoundException {
         Users user = userService.loginFromId(userId);
-        Optional<UserHabit> optUserHabit = userHabitDao.findById(userHabitId);
 
-        if (!optUserHabit.isPresent()) {
-            throw new InstanceNotFoundException("UserHabit with ID " + userHabitId + " not found.", UserHabit.class);
-        }
-
-        UserHabit userHabit = optUserHabit.get();
-
-        return habitEntryDao.findByUserIdAndUserHabitId(user.getId(), userHabit.getId());
+        return habitEntryDao.findByUserIdAndHabitId(user.getId(), habitId);
     }
 
     public HabitEntry getUserBiggestStreak(Long userId) throws InstanceNotFoundException {
