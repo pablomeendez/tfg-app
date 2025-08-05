@@ -170,8 +170,7 @@ public class HabitServiceTest {
         assertNotNull(habitEntry);
         assertNotNull(habitEntry.getId());
         assertEquals(testUser.getId(), habitEntry.getUser().getId());
-        assertEquals(userHabit.getId(), habitEntry.getUserHabit().getId());
-        assertEquals(testHabit.getId(), habitEntry.getUserHabit().getHabit().getId());
+        assertEquals(testHabit.getId(), habitEntry.getHabit().getId());
         assertNotNull(habitEntry.getDate());
         assertEquals(1, habitEntry.getStreak()); // Primer entry, streak debería ser 1
     }
@@ -184,7 +183,7 @@ public class HabitServiceTest {
         // Crear primera entrada (ayer)
         HabitEntry yesterdayEntry = new HabitEntry();
         yesterdayEntry.setUser(testUser);
-        yesterdayEntry.setUserHabit(userHabit);
+        yesterdayEntry.setHabit(testHabit);
         yesterdayEntry.setDate(LocalDateTime.now().minusDays(1));
         yesterdayEntry.setStreak(5);
         yesterdayEntry.setDiaryEntry(testDiaryEntry);
@@ -205,7 +204,7 @@ public class HabitServiceTest {
         // Crear entrada hace dos días
         HabitEntry oldEntry = new HabitEntry();
         oldEntry.setUser(testUser);
-        oldEntry.setUserHabit(userHabit);
+        oldEntry.setHabit(testHabit);
         oldEntry.setDate(LocalDateTime.now().minusDays(2));
         oldEntry.setStreak(5);
         oldEntry.setDiaryEntry(testDiaryEntry);
