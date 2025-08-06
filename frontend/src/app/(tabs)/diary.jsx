@@ -296,9 +296,18 @@ export default function Diary() {
                                     <View className="bg-purple-50 rounded-xl p-4 mb-4">
                                         <View className="flex-row items-center">
                                             <MaterialCommunityIcons name="emoticon" size={20} color="#8B5CF6" />
-                                            <Text className="text-purple-800 font-medium ml-2">
-                                                Mood: {moods.find(mood => mood.id === selectedEntry.moodId)?.name || 'Unknown'}
-                                            </Text>
+                                            <Text className="text-purple-800 font-semibold ml-2 mr-4">Mood:</Text>
+                                            <View className="flex-row items-center flex-1">
+                                                <View className="bg-yellow-300 rounded-full mr-3">
+                                                    <Image 
+                                                        source={{ uri: moods.find(mood => mood.id === selectedEntry.moodId)?.image }} 
+                                                        style={{ width: 32, height: 32 }} 
+                                                    />
+                                                </View>
+                                                <Text className="text-purple-800 font-medium">
+                                                    {moods.find(mood => mood.id === selectedEntry.moodId)?.name || 'Unknown'}
+                                                </Text>
+                                            </View>
                                         </View>
                                     </View>
 
