@@ -127,4 +127,13 @@ public class DiaryEntryController {
     public List<MoodDto> getAllMoods() {
         return toMoodDtos(diaryEntryService.getAllMoods());
     }
+
+    @GetMapping("/latest")
+    public DiaryEntryResponseDto getLatestDiaryEntry(@RequestAttribute Long userId) throws InstanceNotFoundException {
+        DiaryEntry latestEntry = diaryEntryService.getLatestDiaryEntry(userId);
+        if (latestEntry == null) {
+            throw new InstanceNotFoundException("No diary entries found for user with id: " + userId, userId);
+        }
+        return toDiaryEntryResponseDto(latestEntry);
+    }
 }

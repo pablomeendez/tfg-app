@@ -89,4 +89,9 @@ public class DiaryEntryServiceImpl implements DiaryEntryService {
     public List<DiaryEntry> getDiaryEntriesByUserIdAndDate(Long userId, LocalDateTime date) {
         return diaryEntryDao.findByUserIdAndDateBetween(userId, date.minusDays(7), date);
     }
+
+    @Override
+    public DiaryEntry getLatestDiaryEntry(Long userId) throws InstanceNotFoundException {
+        return diaryEntryDao.findFirstByUserIdOrderByDateDesc(userId);
+    }
 }

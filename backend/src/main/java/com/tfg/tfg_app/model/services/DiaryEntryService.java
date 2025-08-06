@@ -26,4 +26,6 @@ public interface DiaryEntryService {
     DiaryEntry getMostFrequentMood(Long userId, LocalDateTime date);
 
     List<DiaryEntry> getDiaryEntriesByUserIdAndDate(Long userId, LocalDateTime date);
+
+    DiaryEntry getLatestDiaryEntry(Long userId) throws InstanceNotFoundException;
 }

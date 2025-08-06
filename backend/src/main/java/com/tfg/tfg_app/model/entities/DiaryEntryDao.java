@@ -27,4 +27,6 @@ public interface DiaryEntryDao extends JpaRepository<DiaryEntry, Long> {
     DiaryEntry findMostFrequentMood(Long userId, LocalDateTime startDate, LocalDateTime endDate);
 
     List<DiaryEntry> findByUserIdAndDateBetween(Long userId, LocalDateTime startDate, LocalDateTime endDate);
+
+    DiaryEntry findFirstByUserIdOrderByDateDesc(Long userId);
 }
