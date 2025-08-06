@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback, useMemo } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import habitService from "../../services/habitService";
 import { Text, TextInput, TouchableOpacity, View, ScrollView, Alert } from "react-native";
@@ -11,6 +11,7 @@ import ImageViewer from "../../components/ImageViewer";
 import { useRouter } from "expo-router";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import diaryEntryService from "../../services/diaryEntryService";
+import { Image } from "expo-image";
 
 const DiaryEntryForm = () => {
     const { userId } = useContext(AuthContext);
@@ -18,6 +19,7 @@ const DiaryEntryForm = () => {
     const localParams = useLocalSearchParams();
     const moodId = localParams.moodId;
     const moodName = localParams.moodName;
+    const moodImage = localParams.moodImage;
     const [description, setDescription] = useState("");
     const [selectedImages, setSelectedImages] = useState([]);
     const [selectedHabits, setSelectedHabits] = useState([]);
@@ -65,7 +67,7 @@ const DiaryEntryForm = () => {
         setSelectedImages(selectedImages.filter((_, i) => i !== index));
     };
 
-    const toggleHabitSelection = (userHabitId) => {
+    const toggleHabitSelection = useCallback((userHabitId) => {
         setSelectedHabits(prev => {
             if (prev.includes(userHabitId)) {
                 return prev.filter(id => id !== userHabitId);
@@ -73,7 +75,38 @@ const DiaryEntryForm = () => {
                 return [...prev, userHabitId];
             }
         });
-    };
+    }, []);
+
+    const habitItems = useMemo(() => {
+        return myHabits.map((userHabit) => {
+            const isSelected = selectedHabits.includes(userHabit.id);
+            return (
+                <TouchableOpacity
+                    key={userHabit.id} 
+                    onPress={() => toggleHabitSelection(userHabit.id)}
+                    className={`rounded-xl border-2 m-2 ${
+                        isSelected
+                            ? 'border-blue-500 bg-blue-50'
+                            : 'border-gray-200 bg-gray-50'
+                    }`}
+                    activeOpacity={0.7}
+                >
+                    <View className="flex-row items-center justify-between">
+                        <View className="flex-1 mr-3">
+                            <HabitCard habit={userHabit.habit} />
+                        </View>
+                        <View className="p-1">
+                            <MaterialCommunityIcons 
+                                name={isSelected ? "check-circle" : "circle-outline"} 
+                                size={28} 
+                                color={isSelected ? "#3B82F6" : "#9CA3AF"} 
+                            />
+                        </View>
+                    </View>
+                </TouchableOpacity>
+            );
+        });
+    }, [myHabits, selectedHabits, toggleHabitSelection]);
 
     const handleSubmit = async () => {
         setIsLoading(true);
@@ -132,10 +165,26 @@ const DiaryEntryForm = () => {
                     </View>
 
                     {moodId && (
-                        <View className="bg-white rounded-xl p-4 mb-6 shadow-sm border border-gray-100">
-                            <Text className="text-lg font-semibold text-gray-700 mb-2">Selected Mood</Text>
-                            <View className="bg-blue-50 rounded-lg p-3">
-                                <Text className="text-blue-800 font-medium">{moodName}</Text>
+                        <View className="bg-white rounded-xl p-5 mb-6 shadow-sm border border-gray-100">
+                            <Text className="text-xl font-semibold text-gray-800 mb-4 flex-row items-center">
+                                <MaterialCommunityIcons name="emoticon-happy" size={24} color="#6B7280" className="mr-2" />
+                                Selected Mood
+                            </Text>
+                            
+                            <View className="bg-gray-50 rounded-lg p-4 border border-blue-100">
+                                <View className="flex flex-row items-center">
+                                    <View className="bg-yellow-300 rounded-full mr-4">
+                                        <Image 
+                                            source={{ uri: moodImage }} 
+                                            style={{ width: 40, height: 40 }} 
+                                        />
+                                    </View>
+                                    <View className="flex-1">
+                                        <Text className="text-lg font-semibold text-gray-800 mb-1">
+                                            {moodName}
+                                        </Text>
+                                    </View>
+                                </View>
                             </View>
                         </View>
                     )}
@@ -196,31 +245,7 @@ const DiaryEntryForm = () => {
                         
                         {myHabits.length > 0 ? (
                             <View className="space-y-3">
-                                {myHabits.map((userHabit) => (
-                                    <TouchableOpacity
-                                        key={userHabit.id} 
-                                        onPress={() => toggleHabitSelection(userHabit.id)}
-                                        className={`rounded-xl border-2 transition-colors m-2 ${
-                                            selectedHabits.includes(userHabit.id)
-                                                ? 'border-blue-500 bg-blue-50'
-                                                : 'border-gray-200 bg-gray-50 active:bg-gray-100'
-                                        }`}
-                                        activeOpacity={0.7}
-                                    >
-                                        <View className="flex-row items-center justify-between">
-                                            <View className="flex-1 mr-3">
-                                                <HabitCard habit={userHabit.habit} />
-                                            </View>
-                                            <View className="p-1">
-                                                <MaterialCommunityIcons 
-                                                    name={selectedHabits.includes(userHabit.id) ? "check-circle" : "circle-outline"} 
-                                                    size={28} 
-                                                    color={selectedHabits.includes(userHabit.id) ? "#3B82F6" : "#9CA3AF"} 
-                                                />
-                                            </View>
-                                        </View>
-                                    </TouchableOpacity>
-                                ))}
+                                {habitItems}
                             </View>
                         ) : (
                             <View className="bg-gray-50 rounded-lg p-6 items-center">
