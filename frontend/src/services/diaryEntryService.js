@@ -17,6 +17,9 @@ const diaryEntryService = {
     },
     getAllMoods: () => {
         return apiClient.get('/diaryEntry/moods');
+    },
+    getLatestDiaryEntry: () => {
+        return apiClient.get(`/diaryEntry/latest`);
     }
 }
 
