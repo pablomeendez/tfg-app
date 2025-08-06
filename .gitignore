@@ -41,3 +41,5 @@ backend/target/
 .vscode/
 coverage/
 tests/components/__snapshots__
+
+.env
