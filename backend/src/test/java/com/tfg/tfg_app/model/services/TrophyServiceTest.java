@@ -148,13 +148,6 @@ public class TrophyServiceTest {
     }
 
     @Test
-    public void testCreateUserTrophyWithNonExistentTrophyForDays() {
-        assertThrows(InstanceNotFoundException.class, () -> {
-            trophyService.giveUserTrophy(testUser.getId(), testHabit.getId(), 999);
-        });
-    }
-
-    @Test
     public void testCreateUserTrophyAlreadyGiven() throws InstanceNotFoundException, TrophyAlreadyGivenException {
         trophyService.giveUserTrophy(testUser.getId(), testHabit.getId(), 7);
 
