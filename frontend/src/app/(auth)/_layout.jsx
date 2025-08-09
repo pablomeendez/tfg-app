@@ -1,5 +1,4 @@
 import { Stack } from 'expo-router';
-import { Modal } from 'react-native';
 
 export default function AuthLayout() {
     return (
