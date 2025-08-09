@@ -1,0 +1,44 @@
+import { View, Text, TouchableOpacity } from 'react-native';
+
+const DiaryEntryCard = ({ entry, onPress }) => {
+    return (
+        <View className="flex-1" key={entry.id}>
+            <Text className="text-lg font-semibold text-gray-800 mb-2">
+                {new Date(entry.date).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                })}
+            </Text>
+            <View className="bg-white rounded-lg p-3 mb-3 shadow-sm border border-gray-100">
+                <TouchableOpacity 
+                    onPress={onPress}
+                className="flex-1"
+                >   
+                <Text className="text-gray-800 font-medium">
+                    {entry.description}
+                </Text>
+                {entry.habitEntries && entry.habitEntries.length > 0 ? (
+                    
+                    entry.habitEntries.map((habitEntry, index) => (
+                        <View key={index} className="flex-1 flex-row gap-4 rounded-lg p-2 mb-1 border-l-4 border-green-500 my-2">
+                            <View>
+                                <Text className="text-green-800 font-medium">{habitEntry.habit.description}</Text>
+                                <Text className="text-green-600 text-xs">{habitEntry.habit.category.name}</Text>
+                            </View>
+                            <View>
+                                <Text className="text-green-600">Streak: {habitEntry.streak}</Text>
+                            </View>
+                        </View>
+                    ))
+                ) : (
+                    <Text className="text-gray-500 italic">No habits completed this day</Text>
+                )}
+                </TouchableOpacity>
+            </View>
+        </View>
+    )
+}
+
+export default DiaryEntryCard;
