@@ -3,12 +3,14 @@ package com.tfg.tfg_app.model.entities;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface DiaryEntryDao extends JpaRepository<DiaryEntry, Long> {
 
-    List<DiaryEntry> findByUserId(Long userId);
+    Page<DiaryEntry> findByUserIdOrderByDateDesc(Long userId, Pageable pageable);
 
     @Query(value = """
     SELECT * FROM DiaryEntry de
