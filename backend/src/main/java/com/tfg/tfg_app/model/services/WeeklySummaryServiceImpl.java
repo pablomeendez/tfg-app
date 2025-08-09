@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +34,7 @@ public class WeeklySummaryServiceImpl implements WeeklySummaryService {
     @Autowired
     private TrophyService trophyService;
 
-    @Scheduled(cron = "00 55 23 * * SUN")
+    @Scheduled(cron = "00 * * * * *")
     public void generateWeeklySummariesForAllUsers() {
         try {
             List<Users> allUsers = userService.getAllUsers(); // Necesitarás implementar este método
@@ -53,7 +55,7 @@ public class WeeklySummaryServiceImpl implements WeeklySummaryService {
 
     public WeeklySummary generateWeeklySummary(Long userId, LocalDateTime date) throws InstanceNotFoundException {
 
-        Users user = userService.loginFromId(userId); 
+        Users user = userService.checkUser(userId); 
 
         int habitsCompleted = habitService.getUserHabitsAfterDate(userId, date).size();
         int totalEntries = diaryEntryService.getDiaryEntriesByUserIdAndDate(userId, date).size();
@@ -74,11 +76,11 @@ public class WeeklySummaryServiceImpl implements WeeklySummaryService {
         return weeklySummaryDao.save(new WeeklySummary(habitsCompleted, totalEntries, trophiesEarned, biggestStreak, user, moodTrend, date));
     }
 
-    public List<WeeklySummary> getWeeklySummariesByUserId(Long userId) throws InstanceNotFoundException {
+    public Page<WeeklySummary> getWeeklySummariesByUserId(Long userId, int page, int size) throws InstanceNotFoundException {
 
-        Users user = userService.loginFromId(userId);
+        Users user = userService.checkUser(userId);
 
-        return weeklySummaryDao.findByUserId(userId);
+        return weeklySummaryDao.findByUserIdOrderByDateDesc(userId, PageRequest.of(page, size));
     } 
 
     public WeeklySummary getWeeklySummaryById(Long id) throws InstanceNotFoundException {

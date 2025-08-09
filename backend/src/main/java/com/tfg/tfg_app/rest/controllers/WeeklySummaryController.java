@@ -3,7 +3,9 @@ package com.tfg.tfg_app.rest.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,8 +22,8 @@ public class WeeklySummaryController {
     @Autowired
     private WeeklySummaryService weeklySummaryService;
 
-    @GetMapping("/user")
-    public List<WeeklySummaryDto> getWeeklySummaryForUser(@RequestParam Long userId) throws InstanceNotFoundException {
-        return WeeklySummaryConversor.toWeeklySummaryDtos(weeklySummaryService.getWeeklySummariesByUserId(userId));
+    @GetMapping("")
+    public Page<WeeklySummaryDto> getWeeklySummaryForUser(@RequestAttribute Long userId, @RequestParam int page, @RequestParam int size) throws InstanceNotFoundException {
+        return WeeklySummaryConversor.toWeeklySummaryDtoPage(weeklySummaryService.getWeeklySummariesByUserId(userId, page, size));
     }
 }
