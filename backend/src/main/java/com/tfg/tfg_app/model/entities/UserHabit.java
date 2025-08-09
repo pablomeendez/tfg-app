@@ -21,6 +21,19 @@ public class UserHabit {
     @JoinColumn(name = "habitId", nullable = false)
     private Habit habit;
 
+    public UserHabit() {
+    }
+
+    public UserHabit(Users user, Habit habit) {
+        this.user = user;
+        this.habit = habit;
+    }
+
+    public UserHabit(Long id, Users user, Habit habit) {
+        this.id = id;
+        this.user = user;
+        this.habit = habit;
+    }
 
 
     public Long getId() {
