@@ -11,19 +11,21 @@ public class DiaryEntryResponseDto {
     private LocalDateTime date;
     private UserDto user;
     private List<ImageDto> images;
-    private Long moodId;
+    private List<HabitEntryDto> habitEntries;
+    private MoodDto mood;
     
 
     public DiaryEntryResponseDto() {
     }
 
-    public DiaryEntryResponseDto(Long id, String description, LocalDateTime date, UserDto user, List<ImageDto> images, Long moodId) {
+    public DiaryEntryResponseDto(Long id, String description, LocalDateTime date, UserDto user, List<ImageDto> images, List<HabitEntryDto> habitEntries, MoodDto mood) {
         this.id = id;
         this.description = description;
         this.date = date;
         this.user = user;
         this.images = images;
-        this.moodId = moodId;
+        this.habitEntries = habitEntries;
+        this.mood = mood;
     }
 
     public Long getId() {
@@ -66,12 +68,20 @@ public class DiaryEntryResponseDto {
         this.images = images;
     }
 
-    public Long getMoodId() {
-        return moodId;
+    public List<HabitEntryDto> getHabitEntries() {
+        return habitEntries;
     }
 
-    public void setMoodId(Long moodId) {
-        this.moodId = moodId;
+    public void setHabitEntries(List<HabitEntryDto> habitEntries) {
+        this.habitEntries = habitEntries;
+    }
+
+    public MoodDto getMood() {
+        return mood;
+    }
+
+    public void setMood(MoodDto mood) {
+        this.mood = mood;
     }
 
 }

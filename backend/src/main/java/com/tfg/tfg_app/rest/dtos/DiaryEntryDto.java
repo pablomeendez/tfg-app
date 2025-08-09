@@ -1,20 +1,27 @@
 package com.tfg.tfg_app.rest.dtos;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
+import org.h2.engine.User;
 
 public class DiaryEntryDto {
     
     private String description;
     private List<byte[]> images;
-    private Long moodId;
+    private LocalDateTime date;
+    private List<UserHabitDto> habits; 
+    private MoodDto mood;
  
     public DiaryEntryDto() {
     }
 
-    public DiaryEntryDto(String description, List<byte[]> images, Long moodId) {
+    public DiaryEntryDto(String description, List<byte[]> images, LocalDateTime date, List<UserHabitDto> habits, MoodDto mood) {
         this.description = description;
         this.images = images;
-        this.moodId = moodId;
+        this.date = date;
+        this.habits = habits;
+        this.mood = mood;
     }
 
     public String getDescription() {
@@ -33,11 +40,27 @@ public class DiaryEntryDto {
         this.images = images;
     }
 
-    public Long getMoodId() {
-        return moodId;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public void setMoodId(Long moodId) {
-        this.moodId = moodId;
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public List<UserHabitDto> getHabits() {
+        return habits;
+    }
+
+    public void setHabits(List<UserHabitDto> habits) {
+        this.habits = habits;
+    }
+
+    public MoodDto getMood() {
+        return mood;
+    }
+
+    public void setMood(MoodDto mood) {
+        this.mood = mood;
     }
 }
