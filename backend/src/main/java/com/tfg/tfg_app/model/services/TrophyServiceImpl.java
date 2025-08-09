@@ -56,7 +56,7 @@ public class TrophyServiceImpl implements TrophyService {
     @Override
     public UserTrophy giveUserTrophy(Long userId, Long habitId, int days) throws InstanceNotFoundException, TrophyAlreadyGivenException {
 
-        Users user = userService.loginFromId(userId);
+        Users user = userService.checkUser(userId);
         if (user == null) {
             throw new InstanceNotFoundException("User with ID " + userId + " not found.", Users.class);
         }
@@ -96,7 +96,7 @@ public class TrophyServiceImpl implements TrophyService {
 
     @Override
     public List<UserTrophy> getUserTrophies(Long userId) throws InstanceNotFoundException {
-        Users user = userService.loginFromId(userId);
+        Users user = userService.checkUser(userId);
         if (user == null) {
             throw new InstanceNotFoundException("User with ID " + userId + " not found.", Users.class);
         }
@@ -105,7 +105,7 @@ public class TrophyServiceImpl implements TrophyService {
 
     @Override
     public List<UserTrophy> getUserTrophiesByUserIdAndHabitId(Long userId, Long habitId) throws InstanceNotFoundException {
-        Users user = userService.loginFromId(userId);
+        Users user = userService.checkUser(userId);
         if (user == null) {
             throw new InstanceNotFoundException("User with ID " + userId + " not found.", Users.class);
         }
@@ -114,7 +114,7 @@ public class TrophyServiceImpl implements TrophyService {
 
     @Override
     public List<UserTrophy> getUserTrophiesByUserIdAndDate(Long userId, LocalDateTime date) throws InstanceNotFoundException {
-        Users user = userService.loginFromId(userId);
+        Users user = userService.checkUser(userId);
 
         return userTrophyDao.findByUserIdAndObtainedAtBetween(userId, date.minusDays(7), date);
     }

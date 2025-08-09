@@ -43,7 +43,7 @@ public class HabitServiceImpl implements HabitService {
 
     public UserHabit createUserHabit(Long userId, Long habitId) throws InstanceNotFoundException {
 
-        Users user = userService.loginFromId(userId);
+        Users user = userService.checkUser(userId);
 
         Optional<Habit> optHabit = habitDao.findById(habitId);
 
@@ -72,13 +72,13 @@ public class HabitServiceImpl implements HabitService {
 
     public List<UserHabit> getHabitsByUserId(Long userId) throws InstanceNotFoundException {
 
-        Users user = userService.loginFromId(userId);
+        Users user = userService.checkUser(userId);
 
         return userHabitDao.findByUserId(userId);
     }
 
     public HabitEntry createHabitEntry(Long userId, Long userHabitIdLong, Long diaryEntryId) throws InstanceNotFoundException {
-        Users user = userService.loginFromId(userId);
+        Users user = userService.checkUser(userId);
         Optional<UserHabit> optUserHabit = userHabitDao.findById(userHabitIdLong);
 
         if (!optUserHabit.isPresent()) {
@@ -132,18 +132,18 @@ public class HabitServiceImpl implements HabitService {
     }
 
     public List<HabitEntry> getHabitEntriesByUserIdAndHabitId(Long userId, Long habitId) throws InstanceNotFoundException {
-        Users user = userService.loginFromId(userId);
+        Users user = userService.checkUser(userId);
 
         return habitEntryDao.findByUserIdAndHabitId(user.getId(), habitId);
     }
 
     public HabitEntry getUserBiggestStreak(Long userId) throws InstanceNotFoundException {
-        Users user = userService.loginFromId(userId);
+        Users user = userService.checkUser(userId);
         return habitEntryDao.findFirstByUserIdOrderByStreakDesc(user.getId());
     }
 
     public List<HabitEntry> getUserHabitsAfterDate(Long userId, LocalDateTime date) throws InstanceNotFoundException {
-        Users user = userService.loginFromId(userId);
+        Users user = userService.checkUser(userId);
         return habitEntryDao.findByUserIdAndDateBetween(user.getId(), date.minusDays(7), date);
     }
 

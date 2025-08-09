@@ -82,7 +82,7 @@ public class UserController {
 	public AuthenticatedUserDto loginFromServiceToken(@RequestAttribute Long userId,
 			@RequestAttribute String serviceToken) throws InstanceNotFoundException {
 
-		Users user = userService.loginFromId(userId);
+		Users user = userService.checkUser(userId);
 
 		return toAuthenticatedUserDto(serviceToken, user);
 
