@@ -3,23 +3,24 @@ package com.tfg.tfg_app.model.services;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import com.tfg.tfg_app.model.common.exceptions.DuplicateInstanceException;
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.entities.DiaryEntry;
 import com.tfg.tfg_app.model.entities.Mood;
+import com.tfg.tfg_app.model.entities.UserHabit;
 import com.tfg.tfg_app.model.services.exceptions.DuplicatedEntryException;
 
 public interface DiaryEntryService {
-    
-    DiaryEntry createDiaryEntry(DiaryEntry diaryEntry) throws DuplicateInstanceException, DuplicatedEntryException;
 
-    DiaryEntry updateDiaryEntry(DiaryEntry diaryEntry) throws InstanceNotFoundException;
+    DiaryEntry createDiaryEntry(Long userId, DiaryEntry diaryEntry, List<byte[]> images, List<UserHabit> habits) throws DuplicateInstanceException, DuplicatedEntryException, InstanceNotFoundException;
 
     void deleteDiaryEntry(DiaryEntry diaryEntry) throws InstanceNotFoundException;
 
     DiaryEntry getDiaryEntryById(Long id) throws InstanceNotFoundException;
 
-    List<DiaryEntry> getDiaryEntriesByUserId(Long userId);
+    Page<DiaryEntry> getDiaryEntriesByUserId(Long userId, int page, int size);
 
     List<Mood> getAllMoods();
 
