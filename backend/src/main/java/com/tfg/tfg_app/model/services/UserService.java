@@ -14,7 +14,7 @@ public interface UserService {
 
     Users login(String userName, String password) throws IncorrectLoginException;
 
-    Users loginFromId(Long id) throws InstanceNotFoundException;
+    Users checkUser(Long id) throws InstanceNotFoundException;
 
     Users updateProfile(Long id, String firstName, String lastName, String email, Boolean firstEntry)
         throws InstanceNotFoundException;
