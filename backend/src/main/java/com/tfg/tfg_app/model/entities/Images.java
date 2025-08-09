@@ -29,7 +29,8 @@ public class Images {
     public Images() {
     }
 
-    public Images(byte[] imageData) {
+    public Images(DiaryEntry diaryEntry, byte[] imageData) {
+        this.diaryEntry = diaryEntry;
         this.imageData = imageData;
         this.uploadDate = LocalDateTime.now();
     }
