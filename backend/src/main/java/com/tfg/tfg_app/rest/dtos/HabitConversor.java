@@ -31,11 +31,20 @@ public class HabitConversor {
     }
 
     public static UserHabitDto toUserHabitDto(UserHabit userHabit) {
-        return new UserHabitDto(userHabit.getId(), userHabit.getUser().getId(), toHabitDto(userHabit.getHabit()));
+        return new UserHabitDto(userHabit.getId(), UserConversor.toUserDto(userHabit.getUser()), toHabitDto(userHabit.getHabit()));
     }
 
     public static List<UserHabitDto> toUserHabitDtos(List<UserHabit> userHabits) {
-        return userHabits.stream().map(HabitConversor::toUserHabitDto).toList();
+        return userHabits.
+        stream().map(HabitConversor::toUserHabitDto).toList();
+    }
+
+    public static UserHabit toUserHabit(UserHabitDto userHabitDto) {
+        return new UserHabit(userHabitDto.getId(), UserConversor.toUser(userHabitDto.getUser()), toHabit(userHabitDto.getHabit()));
+    }
+
+    public static List<UserHabit> toUserHabits(List<UserHabitDto> userHabitDtos) {
+        return userHabitDtos.stream().map(HabitConversor::toUserHabit).toList();
     }
 
     public static HabitEntryDto toHabitEntryDto(HabitEntry habitEntry) {

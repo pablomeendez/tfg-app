@@ -3,12 +3,12 @@ package com.tfg.tfg_app.rest.dtos;
 public class UserHabitDto {
 
     private Long id;
-    private Long userId;
+    private UserDto user;
     private HabitDto habit;
 
-    public UserHabitDto (Long id, Long userId, HabitDto habit) {
+    public UserHabitDto (Long id, UserDto user, HabitDto habit) {
         this.id = id;
-        this.userId = userId;
+        this.user = user;
         this.habit = habit;
 
     }
@@ -21,12 +21,12 @@ public class UserHabitDto {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public UserDto getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(UserDto user) {
+        this.user = user;
     }
 
     public HabitDto getHabit() {
