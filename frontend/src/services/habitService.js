@@ -10,8 +10,8 @@ const habitService = {
     deleteUserHabit: (userHabitId) => {
         return apiClient.delete(`/habits/userHabit/${userHabitId}`);
     },
-    getHabitsByUser: (userId) => {
-        return apiClient.get(`/habits/?userId=${userId}`);
+    getHabitsByUser: () => {
+        return apiClient.get(`/habits`);
     },
     createHabitEntry: (userHabitId, diaryEntryId) => {
         return apiClient.post('/habits/entry', { userHabitId, diaryEntryId });
