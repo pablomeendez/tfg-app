@@ -22,6 +22,15 @@ public class Mood {
     @OneToMany(mappedBy = "mood")
     private Set<DiaryEntry> diaryEntries;
 
+    public Mood() {
+    }
+    
+    public Mood(Long id, String name, String image) {
+        this.id = id;
+        this.name = name;
+        this.image = image;
+    }
+
     public Long getId() {
         return id;
     }
