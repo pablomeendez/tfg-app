@@ -1,4 +1,10 @@
+import { View, Text, TouchableOpacity } from 'react-native';
+import { Image } from 'expo-image';
+import { useRouter } from 'expo-router';
+
 export const DailyCheckIn = ({ moods }) => {
+
+  const router = useRouter();
 
     return (
         <View className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl m-4 shadow-lg border border-blue-100">
