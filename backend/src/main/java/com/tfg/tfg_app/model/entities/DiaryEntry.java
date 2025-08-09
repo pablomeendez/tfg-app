@@ -33,21 +33,20 @@ public class DiaryEntry {
     @JoinColumn(name = "moodId", nullable = false)
     private Mood mood;
 
-    @OneToMany(mappedBy = "diaryEntry")
+    @OneToMany(mappedBy = "diaryEntry", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Images> images;
 
-    @OneToMany(mappedBy = "diaryEntry")
+    @OneToMany(mappedBy = "diaryEntry", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<HabitEntry> habitEntries;
 
     public DiaryEntry() {
     }
 
-    public DiaryEntry(String content, LocalDateTime date, Users user, Mood mood, Set<Images> images) {
+    public DiaryEntry(String content, LocalDateTime date, Users user, Mood mood) {
         this.content = content;
         this.date = date;
         this.user = user;
         this.mood = mood;
-        this.images = images;
     }
 
     public Long getId() {
