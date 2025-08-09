@@ -51,8 +51,8 @@ public class HabitController {
         habitService.deleteUserHabit(id);
     }
 
-    @GetMapping("/")
-    List<UserHabitDto> getHabitsByUserId(@RequestParam Long userId) throws InstanceNotFoundException {
+    @GetMapping("")
+    List<UserHabitDto> getHabitsByUserId(@RequestAttribute Long userId) throws InstanceNotFoundException {
         return toUserHabitDtos(habitService.getHabitsByUserId(userId));
     }
 

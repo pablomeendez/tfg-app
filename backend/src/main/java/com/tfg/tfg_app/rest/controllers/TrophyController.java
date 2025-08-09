@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,12 +28,12 @@ public class TrophyController {
     }
 
     @GetMapping("/userTrophy")
-    public List<UserTrophyDto> getUserTrophiesByUser(@RequestParam Long userId) throws InstanceNotFoundException{
+    public List<UserTrophyDto> getUserTrophiesByUser(@RequestAttribute Long userId) throws InstanceNotFoundException{
         return TrophyConversor.toUserTrophyDtos(trophyService.getUserTrophies(userId));
     }
 
     @GetMapping("/userTrophy/habit")
-    public List<UserTrophyDto> getUserTrophiesByUserAndHabit(@RequestParam Long userId, @RequestParam Long habitId) throws InstanceNotFoundException {
+    public List<UserTrophyDto> getUserTrophiesByUserAndHabit(@RequestAttribute Long userId, @RequestParam Long habitId) throws InstanceNotFoundException {
         return TrophyConversor.toUserTrophyDtos(trophyService.getUserTrophiesByUserIdAndHabitId(userId, habitId));
     }
 
