@@ -4,11 +4,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect, useState, useContext, useCallback } from 'react';
 import diaryEntryService from '../../services/diaryEntryService';
 import weeklySummaryService from '../../services/weeklySummaryService';
-import { Image } from 'expo-image';
 import WeeklySummaryCard from '../../components/WeeklySummaryCard';
-import ImageViewer from '../../components/ImageViewer';
 import { AuthContext } from '../../context/AuthContext';
 import { CompleteEntry } from '../../components/CompleteEntry';
+import {DailyCheckIn} from '../../components/DailyCheckIn';
+import { useTranslation } from 'react-i18next';
+
 
 export default function Index() {
 
@@ -19,6 +20,8 @@ export default function Index() {
   const [latestEntry, setLatestEntry] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const { t } = useTranslation();
 
   const fetchData = useCallback(async () => {
     try {
@@ -41,7 +44,6 @@ export default function Index() {
         const summaryResponse = await weeklySummaryService.getWeeklySummaryByUser(0, 1);
         console.log(summaryResponse.data);
         if (summaryResponse && summaryResponse.data && summaryResponse.data.content && summaryResponse.data.content.length > 0) {
-          console.log((summaryResponse.data.content[0]));
           setWeeklySummary(summaryResponse.data.content[0]);
         } else {
           setWeeklySummary(null);
@@ -58,13 +60,6 @@ export default function Index() {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-
-  const getCurrentMood = () => {
-    if (!latestEntry?.moodId || moods.length === 0) return null;
-    return moods.find(m => m.id == latestEntry.moodId);
-  };
-
-  const currentMood = getCurrentMood();
 
   const isLatestEntryFromToday = () => {
     if (!latestEntry) return false;
@@ -94,7 +89,7 @@ export default function Index() {
       ) :
         <ScrollView>
           {shouldShowMoodForm() ? (
-            <DaylyCheckIn moods={moods} />
+            <DailyCheckIn moods={moods} />
         ) : (
           latestEntry ? (
               <View>
@@ -107,16 +102,16 @@ export default function Index() {
                     }}
                   >
                     <Text className="text-white text-center font-semibold text-base">
-                      📖 View All Entries
+                      📖 {t('view_all_entries')}
                     </Text>
                   </TouchableOpacity>
                 </View>
               </View>
           ) : (
             <View className="bg-gray-100 rounded-lg m-3 p-4">
-              <Text className="text-gray-600 text-center">No diary entries yet</Text>
+              <Text className="text-gray-600 text-center">{t('no_diary_entries')}</Text>
               <Text className="text-gray-500 text-center text-sm mt-1">
-                Start by creating your first entry
+                {t('start_by_creating_entry')}
               </Text>
             </View>
           )
@@ -132,15 +127,15 @@ export default function Index() {
               }}
             >
               <Text className="text-white text-center font-semibold">
-                View all weekly summaries
+                {t('view_all_summaries')}
               </Text>
             </TouchableOpacity>
           </View>
         ) : (
           <View className="bg-gray-100 rounded-lg m-3 p-4">
-            <Text className="text-gray-600 text-center">No weekly summary available</Text>
+            <Text className="text-gray-600 text-center">{t('no_weekly_summary')}</Text>
             <Text className="text-gray-500 text-center text-sm mt-1">
-              Summaries are generated automatically on Sundays
+              {t('summaries_generated_on_sundays')}
             </Text>
           </View>
         )}

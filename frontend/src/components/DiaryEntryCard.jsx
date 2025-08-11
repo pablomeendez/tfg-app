@@ -1,10 +1,13 @@
+import { useTranslation } from 'react-i18next';
 import { View, Text, TouchableOpacity } from 'react-native';
 
 const DiaryEntryCard = ({ entry, onPress }) => {
+    const { t } = useTranslation();
+
     return (
         <View className="flex-1" key={entry.id}>
             <Text className="text-lg font-semibold text-gray-800 mb-2">
-                {new Date(entry.date).toLocaleDateString('en-US', {
+                {new Date(entry.date).toLocaleDateString({
                     weekday: 'long',
                     year: 'numeric',
                     month: 'long',
@@ -28,12 +31,12 @@ const DiaryEntryCard = ({ entry, onPress }) => {
                                 <Text className="text-green-600 text-xs">{habitEntry.habit.category.name}</Text>
                             </View>
                             <View>
-                                <Text className="text-green-600">Streak: {habitEntry.streak}</Text>
+                                <Text className="text-green-600">{t('days_streak', { count: habitEntry.streak })}</Text>
                             </View>
                         </View>
                     ))
                 ) : (
-                    <Text className="text-gray-500 italic">No habits completed this day</Text>
+                    <Text className="text-gray-500 italic">{t('no_habits_completed')}</Text>
                 )}
                 </TouchableOpacity>
             </View>

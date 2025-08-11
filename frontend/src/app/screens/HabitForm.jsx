@@ -53,7 +53,7 @@ const HabitForm = () => {
             
             if (userIdToUse) {
                 const updatedMyHabits = await habitService.getHabitsByUser(userIdToUse);
-                setMyHabits(updatedMyHabits.data || []); // AGREGAR || []
+                setMyHabits(updatedMyHabits.data || []);
             }
         } catch (err) {
             console.error('Error adding habit:', err);

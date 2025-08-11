@@ -19,7 +19,7 @@ const HabitCard = ({ habit }) => {
                 <View className="flex-row items-center justify-between">
                     <View className="bg-blue-100 px-3 pt-1 rounded-full">
                         <Text className="text-blue-700 text-xs font-medium">
-                            {habit.category?.name || 'Sin categoría'}
+                            {habit.category?.name}
                         </Text>
                     </View>
                 </View>

@@ -11,6 +11,7 @@ import { AuthContext } from '../../context/AuthContext';
 import useTogglePasswordVisibility from '../../hooks/useTogglePasswordVisibility';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import userService from '../../services/userService';
+import { useTranslation } from 'react-i18next';
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -18,17 +19,17 @@ export default function Login() {
   const { login } = useContext(AuthContext);
   const router = useRouter();
   const { passwordVisibility, eyeIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
+  const { t } = useTranslation();
 
   const handleLogin = async () => {
     if (!username.trim() || !password.trim()) {
-      Alert.alert('Error', 'Please enter username and password');
+      Alert.alert(t('error'), t('enter_credentials'));
       return;
     }
 
     try {
       const response = await login(username, password);
       const user = response.data.user;
-      console.log(user);
       if (user.firstEntry) {
         user.firstEntry = false;
         const updateResponse = await userService.updateProfile(user.id, user);
@@ -37,8 +38,7 @@ export default function Login() {
         router.replace('/(tabs)');
       }
     } catch (e) {
-      console.log('Error en handleLogin:', e);
-      Alert.alert('Login Failed', 'Invalid username or password');
+      Alert.alert(t('error'), t('invalid_credentials'));
     }
   }
 
@@ -50,7 +50,7 @@ export default function Login() {
         <View className="gap-3">
           <TextInput
             className="border-[1px] p-3 rounded-md font-normal"
-            placeholder="Username"
+            placeholder={t('username')}
             value={username}
             onChangeText={setUsername}
             autoCapitalize="none"
@@ -59,7 +59,7 @@ export default function Login() {
           <View className="flex-row items-center border-[1px] rounded-md font-normal">
             <TextInput
                 className="flex-1 p-3"
-                placeholder="Password"
+                placeholder={t('password')}
                 value={password}
                 onChangeText={setPassword}
                 secureTextEntry={passwordVisibility}
@@ -71,11 +71,11 @@ export default function Login() {
           </View>
 
           <Pressable className="bg-blue-600 p-4 rounded-md items-center mt-3" onPress={handleLogin}>
-            <Text className="text-[#fff] text-xl font-semibold">Login</Text>
+            <Text className="text-[#fff] text-xl font-semibold">{t('login')}</Text>
           </Pressable>
 
           <Pressable className="items-center mt-1" onPress={() => {router.navigate('/register')}}>
-            <Text className="underline"> Not registered? Register here</Text>
+            <Text className="underline"> {t('not_registered')} </Text>
           </Pressable>
         </View>
       </View>

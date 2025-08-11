@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import DropDownPicker from 'react-native-dropdown-picker';
+import { useTranslation } from 'react-i18next';
 
 const defaultPickerItems = [
     { label: '5 items per page', value: 5 },
@@ -12,6 +13,7 @@ const defaultPickerItems = [
 export const PageNavigation = ({data, page, setPage, items, setItems}) => {
     const [open, setOpen] = useState(false);
     const [pickerItems, setPickerItems] = useState(defaultPickerItems);
+    const { t } = useTranslation();
 
     return (
         <View className="p-4 border-b border-white rounded-lg bg-white">
@@ -20,16 +22,16 @@ export const PageNavigation = ({data, page, setPage, items, setItems}) => {
                         onPress={() => setPage(page + 1)}
                     className="bg-blue-100 p-2 rounded-lg"
                 >
-                    <Text className="text-blue-600 font-medium">‹ Previous</Text>
+                    <Text className="text-blue-600 font-medium">‹ {t('previous')}</Text>
                 </TouchableOpacity> : <View
                     className="bg-gray-100 p-2 rounded-lg"
                 >
-                    <Text className="text-gray-600 font-medium">‹ Previous</Text>
+                    <Text className="text-gray-600 font-medium">‹ {t('previous')}</Text>
                     </View>}
             
                 <View className="flex-1 items-center justify-center">
                     <Text className="text-gray-800 font-semibold">
-                        Page {page + 1} of {data.totalPages}
+                        {t('page')} {page + 1} {t('of')} {data.totalPages}
                     </Text>
                 </View>
             
@@ -37,15 +39,15 @@ export const PageNavigation = ({data, page, setPage, items, setItems}) => {
                 onPress={() => setPage(prev => Math.max(prev - 1, 0))}
                 className="bg-blue-100 p-2 rounded-lg"
             >
-                <Text className="text-blue-600 font-medium">Next ›</Text>
+                <Text className="text-blue-600 font-medium">{t('next')} ›</Text>
             </TouchableOpacity> : <View
                 className="bg-gray-100 p-2 rounded-lg"
             >
-                <Text className="text-gray-600 font-medium">Next ›</Text>
+                <Text className="text-gray-600 font-medium">{t('next')} ›</Text>
                 </View>}
         </View>
         <View className="bg-white p-4">
-            <Text className="text-gray-700 font-medium mb-2">Items per page</Text>
+            <Text className="text-gray-700 font-medium mb-2">{t('items_per_page')}</Text>
             <DropDownPicker
                 open={open}
                 value={items}

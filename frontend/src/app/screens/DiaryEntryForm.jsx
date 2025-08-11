@@ -16,14 +16,21 @@ import { Image } from "expo-image";
 const DiaryEntryForm = () => {
     const { userId } = useContext(AuthContext);
     const [myHabits, setMyHabits] = useState([]);
-    const localParams = useLocalSearchParams();
-    const moodId = localParams.moodId;
-    const moodName = localParams.moodName;
-    const moodImage = localParams.moodImage;
     const [description, setDescription] = useState("");
     const [selectedImages, setSelectedImages] = useState([]);
     const [selectedHabits, setSelectedHabits] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const localParams = useLocalSearchParams();
+    const moodId = localParams.moodId;
+    const moodName = localParams.moodName;
+    const moodImage = localParams.moodImage;
+
+    const mood = {
+        id: moodId,
+        name: moodName,
+        image: moodImage
+    }
+
     const router = useRouter();
 
     useEffect(() => {
@@ -31,7 +38,7 @@ const DiaryEntryForm = () => {
             try {
                 const userIdToUse = userId || (await AsyncStorage.getItem("userId"));
                 if (userIdToUse) {
-                    const response = await habitService.getHabitsByUser(userIdToUse);
+                    const response = await habitService.getHabitsByUser();
                     setMyHabits(response.data || []);
                 }   
             } catch (error) {
@@ -67,23 +74,23 @@ const DiaryEntryForm = () => {
         setSelectedImages(selectedImages.filter((_, i) => i !== index));
     };
 
-    const toggleHabitSelection = useCallback((userHabitId) => {
+    const toggleHabitSelection = useCallback((userHabit) => {
         setSelectedHabits(prev => {
-            if (prev.includes(userHabitId)) {
-                return prev.filter(id => id !== userHabitId);
+            if (prev.includes(userHabit)) {
+                return prev.filter(uh => uh.id !== userHabit.id);
             } else {
-                return [...prev, userHabitId];
+                return [...prev, userHabit];
             }
         });
     }, []);
 
     const habitItems = useMemo(() => {
         return myHabits.map((userHabit) => {
-            const isSelected = selectedHabits.includes(userHabit.id);
+            const isSelected = selectedHabits.includes(userHabit);
             return (
                 <TouchableOpacity
                     key={userHabit.id} 
-                    onPress={() => toggleHabitSelection(userHabit.id)}
+                    onPress={() => toggleHabitSelection(userHabit)}
                     className={`rounded-xl border-2 m-2 ${
                         isSelected
                             ? 'border-blue-500 bg-blue-50'
@@ -112,39 +119,19 @@ const DiaryEntryForm = () => {
         setIsLoading(true);
         try {
 
-            const response = await diaryEntryService.createDiaryEntry(description, selectedImages, moodId);
-
-            for (const userHabitId of selectedHabits) {
-                try {
-                    const habitResponse = await habitService.createHabitEntry(userHabitId, response.data.id);
-                    if (habitResponse.data.userTrophy != null) {
-                        Alert.alert("Trophy Earned", `You earned a trophy for completing the habit: ${habitResponse.data.userTrophy.trophy.name}`);
-                    }
-                } catch (habitError) {
-                    console.error('Error creating habit entry:', habitError);
-                }
-            }
+                await diaryEntryService.createDiaryEntry(description, selectedImages, mood, selectedHabits);
             
-            Alert.alert("Success", "Diary entry saved successfully!");
             router.replace('/(tabs)');
         } catch (error) {
             
             if (error.response && error.response.status === 400) {
-                const errorData = error.response.data;
-                const globalError = errorData?.globalError;
-                
-                console.log('Global error:', globalError);
-                console.log('Full error data:', JSON.stringify(errorData, null, 2));
+                const globalError = error.response.data?.globalError;
                 
                 if (globalError === "project.exceptions.DuplicatedEntryException") {
                     Alert.alert("Duplicate Entry Error", "This entry already exists. You have already submitted a diary entry for today.");
                 } else {
-                    Alert.alert("Validation Error", globalError || JSON.stringify(errorData) || "There was a problem with your input. Please check and try again.");
+                    Alert.alert("Validation Error", globalError || "There was a problem with your input. Please check and try again.");
                 }
-            } else if (error.response && error.response.status === 500) {
-                Alert.alert("Server Error", "There was an internal server error. Please try again later.");
-            } else {
-                Alert.alert("Error", `Failed to save diary entry. Error: ${error.message}. Please check your connection and try again.`);
             }
         } finally {
             setIsLoading(false);
@@ -164,7 +151,7 @@ const DiaryEntryForm = () => {
                         <View className="w-10" />
                     </View>
 
-                    {moodId && (
+                    {mood.id && (
                         <View className="bg-white rounded-xl p-5 mb-6 shadow-sm border border-gray-100">
                             <Text className="text-xl font-semibold text-gray-800 mb-4 flex-row items-center">
                                 <MaterialCommunityIcons name="emoticon-happy" size={24} color="#6B7280" className="mr-2" />
@@ -175,13 +162,13 @@ const DiaryEntryForm = () => {
                                 <View className="flex flex-row items-center">
                                     <View className="bg-yellow-300 rounded-full mr-4">
                                         <Image 
-                                            source={{ uri: moodImage }} 
+                                            source={{ uri: mood.image }} 
                                             style={{ width: 40, height: 40 }} 
                                         />
                                     </View>
                                     <View className="flex-1">
                                         <Text className="text-lg font-semibold text-gray-800 mb-1">
-                                            {moodName}
+                                            {mood.name}
                                         </Text>
                                     </View>
                                 </View>

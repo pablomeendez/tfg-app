@@ -2,8 +2,11 @@ import { View, Text, ScrollView, TouchableOpacity, Modal } from 'react-native';
 import { Image } from 'expo-image';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ImageViewer from './ImageViewer';
+import { useTranslation } from 'react-i18next';
 
 export const DiaryEntryModal = ({ isVisible, onClose, selectedEntry }) => {
+    const { t } = useTranslation();
+
     return (
         <Modal
                 animationType="slide"
@@ -16,8 +19,8 @@ export const DiaryEntryModal = ({ isVisible, onClose, selectedEntry }) => {
                     <View className="bg-white rounded-t-3xl max-h-4/5">
                         <View className="p-6">
                             <View className="flex-row items-center justify-between mb-4">
-                                <Text className="text-2xl font-bold text-gray-800">Diary Entry</Text>
-                                <TouchableOpacity 
+                                <Text className="text-2xl font-bold text-gray-800">{t('diary_entry')}</Text>
+                                <TouchableOpacity
                                     onPress={onClose}
                                     className="bg-gray-100 rounded-full p-2"
                                 >
@@ -31,7 +34,7 @@ export const DiaryEntryModal = ({ isVisible, onClose, selectedEntry }) => {
                                         <View className="flex-row items-center">
                                             <MaterialCommunityIcons name="calendar" size={20} color="#3B82F6" />
                                             <Text className="text-blue-800 font-medium ml-2">
-                                                {new Date(selectedEntry.date).toLocaleDateString('en-US', {
+                                                {new Date(selectedEntry.date).toLocaleDateString({
                                                     weekday: 'long',
                                                     year: 'numeric',
                                                     month: 'long',
@@ -43,7 +46,7 @@ export const DiaryEntryModal = ({ isVisible, onClose, selectedEntry }) => {
                                     <View className="bg-purple-50 rounded-xl p-4 mb-4">
                                         <View className="flex-row items-center">
                                             <MaterialCommunityIcons name="emoticon" size={20} color="#8B5CF6" />
-                                            <Text className="text-purple-800 font-semibold ml-2 mr-4">Mood:</Text>
+                                            <Text className="text-purple-800 font-semibold ml-2 mr-4">{t('mood')}:</Text>
                                             <View className="flex-row items-center flex-1">
                                                 <View className="bg-yellow-300 rounded-full mr-3">
                                                     <Image 
@@ -59,7 +62,7 @@ export const DiaryEntryModal = ({ isVisible, onClose, selectedEntry }) => {
                                     </View>
 
                                     <View className="bg-gray-50 rounded-xl p-4 mb-4">
-                                        <Text className="text-gray-800 font-semibold mb-2">Content:</Text>
+                                        <Text className="text-gray-800 font-semibold mb-2">{t('description')}:</Text>
                                         <Text className="text-gray-700 leading-6">
                                             {selectedEntry.description || 'No content available'}
                                         </Text>
@@ -70,7 +73,7 @@ export const DiaryEntryModal = ({ isVisible, onClose, selectedEntry }) => {
                                             <View className="flex-row items-center mb-3">
                                                 <MaterialCommunityIcons name="image-multiple" size={20} color="#10B981" />
                                                 <Text className="text-green-800 font-semibold ml-2">
-                                                    Images ({selectedEntry.images.length})
+                                                    {t('images')} ({selectedEntry.images.length})
                                                 </Text>
                                             </View>
                                             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -86,9 +89,9 @@ export const DiaryEntryModal = ({ isVisible, onClose, selectedEntry }) => {
                                     )}
 
                                     <View className="bg-yellow-50 rounded-xl p-4">
-                                        <Text className="text-yellow-800 font-semibold mb-2">Entry Details:</Text>
+                                        <Text className="text-yellow-800 font-semibold mb-2">{t('entry_details')}:</Text>
                                         <Text className="text-yellow-700 text-sm">
-                                            Created: {new Date(selectedEntry.date).toLocaleString()}
+                                            {t('created')}: {new Date(selectedEntry.date).toLocaleString()}
                                         </Text>
 
                                     </View>
@@ -96,9 +99,9 @@ export const DiaryEntryModal = ({ isVisible, onClose, selectedEntry }) => {
                             ) : (
                                 <View className="items-center py-8">
                                     <MaterialCommunityIcons name="book-open-variant" size={64} color="#D1D5DB" />
-                                    <Text className="text-gray-500 text-lg mt-4">No diary entry for this day</Text>
+                                    <Text className="text-gray-500 text-lg mt-4">{t('no_diary_entries')}</Text>
                                     <Text className="text-gray-400 text-center mt-2">
-                                        Only habits were completed on this day
+                                        {t('only_habits_completed')}
                                     </Text>
                                 </View>
                             )}

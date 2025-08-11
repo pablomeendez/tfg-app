@@ -3,6 +3,8 @@ import { AuthProvider, AuthContext } from '../context/AuthContext';
 import { useContext, useEffect, useRef } from 'react';
 import './../../global.css';
 import { ActivityIndicator, View } from 'react-native';
+import './i18n/i18n';
+
 
 function RootLayoutContent() {
     const { isAuthenticated, loading, userToken } = useContext(AuthContext);
@@ -27,7 +29,7 @@ function RootLayoutContent() {
         );
     }
 
-    return (
+    return ( 
         <Stack screenOptions={{ headerShown: false }}>
             {isAuthenticated ? (
                 <Stack.Screen name="(tabs)" />

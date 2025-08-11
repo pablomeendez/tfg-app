@@ -3,6 +3,7 @@ import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 
 export const DailyCheckIn = ({ moods }) => {
+  const { t } = useTranslation();
 
   const router = useRouter();
 
@@ -12,17 +13,17 @@ export const DailyCheckIn = ({ moods }) => {
               <View className="flex flex-row items-center mb-4">
                 <View className="w-3 h-3 bg-blue-500 rounded-full mr-3"></View>
                 <Text className="text-2xl font-bold text-blue-900">
-                  ✨ Daily Check-in
+                  ✨ {t('daily_check_in')}
                 </Text>
               </View>
               
               <Text className="text-xl text-center text-gray-800 font-medium mb-6">
-                How have you been feeling today?
+                {t('start_your_day_with_a_mood_check_in')}
               </Text>
               
               <View className="bg-white rounded-xl p-5 mb-4 shadow-sm border border-gray-100">
                 <Text className="text-center text-gray-600 text-sm mb-4 font-medium">
-                  Choose your mood to continue
+                  {t('choose_your_mood')}
                 </Text>
                 <View className="flex flex-row flex-wrap justify-center items-center">
                   {moods.length > 0 ? (
@@ -61,7 +62,7 @@ export const DailyCheckIn = ({ moods }) => {
                     ))
                   ) : (
                     <View className="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                      <Text className="text-gray-600 text-center">No moods available</Text>
+                      <Text className="text-gray-600 text-center">{t('no_moods_available')}</Text>
                     </View>
                   )}
                 </View>

@@ -1,15 +1,18 @@
 import { View, Text } from 'react-native';
 import { Image } from 'expo-image';
 import ImageViewer from './ImageViewer';
+import { useTranslation } from 'react-i18next';
 
 export const CompleteEntry = ( {latestEntry} ) => {
+    const { t } = useTranslation();
+
     return (
             <View className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl m-4 shadow-lg border border-blue-100">
               <View className="p-6">
                 <View className="flex flex-row items-center mb-4">
                   <View className="w-3 h-3 bg-blue-500 rounded-full mr-3"></View>
                   <Text className="text-2xl font-bold text-blue-900">
-                    Your Latest Entry
+                    {t('your_latest_entry')}
                   </Text>
                 </View>
                 
@@ -22,7 +25,7 @@ export const CompleteEntry = ( {latestEntry} ) => {
                     <View className="mb-4 bg-blue-50 rounded-xl p-4 border border-blue-100">
                       <View className="flex flex-row items-center">
                         <View className="w-3 h-3 bg-blue-500 rounded-full mr-3"></View>
-                        <Text className="text-blue-900 text-sm font-semibold mr-4">Mood:</Text>
+                        <Text className="text-blue-900 text-sm font-semibold mr-4">{t('mood')}:</Text>
                         <View className="flex flex-row items-center">
                           {latestEntry.mood.image && (
                             <View className="bg-yellow-300 rounded-full mr-2">
@@ -43,7 +46,7 @@ export const CompleteEntry = ( {latestEntry} ) => {
                   
                   {latestEntry.images && latestEntry.images.length > 0 && (
                     <View className="mb-4">
-                      <Text className="text-gray-700 text-sm font-semibold mb-2">📸 Images</Text>
+                      <Text className="text-gray-700 text-sm font-semibold mb-2">📸 {t('images')}</Text>
                       <View className="flex flex-row flex-wrap">
                         {latestEntry.images.map((image) => (
                           <View key={image.id} className="mr-2 flex-1" style={{ minWidth: '45%', maxWidth: '48%' }}>
@@ -58,7 +61,7 @@ export const CompleteEntry = ( {latestEntry} ) => {
                   
                   {latestEntry.habits && latestEntry.habits.length > 0 && (
                     <View className="mb-4">
-                      <Text className="text-gray-700 text-sm font-semibold mb-2">✅ Completed Habits</Text>
+                      <Text className="text-gray-700 text-sm font-semibold mb-2">✅ {t('completed_habits')}</Text>
                       <View className="space-y-2">
                         {latestEntry.habits.map((habit, index) => (
                           <View key={index} className="flex flex-row items-center bg-green-50 rounded-lg p-3 border border-green-100">
@@ -69,7 +72,7 @@ export const CompleteEntry = ( {latestEntry} ) => {
                             {habit.streak && (
                               <View className="bg-green-200 rounded-full px-2 py-1">
                                 <Text className="text-green-800 text-xs font-semibold">
-                                  {habit.streak} day streak
+                                    {t('streak')}: {habit.streak} {t('days')}
                                 </Text>
                               </View>
                             )}

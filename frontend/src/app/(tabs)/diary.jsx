@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import {DiaryEntryModal} from '../../components/DiaryEntryModal';
 import DiaryEntryCard from '../../components/DiaryEntryCard';
 import {PageNavigation} from '../../components/PageNavigation';
+import { useTranslation } from 'react-i18next';
 
 export default function Diary() {
     const [diaryEntries, setDiaryEntries] = useState([]);
@@ -14,6 +15,7 @@ export default function Diary() {
     const [selectedEntry, setSelectedEntry] = useState(null);
     const [page, setPage] = useState(0);
     const [items, setItems] = useState(5);
+    const { t } = useTranslation();
 
     useEffect(() => {
         fetchData();
@@ -36,17 +38,17 @@ export default function Diary() {
         <SafeAreaView className="flex-1 bg-white">
             {error ? (
                 <View className="flex-1 justify-center items-center bg-gray-50 p-4">
-                    <Text className="text-red-600 text-center mb-4">Error: {error}</Text>
+                    <Text className="text-red-600 text-center mb-4">{t('error')}: {error}</Text>
                     <TouchableOpacity 
                         onPress={fetchData}
                         className="bg-blue-500 px-4 py-2 rounded-lg"
                     >
-                        <Text className="text-white font-medium">Retry</Text>
+                        <Text className="text-white font-medium">{t('retry')}</Text>
                     </TouchableOpacity>
                 </View>
             ) : loading ? <View className="flex-1 justify-center items-center bg-gray-50">
                 <ActivityIndicator size="large" color="#3b82f6" />
-                <Text className="mt-2 text-gray-600">Loading diary...</Text>
+                <Text className="mt-2 text-gray-600">{t('loading')}</Text>
             </View> 
             :
             <View className="flex-1">
@@ -73,7 +75,7 @@ export default function Diary() {
                     ) : (
                         <View className="bg-white rounded-lg p-6 mt-4">
                             <Text className="text-center text-gray-400 mt-2">
-                                Start writing diary entries to see them here!
+                                {t('no_entries')}
                             </Text>
                         </View>
                     )
