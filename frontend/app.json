@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
-    "scheme": "tfg  app",
+    "scheme": "tfg-app",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
