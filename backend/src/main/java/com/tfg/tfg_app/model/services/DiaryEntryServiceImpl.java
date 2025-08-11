@@ -24,6 +24,7 @@ import com.tfg.tfg_app.model.entities.MoodDao;
 import com.tfg.tfg_app.model.entities.UserHabit;
 import com.tfg.tfg_app.model.entities.Users;
 import com.tfg.tfg_app.model.services.exceptions.DuplicatedEntryException;
+import com.tfg.tfg_app.model.services.exceptions.TrophyAlreadyGivenException;
 
 @Service
 public class DiaryEntryServiceImpl implements DiaryEntryService {
@@ -38,13 +39,16 @@ public class DiaryEntryServiceImpl implements DiaryEntryService {
     private HabitService habitService;
 
     @Autowired
+    private TrophyService trophyService;
+
+    @Autowired
     private MoodDao moodDao;
 
     @Autowired
     private ImagesDao imagesDao;
 
     @Override
-    public DiaryEntry createDiaryEntry(Long userId, DiaryEntry diaryEntry, List<byte[]> images, List<UserHabit> habits) throws DuplicateInstanceException, DuplicatedEntryException, InstanceNotFoundException {
+    public DiaryEntry createDiaryEntry(Long userId, DiaryEntry diaryEntry, List<byte[]> images, List<UserHabit> habits) throws DuplicateInstanceException, DuplicatedEntryException, InstanceNotFoundException, TrophyAlreadyGivenException {
 
         Users user = userService.checkUser(userId);
         
@@ -66,9 +70,13 @@ public class DiaryEntryServiceImpl implements DiaryEntryService {
 
         habits.forEach(userHabit -> {
             try {
-                habitEntries.add(habitService.createHabitEntry(userId, userHabit.getId(), createdDiaryEntry.getId()));
-            } catch (InstanceNotFoundException e) {
+                HabitEntry habitEntryResult = habitService.createHabitEntry(userId, userHabit.getId(), createdDiaryEntry.getId());
+                habitEntries.add(habitEntryResult);
+                trophyService.checkAndAwardUserTrophy(userId, habitEntryResult.getHabit().getId(), habitEntryResult.getStreak());
+            } catch (InstanceNotFoundException  e) {
                 throw new RuntimeException("Error creating habit entry: " + e.getMessage(), e);
+            } catch (TrophyAlreadyGivenException e) {
+                throw new RuntimeException("Trophy already given: " + e.getMessage(), e)    ;
             }
         });
 
