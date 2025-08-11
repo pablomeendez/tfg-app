@@ -54,7 +54,7 @@ public class TrophyServiceImpl implements TrophyService {
     }
 
     @Override
-    public UserTrophy giveUserTrophy(Long userId, Long habitId, int days) throws InstanceNotFoundException, TrophyAlreadyGivenException {
+    public UserTrophy checkAndAwardUserTrophy(Long userId, Long habitId, int days) throws InstanceNotFoundException, TrophyAlreadyGivenException {
 
         Users user = userService.checkUser(userId);
         if (user == null) {
