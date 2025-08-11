@@ -20,6 +20,7 @@ import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.entities.DiaryEntry;
 import com.tfg.tfg_app.model.services.DiaryEntryService;
 import com.tfg.tfg_app.model.services.exceptions.DuplicatedEntryException;
+import com.tfg.tfg_app.model.services.exceptions.TrophyAlreadyGivenException;
 import com.tfg.tfg_app.rest.dtos.DiaryEntryDto;
 import com.tfg.tfg_app.rest.dtos.DiaryEntryResponseDto;
 import com.tfg.tfg_app.rest.dtos.HabitConversor;
@@ -36,7 +37,7 @@ public class DiaryEntryController {
     public DiaryEntryResponseDto createDiaryEntry(
         @RequestAttribute Long userId,
         @RequestBody DiaryEntryDto diaryEntryDto
-    ) throws DuplicateInstanceException, DuplicatedEntryException, InstanceNotFoundException {
+    ) throws DuplicateInstanceException, DuplicatedEntryException, InstanceNotFoundException, TrophyAlreadyGivenException {
 
         return toDiaryEntryResponseDto(diaryEntryService.createDiaryEntry(userId, toDiaryEntry(diaryEntryDto), diaryEntryDto.getImages(), HabitConversor.toUserHabits(diaryEntryDto.getHabits())));
     }

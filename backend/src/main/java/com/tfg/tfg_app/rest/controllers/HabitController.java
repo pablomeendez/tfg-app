@@ -34,10 +34,9 @@ public class HabitController {
     private HabitService habitService;
 
     @Autowired
-    private TrophyService trophyService;
     
     @GetMapping("/all")
-    List<HabitDto> getAllHabits(){
+    List<HabitDto> getAllHabits(){  
         return toHabitDtos(habitService.getAllHabits());
     }
 
@@ -54,13 +53,6 @@ public class HabitController {
     @GetMapping("")
     List<UserHabitDto> getHabitsByUserId(@RequestAttribute Long userId) throws InstanceNotFoundException {
         return toUserHabitDtos(habitService.getHabitsByUserId(userId));
-    }
-
-    @PostMapping("/entry")
-    HabitEntryWithTrophyDto createHabitEntry(@RequestAttribute Long userId, @RequestBody HabitEntryParamsDto params) throws InstanceNotFoundException, TrophyAlreadyGivenException {
-        HabitEntry habitEntry = habitService.createHabitEntry(userId, params.getUserHabitId(), params.getDiaryEntryId());
-        UserTrophy userTrophy = trophyService.giveUserTrophy(userId, habitEntry.getHabit().getId(), habitEntry.getStreak());
-        return toHabitEntryWithTrophyDto(habitEntry, userTrophy);
     }
 
     @DeleteMapping("/entry/{habitEntryId}")
