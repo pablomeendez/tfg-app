@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 /**
@@ -33,14 +32,13 @@ public class JwtGeneratorImpl implements JwtGenerator {
     @Override
     public String generate(JwtInfo info) {
 
-        Claims claims = Jwts.claims();
-
-        claims.setSubject(info.getUserName())
-                .setExpiration(new Date(System.currentTimeMillis() + expirationMinutes * 60 * 1000));
-        claims.put("userId", info.getUserId());
-        claims.put("role", info.getRole());
-        
-        return Jwts.builder().setClaims(claims).signWith(Keys.hmacShaKeyFor(signKey.getBytes()), SignatureAlgorithm.HS512).compact();
+        return Jwts.builder()
+                .subject(info.getUserName())
+                .expiration(new Date(System.currentTimeMillis() + expirationMinutes * 60 * 1000))
+                .claim("userId", info.getUserId())
+                .claim("role", info.getRole())
+                .signWith(Keys.hmacShaKeyFor(signKey.getBytes()))
+                .compact();
 
     }
 
@@ -53,7 +51,7 @@ public class JwtGeneratorImpl implements JwtGenerator {
     @Override
     public JwtInfo getInfo(String token) {
         
-        Claims claims = Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(signKey.getBytes())).build().parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parser().verifyWith(Keys.hmacShaKeyFor(signKey.getBytes())).build().parseSignedClaims(token).getPayload();
 
         return new JwtInfo(((Integer) claims.get("userId")).longValue(), claims.getSubject(),
                 (String) claims.get("role"));
