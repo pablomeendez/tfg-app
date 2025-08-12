@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -30,6 +31,7 @@ import com.tfg.tfg_app.model.entities.MoodDao;
 import com.tfg.tfg_app.model.entities.UserHabit;
 import com.tfg.tfg_app.model.entities.Users;
 import com.tfg.tfg_app.model.services.exceptions.DuplicatedEntryException;
+import com.tfg.tfg_app.model.services.exceptions.TrophyAlreadyGivenException;
 
 import jakarta.transaction.Transactional;
 
@@ -69,7 +71,7 @@ public class HabitServiceTest {
     private Mood testMood;
 
     @Before
-    public void setUp() throws DuplicateInstanceException, DuplicatedEntryException {
+    public void setUp() throws DuplicateInstanceException, DuplicatedEntryException, InstanceNotFoundException, TrophyAlreadyGivenException {
         // Crear usuario de prueba
         testUser = new Users("testuser", "password123", "Test", "User", "test@example.com");
         userService.signUp(testUser);
@@ -94,12 +96,8 @@ public class HabitServiceTest {
         moodDao.save(testMood);
 
         // Crear diary entry de prueba usando el service
-        testDiaryEntry = new DiaryEntry();
-        testDiaryEntry.setUser(testUser);
-        testDiaryEntry.setMood(testMood);
-        testDiaryEntry.setContent("Test diary entry");
-        testDiaryEntry.setDate(LocalDateTime.now());
-        testDiaryEntry = diaryEntryService.createDiaryEntry(testDiaryEntry);
+        testDiaryEntry = new DiaryEntry("Test diary entry", LocalDateTime.now(), testUser, testMood);
+        testDiaryEntry = diaryEntryService.createDiaryEntry(testUser.getId(), testDiaryEntry, new ArrayList<>(), new ArrayList<>());
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.tfg.tfg_app.model.services;
 import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -18,6 +19,7 @@ import com.tfg.tfg_app.Application;
 import com.tfg.tfg_app.model.common.exceptions.DuplicateInstanceException;
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.services.exceptions.DuplicatedEntryException;
+import com.tfg.tfg_app.model.services.exceptions.TrophyAlreadyGivenException;
 import com.tfg.tfg_app.model.entities.Category;
 import com.tfg.tfg_app.model.entities.CategoryDao;
 import com.tfg.tfg_app.model.entities.DiaryEntry;
@@ -66,7 +68,7 @@ public class WeeklySummaryServiceTest {
     private Habit testHabit;
     
     @Before
-    public void setUp() throws DuplicateInstanceException, InstanceNotFoundException, DuplicatedEntryException {
+    public void setUp() throws DuplicateInstanceException, InstanceNotFoundException, DuplicatedEntryException, TrophyAlreadyGivenException {
         // Create test data
         Users testUser = new Users();
         testUser.setUserName("testUser");
@@ -101,12 +103,8 @@ public class WeeklySummaryServiceTest {
         // Create user habit and diary entry to have some data
         habitService.createUserHabit(testUserId, testHabit.getId());
         
-        DiaryEntry diaryEntry = new DiaryEntry();
-        diaryEntry.setUser(testUser);
-        diaryEntry.setContent("Test diary entry");
-        diaryEntry.setDate(LocalDateTime.now());
-        diaryEntry.setMood(testMood);
-        diaryEntry = diaryEntryService.createDiaryEntry(diaryEntry);
+        DiaryEntry diaryEntry = new DiaryEntry("Test diary entry", LocalDateTime.now(), testUser, testMood);
+        diaryEntry = diaryEntryService.createDiaryEntry(testUser.getId(), diaryEntry, new ArrayList<>(), new ArrayList<>());
         
         HabitEntry habitEntry = new HabitEntry();
         habitEntry.setUser(testUser);
@@ -156,7 +154,7 @@ public class WeeklySummaryServiceTest {
         WeeklySummary createdSummary = weeklySummaryService.generateWeeklySummary(testUserId, date);
 
         // When
-        List<WeeklySummary> result = weeklySummaryService.getWeeklySummariesByUserId(testUserId);
+        List<WeeklySummary> result = weeklySummaryService.getWeeklySummariesByUserId(testUserId, 0, 10).getContent();
 
         // Then
         assertNotNull(result);
@@ -175,7 +173,7 @@ public class WeeklySummaryServiceTest {
         Long userId = 999L;
 
         // When & Then
-        weeklySummaryService.getWeeklySummariesByUserId(userId);
+        weeklySummaryService.getWeeklySummariesByUserId(userId, 0, 10).getContent();
     }
 
     @Test

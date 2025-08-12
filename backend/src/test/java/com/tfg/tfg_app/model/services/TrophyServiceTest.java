@@ -110,8 +110,8 @@ public class TrophyServiceTest {
     }
 
     @Test
-    public void testCreateUserTrophy() throws InstanceNotFoundException, TrophyAlreadyGivenException {
-        UserTrophy userTrophy = trophyService.giveUserTrophy(testUser.getId(), testHabit.getId(), 7);
+    public void testCreateUserTrophy() throws InstanceNotFoundException, TrophyAlreadyGivenException  {
+        UserTrophy userTrophy = trophyService.checkAndAwardUserTrophy(testUser.getId(), testHabit.getId(), 7);
         
         assertNotNull(userTrophy);
         assertNotNull(userTrophy.getId());
@@ -125,44 +125,44 @@ public class TrophyServiceTest {
     @Test
     public void testCreateUserTrophyWithInvalidUserId() {
         assertThrows(InstanceNotFoundException.class, () -> {
-            trophyService.giveUserTrophy(NON_EXISTENT_ID, testHabit.getId(), 7);
+            trophyService.checkAndAwardUserTrophy(NON_EXISTENT_ID, testHabit.getId(), 7);
         });
     }
 
     @Test
     public void testCreateUserTrophyWithInvalidHabitId() {
         assertThrows(InstanceNotFoundException.class, () -> {
-            trophyService.giveUserTrophy(testUser.getId(), NON_EXISTENT_ID, 7);
+            trophyService.checkAndAwardUserTrophy(testUser.getId(), NON_EXISTENT_ID, 7);
         });
     }
 
     @Test
     public void testCreateUserTrophyWithInvalidDays() {
         assertThrows(IllegalArgumentException.class, () -> {
-            trophyService.giveUserTrophy(testUser.getId(), testHabit.getId(), 0);
+            trophyService.checkAndAwardUserTrophy(testUser.getId(), testHabit.getId(), 0);
         });
 
         assertThrows(IllegalArgumentException.class, () -> {
-            trophyService.giveUserTrophy(testUser.getId(), testHabit.getId(), -5);
+            trophyService.checkAndAwardUserTrophy(testUser.getId(), testHabit.getId(), -5);
         });
     }
 
     @Test
     public void testCreateUserTrophyAlreadyGiven() throws InstanceNotFoundException, TrophyAlreadyGivenException {
-        trophyService.giveUserTrophy(testUser.getId(), testHabit.getId(), 7);
+        trophyService.checkAndAwardUserTrophy(testUser.getId(), testHabit.getId(), 7);
 
         assertThrows(TrophyAlreadyGivenException.class, () -> {
-            trophyService.giveUserTrophy(testUser.getId(), testHabit.getId(), 7);
+            trophyService.checkAndAwardUserTrophy(testUser.getId(), testHabit.getId(), 7);
         });
     }
 
     @Test
     public void testCreateMultipleTrophiesForSameUserAndHabit() throws InstanceNotFoundException, TrophyAlreadyGivenException {
-        UserTrophy userTrophy7 = trophyService.giveUserTrophy(testUser.getId(), testHabit.getId(), 7);
+        UserTrophy userTrophy7 = trophyService.checkAndAwardUserTrophy(testUser.getId(), testHabit.getId(), 7);
         assertNotNull(userTrophy7);
         assertEquals(7, userTrophy7.getTrophy().getDays());
 
-        UserTrophy userTrophy30 = trophyService.giveUserTrophy(testUser.getId(), testHabit.getId(), 30);
+        UserTrophy userTrophy30 = trophyService.checkAndAwardUserTrophy(testUser.getId(), testHabit.getId(), 30);
         assertNotNull(userTrophy30);
         assertEquals(30, userTrophy30.getTrophy().getDays());
         
@@ -175,7 +175,7 @@ public class TrophyServiceTest {
         List<UserTrophy> initialTrophies = trophyService.getUserTrophies(testUser.getId());
         int initialCount = initialTrophies.size();
 
-        trophyService.giveUserTrophy(testUser.getId(), testHabit.getId(), 7);
+        trophyService.checkAndAwardUserTrophy(testUser.getId(), testHabit.getId(), 7);
 
         List<UserTrophy> updatedTrophies = trophyService.getUserTrophies(testUser.getId());
         assertEquals(initialCount + 1, updatedTrophies.size());
@@ -199,8 +199,8 @@ public class TrophyServiceTest {
     public void testGetUserTrophiesByUserIdAndHabitId() throws InstanceNotFoundException, TrophyAlreadyGivenException {
         List<UserTrophy> initialTrophies = trophyService.getUserTrophiesByUserIdAndHabitId(testUser.getId(), testHabit.getId());
         assertEquals(0, initialTrophies.size());
-        trophyService.giveUserTrophy(testUser.getId(), testHabit.getId(), 7);
-        trophyService.giveUserTrophy(testUser.getId(), testHabit.getId(), 30);
+        trophyService.checkAndAwardUserTrophy(testUser.getId(), testHabit.getId(), 7);
+        trophyService.checkAndAwardUserTrophy(testUser.getId(), testHabit.getId(), 30);
 
         List<UserTrophy> trophies = trophyService.getUserTrophiesByUserIdAndHabitId(testUser.getId(), testHabit.getId());
         assertEquals(2, trophies.size());
@@ -219,7 +219,7 @@ public class TrophyServiceTest {
 
     @Test
     public void testGetTrophiesByUserId() throws InstanceNotFoundException, TrophyAlreadyGivenException {
-        trophyService.giveUserTrophy(testUser.getId(), testHabit.getId(), 7);
+        trophyService.checkAndAwardUserTrophy(testUser.getId(), testHabit.getId(), 7);
 
         List<Trophy> trophies = trophyService.getTrophiesByUserId(testUser.getId());
         assertNotNull(trophies);

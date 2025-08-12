@@ -52,13 +52,13 @@ public class UserServiceTest {
 	 * @throws InstanceNotFoundException  the instance not found exception
 	 */
 	@Test
-	public void testSignUpAndLoginFromId() throws DuplicateInstanceException, InstanceNotFoundException {
+	public void testSignUpAndcheckUser() throws DuplicateInstanceException, InstanceNotFoundException {
 
 		Users user = createUser("user");
 
 		userService.signUp(user);
 
-		Users loggedInUser = userService.loginFromId(user.getId());
+		Users loggedInUser = userService.checkUser(user.getId());
 
 		assertEquals(user, loggedInUser);
 
@@ -76,7 +76,7 @@ public class UserServiceTest {
 
 	@Test
 	public void testLoginFromNonExistentId() {
-		assertThrows(InstanceNotFoundException.class, () -> userService.loginFromId(NON_EXISTENT_ID));
+		assertThrows(InstanceNotFoundException.class, () -> userService.checkUser(NON_EXISTENT_ID));
 	}
 
 	@Test
@@ -123,7 +123,7 @@ public class UserServiceTest {
 		userService.updateProfile(user.getId(), 'X' + user.getName(), 'X' + user.getLastName(),
 				'X' + user.getEmail(), false);
 
-		Users updatedUser = userService.loginFromId(user.getId());
+		Users updatedUser = userService.checkUser(user.getId());
 
 		assertEquals(user, updatedUser);
 
