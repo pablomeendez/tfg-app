@@ -1,9 +1,11 @@
 package com.tfg.tfg_app.model.services;
 
+import dev.langchain4j.model.chat.response.ChatResponse;
+import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
-import dev.langchain4j.service.spring.AiService;
+import dev.langchain4j.service.UserMessage;
 
-@AiService
+
 public interface Assistant {
 
     @SystemMessage("""
@@ -13,8 +15,10 @@ public interface Assistant {
         No inicies una conversación extensa ni hagas muchas preguntas. 
         Evita diagnósticos médicos o psicológicos y nunca des consejos que puedan poner en riesgo la salud o el bienestar del usuario.
 
+        Contesta en el lenguaje del usuario, utilizando un tono amigable y accesible.
+        
         Si no tienes suficiente contexto, da una sugerencia general y amable.
         """)
-    String chat(String userMessage);
-    
+    ChatResponse chat(@MemoryId Long userId, @UserMessage String userMessage);
+
 }
