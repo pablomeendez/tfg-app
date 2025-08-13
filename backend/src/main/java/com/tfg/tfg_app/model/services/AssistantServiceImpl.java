@@ -71,7 +71,7 @@ public class AssistantServiceImpl implements AssistantService {
             "No weekly summary available";
 
         String userHabitsData = userHabits.stream()
-            .map(uh -> String.format("Habit: %s", uh.getHabit().getName()))
+            .map(uh -> String.format("Habit: %s", uh.getHabit().getNameEs()))
             .reduce("", (acc, habit) -> acc + (acc.isEmpty() ? "" : ", ") + habit);
 
         String combinedMessage = "Weekly Summary: " + weeklySummaryData

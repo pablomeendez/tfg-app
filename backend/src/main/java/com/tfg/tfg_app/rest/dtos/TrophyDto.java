@@ -2,18 +2,26 @@ package com.tfg.tfg_app.rest.dtos;
 
 public class TrophyDto {
     private Long id;
-    private String name;
-    private String description;
+    private String nameEn;
+    private String nameEs;
+    private String nameGl;
+    private String descriptionEn;
+    private String descriptionEs;
+    private String descriptionGl;
     private int days;
     private String image;
 
     public TrophyDto() {
     }
 
-    public TrophyDto(Long id, String name, String description, int days, String image) {
+    public TrophyDto(Long id, String nameEn, String nameEs, String nameGl, String descriptionEn, String descriptionEs, String descriptionGl, int days, String image) {
         this.id = id;
-        this.name = name;
-        this.description = description;
+        this.nameEn = nameEn;
+        this.nameEs = nameEs;
+        this.nameGl = nameGl;
+        this.descriptionEn = descriptionEn;
+        this.descriptionEs = descriptionEs;
+        this.descriptionGl = descriptionGl;
         this.days = days;
         this.image = image;
     }
@@ -26,20 +34,52 @@ public class TrophyDto {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNameEn() {
+        return nameEn;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameEn(String nameEn) {
+        this.nameEn = nameEn;
     }
 
-    public String getDescription() {
-        return description;
+    public String getNameEs() {
+        return nameEs;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setNameEs(String nameEs) {
+        this.nameEs = nameEs;
+    }
+
+    public String getNameGl() {
+        return nameGl;
+    }
+
+    public void setNameGl(String nameGl) {
+        this.nameGl = nameGl;
+    }
+
+    public String getDescriptionEn() {
+        return descriptionEn;
+    }
+
+    public void setDescriptionEn(String descriptionEn) {
+        this.descriptionEn = descriptionEn;
+    }
+
+    public String getDescriptionEs() {
+        return descriptionEs;
+    }
+
+    public void setDescriptionEs(String descriptionEs) {
+        this.descriptionEs = descriptionEs;
+    }
+
+    public String getDescriptionGl() {
+        return descriptionGl;
+    }
+
+    public void setDescriptionGl(String descriptionGl) {
+        this.descriptionGl = descriptionGl;
     }
 
     public int getDays() {

@@ -2,15 +2,19 @@ package com.tfg.tfg_app.rest.dtos;
 
 public class MoodDto {
     private Long id;
-    private String name;
+    private String nameEn;
+    private String nameEs;
+    private String nameGl;
     private String image;
 
     public MoodDto() {
     }
 
-    public MoodDto(Long id, String name, String image) {
+    public MoodDto(Long id, String nameEn, String nameEs, String nameGl, String image) {
         this.id = id;
-        this.name = name;
+        this.nameEn = nameEn;
+        this.nameEs = nameEs;
+        this.nameGl = nameGl;
         this.image = image;
     }
     
@@ -23,12 +27,28 @@ public class MoodDto {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNameEn() {
+        return nameEn;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameEn(String nameEn) {
+        this.nameEn = nameEn;
+    }
+
+    public String getNameEs() {
+        return nameEs;
+    }
+
+    public void setNameEs(String nameEs) {
+        this.nameEs = nameEs;
+    }
+
+    public String getNameGl() {
+        return nameGl;
+    }
+
+    public void setNameGl(String nameGl) {
+        this.nameGl = nameGl;
     }
 
     public String getImage() {

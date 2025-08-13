@@ -15,11 +15,27 @@ public class Trophy {
 
     @NotBlank
     @Column(nullable = false)
-    private String name;
+    private String nameEn;
 
     @NotBlank
     @Column(nullable = false)
-    private String description;
+    private String nameEs;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String nameGl;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String descriptionEn;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String descriptionEs;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String descriptionGl;
 
     @NotNull
     @Column(nullable = false)
@@ -36,17 +52,25 @@ public class Trophy {
     public Trophy() {
     }
 
-    public Trophy(String name, String description, int days, String image) {
-        this.name = name;
-        this.description = description;
+    public Trophy(String nameEn, String nameEs, String nameGl, String descriptionEn, String descriptionEs, String descriptionGl, int days, String image) {
+        this.nameEn = nameEn;
+        this.nameEs = nameEs;
+        this.nameGl = nameGl;
+        this.descriptionEn = descriptionEn;
+        this.descriptionEs = descriptionEs;
+        this.descriptionGl = descriptionGl;
         this.days = days;
         this.image = image;
     }
 
-    public Trophy(Long id, String name, String description, int days, String image) {
+    public Trophy(Long id, String nameEn, String nameEs, String nameGl, String descriptionEn, String descriptionEs, String descriptionGl, int days, String image) {
         this.id = id;
-        this.name = name;
-        this.description = description;
+        this.nameEn = nameEn;
+        this.nameEs = nameEs;
+        this.nameGl = nameGl;
+        this.descriptionEn = descriptionEn;
+        this.descriptionEs = descriptionEs;
+        this.descriptionGl = descriptionGl;
         this.days = days;
         this.image = image;
     }
@@ -59,20 +83,52 @@ public class Trophy {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNameEn() {
+        return nameEn;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameEn(String nameEn) {
+        this.nameEn = nameEn;
     }
 
-    public String getDescription() {
-        return description;
+    public String getNameEs() {
+        return nameEs;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setNameEs(String nameEs) {
+        this.nameEs = nameEs;
+    }
+
+    public String getNameGl() {
+        return nameGl;
+    }
+
+    public void setNameGl(String nameGl) {
+        this.nameGl = nameGl;
+    }
+
+    public String getDescriptionEn() {
+        return descriptionEn;
+    }
+
+    public void setDescriptionEn(String descriptionEn) {
+        this.descriptionEn = descriptionEn;
+    }
+
+    public String getDescriptionEs() {
+        return descriptionEs;
+    }
+
+    public void setDescriptionEs(String descriptionEs) {
+        this.descriptionEs = descriptionEs;
+    }
+
+    public String getDescriptionGl() {
+        return descriptionGl;
+    }
+
+    public void setDescriptionGl(String descriptionGl) {
+        this.descriptionGl = descriptionGl;
     }
 
     public int getDays() {

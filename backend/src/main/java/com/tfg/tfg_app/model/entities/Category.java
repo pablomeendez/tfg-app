@@ -14,7 +14,15 @@ public class Category {
 
     @NotBlank
     @Column(nullable = false)
-    private String name;
+    private String nameEn;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String nameEs;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String nameGl;
 
     @OneToMany(mappedBy = "category")
     private Set<Habit> habits;
@@ -22,9 +30,11 @@ public class Category {
     public Category() {
     }
 
-    public Category(Long id, String name) {
+    public Category(Long id, String nameEn, String nameEs, String nameGl) {
         this.id = id;
-        this.name = name;
+        this.nameEn = nameEn;
+        this.nameEs = nameEs;
+        this.nameGl = nameGl;
     }
 
     public Long getId() {
@@ -35,12 +45,28 @@ public class Category {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNameEn() {
+        return nameEn;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameEn(String nameEn) {
+        this.nameEn = nameEn;
+    }
+
+    public String getNameEs() {
+        return nameEs;
+    }
+
+    public void setNameEs(String nameEs) {
+        this.nameEs = nameEs;
+    }
+
+    public String getNameGl() {
+        return nameGl;
+    }
+
+    public void setNameGl(String nameGl) {
+        this.nameGl = nameGl;
     }
 
     public Set<Habit> getHabits() {

@@ -15,11 +15,27 @@ public class Habit {
 
     @NotBlank
     @Column(nullable = false)
-    private String name;
+    private String nameEn;
 
     @NotBlank
     @Column(nullable = false)
-    private String description;
+    private String nameEs;
+    
+    @NotBlank
+    @Column(nullable = false)
+    private String nameGl;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String descriptionEn;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String descriptionEs;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String descriptionGl;
 
     @NotNull
     @Lob
@@ -37,10 +53,14 @@ public class Habit {
     public Habit() {
     }
 
-    public Habit(Long id, String name, String description, Category category, String image) {
+    public Habit(Long id, String nameEn, String nameEs, String nameGl, String descriptionEn, String descriptionEs, String descriptionGl, Category category, String image) {
         this.id = id;
-        this.name = name;
-        this.description = description;
+        this.nameEn = nameEn;
+        this.nameEs = nameEs;
+        this.nameGl = nameGl;
+        this.descriptionEn = descriptionEn;
+        this.descriptionEs = descriptionEs;
+        this.descriptionGl = descriptionGl;
         this.category = category;
         this.image = image;
     }
@@ -53,20 +73,52 @@ public class Habit {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNameEn() {
+        return nameEn;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameEn(String nameEn) {
+        this.nameEn = nameEn;
     }
 
-    public String getDescription() {
-        return description;
+    public String getNameEs() {
+        return nameEs;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setNameEs(String nameEs) {
+        this.nameEs = nameEs;
+    }
+
+    public String getNameGl() {
+        return nameGl;
+    }
+
+    public void setNameGl(String nameGl) {
+        this.nameGl = nameGl;
+    }
+
+    public String getDescriptionEn() {
+        return descriptionEn;
+    }
+
+    public void setDescriptionEn(String descriptionEn) {
+        this.descriptionEn = descriptionEn;
+    }
+
+    public String getDescriptionEs() {
+        return descriptionEs;
+    }
+
+    public void setDescriptionEs(String descriptionEs) {
+        this.descriptionEs = descriptionEs;
+    }
+
+    public String getDescriptionGl() {
+        return descriptionGl;
+    }
+
+    public void setDescriptionGl(String descriptionGl) {
+        this.descriptionGl = descriptionGl;
     }
 
     public String getImage() {
