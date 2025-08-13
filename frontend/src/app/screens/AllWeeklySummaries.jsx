@@ -67,7 +67,7 @@ export default function AllWeeklySummaries() {
                                 size={24}
                                 color="#374151"
                             />
-                            <Text className="ml-2 text-gray-700">Back</Text>
+                            <Text className="ml-2 text-gray-700">{t('back')}</Text>
                         </TouchableOpacity>
                         <Text className="text-xl font-bold text-gray-800">
                             {t('weekly_summaries')}

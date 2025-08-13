@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import diaryEntryService from "../../services/diaryEntryService";
 import { Image } from "expo-image";
 import { LoadingComponent } from "../../components/LoadingComponent";
+import { useTranslation } from "react-i18next";
 
 const DiaryEntryForm = () => {
     const { userId } = useContext(AuthContext);
@@ -26,6 +27,7 @@ const DiaryEntryForm = () => {
     const moodName = localParams.moodName;
     const moodImage = localParams.moodImage;
     const [error, setError] = useState(null);
+    const { t } = useTranslation();
 
     const mood = {
         id: moodId,
@@ -121,21 +123,11 @@ const DiaryEntryForm = () => {
     const handleSubmit = async () => {
         setIsLoading(true);
         try {
-
-                await diaryEntryService.createDiaryEntry(description, selectedImages, mood, selectedHabits);
+            await diaryEntryService.createDiaryEntry(description, selectedImages, mood, selectedHabits);
             
             router.replace('/(tabs)');
         } catch (error) {
-            
-            if (error.response && error.response.status === 400) {
-                const globalError = error.response.data?.globalError;
-                
-                if (globalError === "project.exceptions.DuplicatedEntryException") {
-                    Alert.alert("Duplicate Entry Error", "This entry already exists. You have already submitted a diary entry for today.");
-                } else {
-                    Alert.alert("Validation Error", globalError || "There was a problem with your input. Please check and try again.");
-                }
-            }
+            setError(error.message);
         } finally {
             setIsLoading(false);
         }
@@ -154,7 +146,7 @@ const DiaryEntryForm = () => {
                         <Link href="/(tabs)" className="p-2">
                             <MaterialCommunityIcons name="arrow-left" size={28} color="#374151" />
                         </Link>
-                        <Text className="text-2xl font-bold text-gray-800">New Diary Entry</Text>
+                        <Text className="text-2xl font-bold text-gray-800">{t("new_diary_entry")}</Text>
                         <View className="w-10" />
                     </View>
 
@@ -162,7 +154,7 @@ const DiaryEntryForm = () => {
                         <View className="bg-white rounded-xl p-5 mb-6 shadow-sm border border-gray-100">
                             <Text className="text-xl font-semibold text-gray-800 mb-4 flex-row items-center">
                                 <MaterialCommunityIcons name="emoticon-happy" size={24} color="#6B7280" className="mr-2" />
-                                Selected Mood
+                                {t("selected_mood")}
                             </Text>
                             
                             <View className="bg-gray-50 rounded-lg p-4 border border-blue-100">
@@ -186,7 +178,7 @@ const DiaryEntryForm = () => {
                     <View className="bg-white rounded-xl p-5 mb-6 shadow-sm border border-gray-100">
                         <Text className="text-xl font-semibold text-gray-800 mb-4 flex-row items-center">
                             <MaterialCommunityIcons name="text" size={24} color="#6B7280" className="mr-2" />
-                            Description
+                            {t("description")}
                         </Text>
                         <TextInput 
                             multiline 
@@ -203,7 +195,7 @@ const DiaryEntryForm = () => {
                     <View className="bg-white rounded-xl p-5 mb-6 shadow-sm border border-gray-100">
                         <Text className="text-xl font-semibold text-gray-800 mb-4 flex-row items-center">
                             <MaterialCommunityIcons name="image-multiple" size={24} color="#6B7280" className="mr-2" />
-                            Images ({selectedImages.length}/3)
+                            {t("images")} ({selectedImages.length}/3)
                         </Text>
                         
                         <View className="flex-row flex-wrap mb-4">
@@ -226,7 +218,7 @@ const DiaryEntryForm = () => {
                                 className="mr-2" 
                             />
                             <Text className="text-white font-semibold text-base">
-                                {selectedImages.length >= 3 ? "Maximum images reached" : "Add Image"}
+                                {selectedImages.length >= 3 ? t("maximum_images_reached") : t("add_image")}
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -234,7 +226,7 @@ const DiaryEntryForm = () => {
                     <View className="bg-white rounded-xl p-5 mb-6 shadow-sm border border-gray-100">
                         <Text className="text-xl font-semibold text-gray-800 mb-4 flex-row items-center">
                             <MaterialCommunityIcons name="calendar-check" size={24} color="#6B7280" className="mr-2" />
-                            Today's Habits
+                            {t("todays_habits")}
                         </Text>
                         
                         {myHabits.length > 0 ? (
@@ -245,10 +237,10 @@ const DiaryEntryForm = () => {
                             <View className="bg-gray-50 rounded-lg p-6 items-center">
                                 <MaterialCommunityIcons name="calendar-outline" size={48} color="#9CA3AF" />
                                 <Text className="text-gray-500 text-center mt-3 text-base">
-                                    No habits registered yet
+                                    {t("no_habits_today")}
                                 </Text>
                                 <Text className="text-gray-400 text-center mt-1 text-sm">
-                                    Add some habits to track your progress
+                                    {t("add_some_habits")}
                                 </Text>
                             </View>
                         )}
@@ -272,7 +264,7 @@ const DiaryEntryForm = () => {
                                     <MaterialCommunityIcons name="content-save" size={24} color="white" style={{ marginRight: 8 }} />
                                 )}
                                 <Text className="text-white font-bold text-lg">
-                                    {isLoading ? "Saving..." : "Save Diary Entry"}
+                                    {isLoading ? t("saving") : t("save_diary_entry")}
                                 </Text>
                             </View>
                         </TouchableOpacity>

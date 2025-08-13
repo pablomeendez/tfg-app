@@ -69,5 +69,14 @@
     "items_per_page": "Elementos por páxina",
     "diary_entries": "Entradas do diario",
     "longest_streak": "Racha máis longa",
-    "predominant_mood": "Estado de ánimo predominante"
+    "predominant_mood": "Estado de ánimo predominante",
+    "back": "Volver",
+    "selected_mood": "Estado de Ánimo Seleccionado",
+    "maximum_images_reached": "Alcanzouse o número máximo de imaxes",
+    "add_image": "Engadir Imaxe",
+    "todays_habits": "Hábitos de Hoxe",
+    "no_habits_today": "Aínda non hai hábitos rexistrados",
+    "add_some_habits": "Engade algúns hábitos para seguir o teu progreso",
+    "saving": "Gardando...",
+    "save_diary_entry": "Gardar Entrada do Diario"
 }

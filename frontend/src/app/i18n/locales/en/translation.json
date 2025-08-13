@@ -70,5 +70,17 @@
     "diary_entries": "Diary entries",
     "trophies_earned": "Trophies earned",
     "longest_streak": "Longest streak",
-    "predomint_mood": "Predomint mood"
+    "predomint_mood": "Predominant mood",
+    "back": "Back",
+    "selected_mood": "Selected Mood",
+    "maximum_images_reached": "Maximum images reached",
+    "add_image": "Add Image",
+    "todays_habits": "Today's Habits",
+    "no_habits_today": "No habits registered yet",
+    "add_some_habits": "Add some habits to track your progress",
+    "saving": "Saving...",
+    "save_diary_entry": "Save Diary Entry",
+    "no_habits_available": "No habits available",   
+    "habit_form": "Habit Form",
+    "done": "Done"
 }

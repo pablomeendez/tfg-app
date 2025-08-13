@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useTransition } from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native'; // AGREGAR ActivityIndicator y ScrollView
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -16,6 +16,7 @@ const HabitForm = () => {
     const { userId } = useContext(AuthContext);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { t } = useTransition();
 
     useEffect(() => {
         const fetchHabits = async () => {
@@ -92,7 +93,7 @@ const HabitForm = () => {
             ) : 
             <View>
                 <ScrollView className="flex-1 p-4"> 
-                    <Text className="text-2xl font-bold mb-4 text-center">Habit Form</Text> 
+                    <Text className="text-2xl font-bold mb-4 text-center">{t('habit_form')}</Text> 
                     {allHabits.map((habit, index) => (
                         <View key={`habit-${habit.id || index}`} className="mb-4"> 
                             <HabitCard habit={habit} />
@@ -106,14 +107,14 @@ const HabitForm = () => {
                                             handleDeleteHabit(userHabit.id);
                                         }
                                     }}>
-                                    <Text className="text-center text-white font-semibold">Remove</Text> 
+                                    <Text className="text-center text-white font-semibold">{t('remove')}</Text> 
                                 </TouchableOpacity>
                             : (
                                 <TouchableOpacity 
                                     className="bg-blue-500 w-9/12 justify-center h-10 rounded-lg" 
                                     onPress={() => handleAddHabit(habit.id)}
                                 >
-                                    <Text className="text-center text-white font-semibold">Add</Text>
+                                    <Text className="text-center text-white font-semibold">{t('add')}</Text>
                                 </TouchableOpacity>
                             )}
                         </View>
@@ -121,7 +122,7 @@ const HabitForm = () => {
                 ))}
                 
                 {allHabits.length === 0 && (
-                    <Text className="text-gray-500 text-center py-4">No hay hábitos disponibles</Text>
+                    <Text className="text-gray-500 text-center py-4">{t('no_habits_available')}</Text>
                 )}
                 </ScrollView>
                 
@@ -130,7 +131,7 @@ const HabitForm = () => {
                         className="bg-green-600 p-4 rounded-lg" 
                         onPress={() => router.replace('/(tabs)')} 
                     >
-                        <Text className="text-center text-white text-lg font-semibold">Done</Text> 
+                        <Text className="text-center text-white text-lg font-semibold">{t('done')}</Text> 
                     </TouchableOpacity>
                 </View>
             </View>}
