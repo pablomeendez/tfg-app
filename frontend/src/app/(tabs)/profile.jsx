@@ -6,6 +6,7 @@ import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
+import { LoadingComponent } from '../../components/LoadingComponent';
 
 export default function Profile() {
     const { logout } = useContext(AuthContext);
@@ -57,10 +58,7 @@ export default function Profile() {
     return (
         <SafeAreaView className="flex-1 bg-white">
             {loading ? (
-                <View className="flex-1 justify-center items-center bg-blue-500" edges={['top', 'left', 'right']}>
-                    <ActivityIndicator size="large" color="white" />
-                    <Text className="mt-2 text-white">{t('loading')}</Text>
-                </View>
+                <LoadingComponent />
             ) : 
             <ScrollView className="flex-1">
                 <View className="bg-blue-500 px-4 py-6">

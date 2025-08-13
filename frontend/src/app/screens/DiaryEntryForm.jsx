@@ -12,6 +12,7 @@ import { useRouter } from "expo-router";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import diaryEntryService from "../../services/diaryEntryService";
 import { Image } from "expo-image";
+import { LoadingComponent } from "../../components/LoadingComponent";
 
 const DiaryEntryForm = () => {
     const { userId } = useContext(AuthContext);
@@ -24,6 +25,7 @@ const DiaryEntryForm = () => {
     const moodId = localParams.moodId;
     const moodName = localParams.moodName;
     const moodImage = localParams.moodImage;
+    const [error, setError] = useState(null);
 
     const mood = {
         id: moodId,
@@ -43,6 +45,7 @@ const DiaryEntryForm = () => {
                 }   
             } catch (error) {
                 console.error("Error fetching data:", error);
+                setError(error.message);
             }
         };
         fetchData();
@@ -140,6 +143,10 @@ const DiaryEntryForm = () => {
 
     return (
         <SafeAreaView className="flex-1 bg-gray-50">
+            { error ? 
+                <ErrorComponent error={error} /> 
+                : loading ? 
+                <LoadingComponent /> :
             <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
                 <View className="px-6 py-4">
 
@@ -271,7 +278,7 @@ const DiaryEntryForm = () => {
                         </TouchableOpacity>
                     </View>
                 </View>
-            </ScrollView>
+            </ScrollView>}
         </SafeAreaView>
     );
 };

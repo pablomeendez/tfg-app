@@ -2,7 +2,6 @@ import {
     Text,
     View,
     ScrollView,
-    ActivityIndicator,
     TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,6 +13,8 @@ import WeeklySummaryCard from "../../components/WeeklySummaryCard";
 import { AuthContext } from "../../context/AuthContext";
 import { PageNavigation } from "../../components/PageNavigation";
 import { useTranslation } from "react-i18next";
+import { ErrorComponent } from "../../components/ErrorComponent";
+import { LoadingComponent } from "../../components/LoadingComponent";
 
 export default function AllWeeklySummaries() {
     const router = useRouter();
@@ -51,16 +52,9 @@ export default function AllWeeklySummaries() {
     return (
         <SafeAreaView className="flex-1 bg-white">
             {error ? (
-                <View className="flex-1 justify-center items-center bg-gray-50 p-4">
-                    <Text className="text-red-600 text-center mb-4">
-                        Error: {error}
-                    </Text>
-                </View>
+                <ErrorComponent error={error} />
             ) : loading ? (
-                <View className="flex-1 justify-center items-center bg-gray-50">
-                    <ActivityIndicator size="large" color="#3b82f6" />
-                    <Text className="mt-2 text-gray-600">{t('loading')}</Text>
-                </View>
+                <LoadingComponent />
             ) : (
                 <View className="flex-1">
                     <View className="flex-row items-center justify-between p-4 border-b border-gray-200">

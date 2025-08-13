@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import trophyService from "../../services/trophyService";
 import { useTranslation } from "react-i18next";
+import { LoadingComponent } from "../../components/LoadingComponent";
 
 export default function Trophies() {
     const [trophies, setTrophies] = useState([]);
@@ -51,20 +52,12 @@ export default function Trophies() {
     return (
         <SafeAreaView className="flex-1 bg-gray-50">
             {error ? (
-                <View className="flex-1 justify-center items-center p-4">
-                    <MaterialCommunityIcons name="trophy-broken" size={64} color="#EF4444" />
-                    <Text className="text-red-500 text-center mt-4 text-lg">{error}</Text>
+                <View className="">
+                    <ErrorComponent error={error} />
                     <Text className="text-gray-500 text-center mt-2">{t('unable_to_load_trophies')}</Text>
                 </View>) : loading ? (
-                <View className="flex-1 justify-center items-center">
-                    <ActivityIndicator size="large" color="#3b82f6" />
-                    <Text className="mt-2 text-gray-600">{t('loading')}</Text>
-                </View>) : loading ? (
-                <View className="flex-1 justify-center items-center">
-                    <ActivityIndicator size="large" color="#3b82f6" />
-                    <Text className="mt-2 text-gray-600">{t('loading')}</Text>
-                </View>
-            ) : 
+                    <LoadingComponent />
+                ) :
             <View className="flex-1">
                 <View className="p-4">
                     <Text className="text-2xl font-bold text-gray-800 mb-6">{t('my_trophies')}</Text>

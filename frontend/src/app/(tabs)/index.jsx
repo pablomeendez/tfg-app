@@ -9,6 +9,8 @@ import { AuthContext } from '../../context/AuthContext';
 import { CompleteEntry } from '../../components/CompleteEntry';
 import {DailyCheckIn} from '../../components/DailyCheckIn';
 import { useTranslation } from 'react-i18next';
+import { ErrorComponent } from '../../components/ErrorComponent';
+import { LoadingComponent } from '../../components/LoadingComponent';
 
 
 export default function Index() {
@@ -78,14 +80,9 @@ export default function Index() {
   return (
     <SafeAreaView className="flex-1 bg-white">
       {error ? (
-         <View className="flex-1 justify-center items-center bg-gray-50 p-4">
-            <Text className="text-red-600 text-center mb-4">Error: {error}</Text>
-          </View>
+         <ErrorComponent error={error}/>
       ) : loading ? (
-        <View className="flex-1 justify-center items-center bg-gray-50">
-          <ActivityIndicator size="large" color="#3b82f6" />
-          <Text className="mt-2 text-gray-600">Loading...</Text>
-        </View>
+        <LoadingComponent />
       ) :
         <ScrollView>
           {shouldShowMoodForm() ? (

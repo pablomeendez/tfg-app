@@ -5,6 +5,8 @@ import habitService from '../../services/habitService';
 import HabitCard from '../../components/HabitCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
+import { ErrorComponent } from '../../components/ErrorComponent';
+import { LoadingComponent } from '../../components/LoadingComponent';
 
 export default function Habits() { 
     const [allHabits, setAllHabits] = useState([]);
@@ -59,15 +61,10 @@ export default function Habits() {
     return (
         <SafeAreaView className="flex-1 bg-white">
             {error ? 
-                (<View className="flex-1 justify-center items-center bg-gray-50 p-4">
-                    <Text className="text-red-600 text-center mb-4">{t('error')}: {error}</Text>
-                </View>) 
+                (<ErrorComponent error={error} />) 
             :
             loading ? (
-                <View className="flex-1 justify-center items-center bg-gray-50">
-                    <ActivityIndicator size="large" color="#3b82f6" />
-                <Text className="mt-2 text-gray-600">{t('loading')}</Text>
-            </View> ) 
+                <LoadingComponent />) 
             :
             <ScrollView className="flex-1 p-4">
                 <View className="mb-6">

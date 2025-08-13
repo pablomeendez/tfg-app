@@ -6,6 +6,8 @@ import {DiaryEntryModal} from '../../components/DiaryEntryModal';
 import DiaryEntryCard from '../../components/DiaryEntryCard';
 import {PageNavigation} from '../../components/PageNavigation';
 import { useTranslation } from 'react-i18next';
+import { ErrorComponent } from '../../components/ErrorComponent';
+import { LoadingComponent } from '../../components/LoadingComponent';
 
 export default function Diary() {
     const [diaryEntries, setDiaryEntries] = useState([]);
@@ -37,8 +39,8 @@ export default function Diary() {
     return (
         <SafeAreaView className="flex-1 bg-white">
             {error ? (
-                <View className="flex-1 justify-center items-center bg-gray-50 p-4">
-                    <Text className="text-red-600 text-center mb-4">{t('error')}: {error}</Text>
+                <View>
+                    <ErrorComponent error={error} />
                     <TouchableOpacity 
                         onPress={fetchData}
                         className="bg-blue-500 px-4 py-2 rounded-lg"
@@ -46,10 +48,8 @@ export default function Diary() {
                         <Text className="text-white font-medium">{t('retry')}</Text>
                     </TouchableOpacity>
                 </View>
-            ) : loading ? <View className="flex-1 justify-center items-center bg-gray-50">
-                <ActivityIndicator size="large" color="#3b82f6" />
-                <Text className="mt-2 text-gray-600">{t('loading')}</Text>
-            </View> 
+            ) : loading ? 
+                <LoadingComponent />
             :
             <View className="flex-1">
                 <PageNavigation
