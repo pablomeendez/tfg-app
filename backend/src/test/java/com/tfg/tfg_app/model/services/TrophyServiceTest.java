@@ -65,20 +65,26 @@ public class TrophyServiceTest {
         userService.signUp(testUser);
 
         testCategory = new Category();
-        testCategory.setName("Test Category");
+        testCategory.setNameEn("Test Category");
+        testCategory.setNameEs("Categoría de Prueba");
+        testCategory.setNameGl("Categoría de Proba");
         testCategory = categoryDao.save(testCategory);
 
         testHabit = new Habit();
-        testHabit.setName("Test Habit");
-        testHabit.setDescription("Test habit description");
+        testHabit.setNameEn("Test Habit");
+        testHabit.setNameEs("Hábito de Prueba");
+        testHabit.setNameGl("Hábito de Proba");
+        testHabit.setDescriptionEn("Test habit description");
+        testHabit.setDescriptionEs("Descripción del hábito de prueba");
+        testHabit.setDescriptionGl("Descrición do hábito de proba");
         testHabit.setImage("test_habit.png");
         testHabit.setCategory(testCategory);
         testHabit = habitDao.save(testHabit);
 
-        testTrophy7Days = new Trophy("Week Warrior", "Complete 7 days", 7, "trophy_7_days.png");
+        testTrophy7Days = new Trophy("Week Warrior", "Guerrero de la Semana", "Guerreiro da semana", "Complete 7 days", "Completar 7 días", "Completar 7 dias", 7, "trophy_7_days.png");
         testTrophy7Days = trophyDao.save(testTrophy7Days);
 
-        testTrophy30Days = new Trophy("Monthly Master", "Complete 30 days", 30, "trophy_30_days.png");
+        testTrophy30Days = new Trophy("Monthly Master", "Maestro Mensual", "Mestre Mensual", "Complete 30 days", "Completar 30 días", "Completar 30 dias", 30, "trophy_30_days.png");
         testTrophy30Days = trophyDao.save(testTrophy30Days);
     }
 
@@ -88,8 +94,8 @@ public class TrophyServiceTest {
         assertNotNull(trophies);
         assertTrue(trophies.size() >= 2);
         
-        assertTrue(trophies.stream().anyMatch(t -> t.getName().equals("Week Warrior")));
-        assertTrue(trophies.stream().anyMatch(t -> t.getName().equals("Monthly Master")));
+        assertTrue(trophies.stream().anyMatch(t -> t.getNameEn().equals("Week Warrior")));
+        assertTrue(trophies.stream().anyMatch(t -> t.getNameEn().equals("Monthly Master")));
     }
 
     @Test
@@ -97,8 +103,8 @@ public class TrophyServiceTest {
         Trophy trophy = trophyService.getTrophyById(testTrophy7Days.getId());
         assertNotNull(trophy);
         assertEquals(testTrophy7Days.getId(), trophy.getId());
-        assertEquals("Week Warrior", trophy.getName());
-        assertEquals("Complete 7 days", trophy.getDescription());
+        assertEquals("Week Warrior", trophy.getNameEn());
+        assertEquals("Complete 7 days", trophy.getDescriptionEn());
         assertEquals(7, trophy.getDays());
     }
 

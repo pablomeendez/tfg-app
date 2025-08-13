@@ -55,12 +55,16 @@ public class DiaryEntryServiceTest {
         userService.signUp(testUser);
     
         testMood = new Mood();
-        testMood.setName("Happy");
+        testMood.setNameEn("Happy");
+        testMood.setNameEs("Feliz");
+        testMood.setNameGl("Feliz");
         testMood.setImage("happy_image.png");
         moodDao.save(testMood);
 
         testMood2 = new Mood();
-        testMood2.setName("Sad");
+        testMood2.setNameEn("Sad");
+        testMood2.setNameEs("Triste");
+        testMood2.setNameGl("Triste");
         testMood2.setImage("sad_image.png");
         moodDao.save(testMood2);
     }

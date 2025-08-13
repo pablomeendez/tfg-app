@@ -83,19 +83,27 @@ public class WeeklySummaryServiceTest {
         
         // Create test mood
         testMood = new Mood();
-        testMood.setName("Happy");
+        testMood.setNameEn("Happy");
+        testMood.setNameEs("Feliz");
+        testMood.setNameGl("Feliz");
         testMood.setImage("happy.svg");
         testMood = moodDao.save(testMood);
         
         // Create test category
         testCategory = new Category();
-        testCategory.setName("Health");
+        testCategory.setNameEn("Health");   
+        testCategory.setNameEs("Salud");
+        testCategory.setNameGl("Saúde");
         testCategory = categoryDao.save(testCategory);
         
         // Create test habit
         testHabit = new Habit();
-        testHabit.setName("Test Habit");
-        testHabit.setDescription("Test habit description");
+        testHabit.setNameEn("Test Habit");
+        testHabit.setNameEs("Hábito de Prueba");
+        testHabit.setNameGl("Hábito de Proba");
+        testHabit.setDescriptionEn("Test habit description");
+        testHabit.setDescriptionEs("Descripción del hábito de prueba");
+        testHabit.setDescriptionGl("Descrición do hábito de proba");
         testHabit.setImage("test.jpg");
         testHabit.setCategory(testCategory);
         testHabit = habitDao.save(testHabit);

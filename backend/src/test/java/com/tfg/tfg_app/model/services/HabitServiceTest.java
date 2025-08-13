@@ -72,30 +72,33 @@ public class HabitServiceTest {
 
     @Before
     public void setUp() throws DuplicateInstanceException, DuplicatedEntryException, InstanceNotFoundException, TrophyAlreadyGivenException {
-        // Crear usuario de prueba
         testUser = new Users("testuser", "password123", "Test", "User", "test@example.com");
         userService.signUp(testUser);
 
-        // Crear categoría de prueba
         testCategory = new Category();
-        testCategory.setName("Health");
+        testCategory.setNameEn("Health");
+        testCategory.setNameEs("Salud");
+        testCategory.setNameGl("Saúde");
         categoryDao.save(testCategory);
 
-        // Crear hábito de prueba
         testHabit = new Habit();
-        testHabit.setName("Exercise");
-        testHabit.setDescription("Daily exercise routine");
-        testHabit.setImage("exercise_image.png"); 
+        testHabit.setNameEn("Exercise");
+        testHabit.setNameEs("Ejercicio");
+        testHabit.setNameGl("Exercicio");
+        testHabit.setDescriptionEn("Daily exercise routine");
+        testHabit.setDescriptionEs("Rutina de ejercicio diario");
+        testHabit.setDescriptionGl("Rutina de exercicio diario");
+        testHabit.setImage("exercise_image.png");
         testHabit.setCategory(testCategory);
         habitDao.save(testHabit);
 
-        // Crear mood de prueba
         testMood = new Mood();
-        testMood.setName("Happy");
+        testMood.setNameEn("Happy");
+        testMood.setNameEs("Feliz");
+        testMood.setNameGl("Feliz");
         testMood.setImage("happy_image.png");
         moodDao.save(testMood);
 
-        // Crear diary entry de prueba usando el service
         testDiaryEntry = new DiaryEntry("Test diary entry", LocalDateTime.now(), testUser, testMood);
         testDiaryEntry = diaryEntryService.createDiaryEntry(testUser.getId(), testDiaryEntry, new ArrayList<>(), new ArrayList<>());
     }
@@ -137,8 +140,12 @@ public class HabitServiceTest {
         
         // Crear otro hábito
         Habit testHabit2 = new Habit();
-        testHabit2.setName("Meditation");
-        testHabit2.setDescription("Daily meditation");
+        testHabit2.setNameEn("Meditation");
+        testHabit2.setNameEs("Meditación");
+        testHabit2.setNameGl("Meditación");
+        testHabit2.setDescriptionEn("Daily meditation");
+        testHabit2.setDescriptionEs("Meditación diaria");
+        testHabit2.setDescriptionGl("Meditación diaria");
         testHabit2.setImage("meditation_image.png");
         testHabit2.setCategory(testCategory);
         habitDao.save(testHabit2);
