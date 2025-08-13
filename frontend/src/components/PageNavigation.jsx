@@ -4,10 +4,10 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { useTranslation } from 'react-i18next';
 
 const defaultPickerItems = [
-    { label: '5 items per page', value: 5 },
-    { label: '10 items per page', value: 10 },
-    { label: '20 items per page', value: 20 },
-    { label: '30 items per page', value: 30 },
+    { label: '5', value: 5 },
+    { label: '10', value: 10 },
+    { label: '20', value: 20 },
+    { label: '30', value: 30 },
 ];
 
 export const PageNavigation = ({data, page, setPage, items, setItems}) => {

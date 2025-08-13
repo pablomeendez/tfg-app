@@ -87,7 +87,7 @@ export const CompleteEntry = ( {latestEntry} ) => {
                       <View className="flex flex-row items-center">
                         <View className="w-2 h-2 bg-gray-400 rounded-full mr-2"></View>
                         <Text className="text-gray-600 text-sm font-medium">
-                          {new Date(latestEntry.date).toLocaleDateString('en-US', {
+                          {new Date(latestEntry.date).toLocaleDateString({
                             weekday: 'long',
                             month: 'long',
                             day: 'numeric',
