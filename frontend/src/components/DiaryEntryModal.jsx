@@ -3,8 +3,10 @@ import { Image } from 'expo-image';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ImageViewer from './ImageViewer';
 import { useTranslation } from 'react-i18next';
+import i18n from '../app/i18n/i18n';
 
 export const DiaryEntryModal = ({ isVisible, onClose, selectedEntry }) => {
+    const language = i18n.language;
     const { t } = useTranslation();
 
     return (
@@ -55,7 +57,7 @@ export const DiaryEntryModal = ({ isVisible, onClose, selectedEntry }) => {
                                                     />
                                                 </View>
                                                 <Text className="text-purple-800 font-medium">
-                                                    {selectedEntry.mood.name || 'Unknown'}
+                                                    {language === 'en' ? selectedEntry.mood.nameEn : language === 'es' ? selectedEntry.mood.nameEs : selectedEntry.mood.nameGl}
                                                 </Text>
                                             </View>
                                         </View>

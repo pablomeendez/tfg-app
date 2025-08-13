@@ -31,6 +31,7 @@
     "add": "Añadir",
     "view_all_summaries": "Ver todos los resúmenes semanales",
     "no_weekly_summary": "No hay resumen semanal disponible",
+    "weekly_summary": "Resumen Semanal",
     "summaries_generated_on_sundays": "Los resúmenes se generan automáticamente los domingos",
     "personal_information": "Información Personal",
     "user_id": "ID de Usuario",

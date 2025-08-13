@@ -21,7 +21,7 @@ const DiaryEntryForm = () => {
     const [description, setDescription] = useState("");
     const [selectedImages, setSelectedImages] = useState([]);
     const [selectedHabits, setSelectedHabits] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const localParams = useLocalSearchParams();
     const moodId = localParams.moodId;
     const moodName = localParams.moodName;
@@ -40,11 +40,9 @@ const DiaryEntryForm = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const userIdToUse = userId || (await AsyncStorage.getItem("userId"));
-                if (userIdToUse) {
-                    const response = await habitService.getHabitsByUser();
-                    setMyHabits(response.data || []);
-                }   
+                const response = await habitService.getHabitsByUser();
+                setMyHabits(response.data || []);
+                 
             } catch (error) {
                 console.error("Error fetching data:", error);
                 setError(error.message);
@@ -121,7 +119,7 @@ const DiaryEntryForm = () => {
     }, [myHabits, selectedHabits, toggleHabitSelection]);
 
     const handleSubmit = async () => {
-        setIsLoading(true);
+        setLoading(true);
         try {
             await diaryEntryService.createDiaryEntry(description, selectedImages, mood, selectedHabits);
             
@@ -129,7 +127,7 @@ const DiaryEntryForm = () => {
         } catch (error) {
             setError(error.message);
         } finally {
-            setIsLoading(false);
+            setLoading(false);
         }
     };
 
@@ -250,21 +248,21 @@ const DiaryEntryForm = () => {
                         <TouchableOpacity 
                             onPress={handleSubmit}
                             className={`rounded-xl p-4 shadow-lg ${
-                                isLoading 
+                                loading 
                                     ? 'bg-gray-400' 
                                     : 'bg-green-500 active:bg-green-600'
                             }`}
                             activeOpacity={0.8}
-                            disabled={isLoading}
+                            disabled={loading}
                         >
                             <View className="flex-row items-center justify-center">
-                                {isLoading ? (
+                                {loading ? (
                                     <MaterialCommunityIcons name="loading" size={24} color="white" style={{ marginRight: 8 }} />
                                 ) : (
                                     <MaterialCommunityIcons name="content-save" size={24} color="white" style={{ marginRight: 8 }} />
                                 )}
                                 <Text className="text-white font-bold text-lg">
-                                    {isLoading ? t("saving") : t("save_diary_entry")}
+                                    {loading ? t("saving") : t("save_diary_entry")}
                                 </Text>
                             </View>
                         </TouchableOpacity>

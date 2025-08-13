@@ -2,8 +2,10 @@ import { View, Text } from 'react-native';
 import { Image } from 'expo-image';
 import ImageViewer from './ImageViewer';
 import { useTranslation } from 'react-i18next';
+import i18n from '../app/i18n/i18n';
 
 export const CompleteEntry = ( {latestEntry} ) => {
+    const language = i18n.language
     const { t } = useTranslation();
 
     return (
@@ -37,7 +39,7 @@ export const CompleteEntry = ( {latestEntry} ) => {
                             </View>
                           )}
                           <Text className="text-gray-800 text-sm font-semibold">
-                            {latestEntry.mood.name || `Mood ${latestEntry.mood.id}`}
+                            {language === 'en' ? latestEntry.mood.nameEn : language === 'es' ? latestEntry.mood.nameEs : latestEntry.mood.nameGl}
                           </Text>
                         </View>
                       </View>

@@ -31,6 +31,7 @@
     "add": "Add",
     "view_all_summaries": "View all weekly summaries",
     "no_weekly_summary": "No weekly summary available",
+    "weekly_summary": "Weekly Summary",
     "summaries_generated_on_sundays": "Summaries are generated automatically on Sundays",
     "personal_information": "Personal Information",
     "user_id": "User ID",

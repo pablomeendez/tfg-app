@@ -1,9 +1,12 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
+import i18n from '../app/i18n/i18n';
 
 export const DailyCheckIn = ({ moods }) => {
   const { t } = useTranslation();
+  const language = i18n.language;
 
   const router = useRouter();
 
@@ -34,7 +37,7 @@ export const DailyCheckIn = ({ moods }) => {
                           onPress={() => {
                             router.push({
                               pathname: "/screens/DiaryEntryForm",
-                              params: { moodId: mood.id, moodName: mood.name, moodImage: mood.image }
+                              params: { moodId: mood.id, moodName: language === 'en' ? mood.nameEn : language === 'es' ? mood.nameEs : mood.nameGl  , moodImage: mood.image }
                             });
                           }}
                         >

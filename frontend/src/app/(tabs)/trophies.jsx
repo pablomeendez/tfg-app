@@ -5,6 +5,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import trophyService from "../../services/trophyService";
 import { useTranslation } from "react-i18next";
 import { LoadingComponent } from "../../components/LoadingComponent";
+import i18n from "../i18n/i18n";
+import { TrophyCard } from "../../components/TrophyCard";
 
 export default function Trophies() {
     const [trophies, setTrophies] = useState([]);
@@ -78,27 +80,11 @@ export default function Trophies() {
                                 </View>
                                 
                                 {trophiesByStreak[streakDays].map((userTrophy, index) => (
-                                    <View key={index} className="bg-white rounded-xl p-4 mb-3 shadow-sm border border-gray-100">
-                                        <View className="flex-row items-center">
-                                            <View className="bg-yellow-100 rounded-full p-3 mr-4">
-                                                <MaterialCommunityIcons name="trophy" size={24} color="#F59E0B" />
-                                            </View>
-                                            <View className="flex-1">
-                                                <Text className="text-lg font-bold text-gray-800">
-                                                    {userTrophy.trophy?.name || userTrophy.name || 'Trophy'}
-                                                </Text>
-                                                <Text className="text-gray-600 mt-1">
-                                                    {userTrophy.trophy?.description || userTrophy.description || 'No description available'}
-                                                </Text>
-                                                <Text className="text-green-600 text-sm font-medium mt-2">
-                                                    {t('days_streak', { count: userTrophy.trophy.days })} {t('completed')}
-                                                </Text>
-                                                <Text className="text-gray-500 text-xs mt-1">
-                                                    {t('earned_on', { date: new Date(userTrophy.obtainedAt).toLocaleDateString() })}
-                                                </Text>
-                                            </View>
-                                        </View>
-                                    </View>
+                                    <TrophyCard
+                                        key={userTrophy.id || index}
+                                        userTrophy={userTrophy}
+                                        language={i18n.language}
+                                    />
                                 ))}
                             </View>
                         ))

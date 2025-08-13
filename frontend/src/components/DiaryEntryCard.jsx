@@ -1,7 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { View, Text, TouchableOpacity } from 'react-native';
+import i18n from '../app/i18n/i18n';
 
 const DiaryEntryCard = ({ entry, onPress }) => {
+    const language = i18n.language;
     const { t } = useTranslation();
 
     return (
@@ -27,8 +29,8 @@ const DiaryEntryCard = ({ entry, onPress }) => {
                     entry.habitEntries.map((habitEntry, index) => (
                         <View key={index} className="flex-1 flex-row gap-4 rounded-lg p-2 mb-1 border-l-4 border-green-500 my-2">
                             <View>
-                                <Text className="text-green-800 font-medium">{habitEntry.habit.description}</Text>
-                                <Text className="text-green-600 text-xs">{habitEntry.habit.category.name}</Text>
+                                <Text className="text-green-800 font-medium">{language === 'en' ? habitEntry.habit.descriptionEn : language === 'es' ? habitEntry.habit.descriptionEs : habitEntry.habit.descriptionGl}</Text>
+                                <Text className="text-green-600 text-xs">{language === 'en' ? habitEntry.habit.category.nameEn : language === 'es' ? habitEntry.habit.category.nameEs : habitEntry.habit.category.nameGl}</Text>
                             </View>
                             <View>
                                 <Text className="text-green-600">{t('days_streak', { count: habitEntry.streak })}</Text>
