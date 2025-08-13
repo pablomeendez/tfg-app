@@ -13,7 +13,9 @@ CREATE TABLE IF NOT EXISTS Users (
 
 CREATE TABLE IF NOT EXISTS Mood (
     id Long NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    nameEn VARCHAR(255) NOT NULL,
+    nameEs VARCHAR(255) NOT NULL,
+    nameGl VARCHAR(255) NOT NULL,
     image VARCHAR(255)  
 );
 
@@ -37,13 +39,19 @@ CREATE TABLE IF NOT EXISTS Images (
 
 CREATE TABLE IF NOT EXISTS Category (
     id Long NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    nameEn VARCHAR(255) NOT NULL,
+    nameEs VARCHAR(255) NOT NULL,
+    nameGl VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Habit (
     id Long NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    description VARCHAR(255) NOT NULL,
+    nameEn VARCHAR(255) NOT NULL,
+    nameEs VARCHAR(255) NOT NULL,
+    nameGl VARCHAR(255) NOT NULL,
+    descriptionEn VARCHAR(255) NOT NULL,
+    descriptionEs VARCHAR(255) NOT NULL,
+    descriptionGl VARCHAR(255) NOT NULL,
     image VARCHAR(255) NOT NULL,
     categoryId Long NOT NULL,
     CONSTRAINT fk_habit_category FOREIGN KEY (categoryId) REFERENCES Category(id)
@@ -72,8 +80,12 @@ CREATE TABLE IF NOT EXISTS HabitEntry (
 
 CREATE TABLE IF NOT EXISTS Trophy (
     id Long NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    description VARCHAR(255) NOT NULL,
+    nameEn VARCHAR(255) NOT NULL,
+    nameEs VARCHAR(255) NOT NULL,
+    nameGl VARCHAR(255) NOT NULL,
+    descriptionEn VARCHAR(255) NOT NULL,
+    descriptionEs VARCHAR(255) NOT NULL,
+    descriptionGl VARCHAR(255) NOT NULL,
     days int NOT NULL,
     image VARCHAR(255) NOT NULL
 );
