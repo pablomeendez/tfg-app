@@ -68,6 +68,7 @@
     "next": "Seguinte",
     "items_per_page": "Elementos por páxina",
     "diary_entries": "Entradas do diario",
+    "diary_entry": "Entrada do diario",
     "longest_streak": "Racha máis longa",
     "predominant_mood": "Estado de ánimo predominante",
     "back": "Volver",
@@ -78,5 +79,14 @@
     "no_habits_today": "Aínda non hai hábitos rexistrados",
     "add_some_habits": "Engade algúns hábitos para seguir o teu progreso",
     "saving": "Gardando...",
-    "save_diary_entry": "Gardar Entrada do Diario"
+    "save_diary_entry": "Gardar Entrada do Diario",
+    "language": "Idioma",
+    "select_language": "Seleccionar idioma",
+    "could_not_change_language": "Non se puido cambiar o idioma",
+    "habits": "Hábitos",
+    "trophies": "Trofeos",
+    "chat": "Chat",
+    "profile": "Perfil",
+    "diary": "Diario",
+    "home": "Inicio"
 }

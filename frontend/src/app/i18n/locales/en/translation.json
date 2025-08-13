@@ -68,6 +68,7 @@
     "next": "Next",
     "items_per_page": "Items per page",
     "diary_entries": "Diary entries",
+    "diary_entry": "Diary entry",
     "trophies_earned": "Trophies earned",
     "longest_streak": "Longest streak",
     "predomint_mood": "Predominant mood",
@@ -82,5 +83,14 @@
     "save_diary_entry": "Save Diary Entry",
     "no_habits_available": "No habits available",   
     "habit_form": "Habit Form",
-    "done": "Done"
+    "done": "Done",
+    "language": "Language",
+    "select_language": "Select language", 
+    "could_not_change_language": "Could not change language",
+    "habits": "Habits",
+    "trophies": "Trophies",
+    "chat": "Chat",
+    "profile": "Profile",
+    "diary": "Diary",
+    "home": "Home"
 }
