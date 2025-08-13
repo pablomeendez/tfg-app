@@ -66,7 +66,6 @@ export default function Trophies() {
                 </View>
                 
                 <ScrollView className="flex-1 px-4" showsVerticalScrollIndicator={false}>
-                    {console.log(sortedStreaks.length)}
                     {sortedStreaks.length > 0 ? (
                         sortedStreaks.map(streakDays => (
                             <View key={streakDays} className="mb-6">

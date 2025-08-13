@@ -44,7 +44,6 @@ export default function Index() {
         }
 
         const summaryResponse = await weeklySummaryService.getWeeklySummaryByUser(0, 1);
-        console.log(summaryResponse.data);
         if (summaryResponse && summaryResponse.data && summaryResponse.data.content && summaryResponse.data.content.length > 0) {
           setWeeklySummary(summaryResponse.data.content[0]);
         } else {
