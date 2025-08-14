@@ -2,7 +2,7 @@ package com.tfg.tfg_app.rest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +20,12 @@ public class AssistantController {
     @Autowired
     private AssistantService assistantService;
 
-    @GetMapping("/chat")
+    @PostMapping("/chat")
     public ResponseEntity<String> chat(@RequestAttribute Long userId, @RequestBody AssistantDto question) {
         try {
             ChatResponse response = assistantService.chat(userId, question.getQuestion());
-            return ResponseEntity.ok(response.toString());
-        } catch (Exception e) {
+            return ResponseEntity.ok(response.aiMessage().text());
+        } catch (Exception e) {     
             System.err.println("Error en chat assistant: " + e.getMessage());
             return ResponseEntity.ok("Lo siento, el asistente de IA no está disponible en este momento. Por favor, inténtalo más tarde.");
         }
