@@ -11,6 +11,4 @@ import dev.langchain4j.model.chat.response.ChatResponse;
 public interface AssistantService {
 
     ChatResponse chat(Long userId, String question) throws InstanceNotFoundException, JsonProcessingException;
-
-    List<ChatMessage> getChatResponses(Long userId);
 }
