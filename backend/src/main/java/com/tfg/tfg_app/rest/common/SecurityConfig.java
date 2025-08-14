@@ -47,6 +47,7 @@ public class SecurityConfig {
                 .requestMatchers(antMatcher("/api/users/signUp")).permitAll()
                 .requestMatchers(antMatcher("/api/users/login")).permitAll()
                 .requestMatchers(antMatcher("/api/users/loginFromServiceToken")).permitAll()
+                .requestMatchers(antMatcher("/api/users/changePassword")).hasAnyRole("USER", "ADMIN")
                 .requestMatchers(antMatcher("/api/users/:id")).hasAnyRole("USER", "ADMIN")
                 .requestMatchers(antMatcher("/api/diaryEntry/")).hasAnyRole("USER", "ADMIN")
                 .requestMatchers(antMatcher("/api/diaryEntry/create")).hasAnyRole("USER", "ADMIN")

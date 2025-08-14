@@ -3,6 +3,7 @@ package com.tfg.tfg_app.rest.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -16,9 +17,11 @@ import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.entities.Users;
 import com.tfg.tfg_app.model.services.UserService;
 import com.tfg.tfg_app.model.services.exceptions.IncorrectLoginException;
+import com.tfg.tfg_app.model.services.exceptions.IncorrectPasswordException;
 import com.tfg.tfg_app.rest.common.JwtGenerator;
 import com.tfg.tfg_app.rest.common.JwtInfo;
 import com.tfg.tfg_app.rest.dtos.AuthenticatedUserDto;
+import com.tfg.tfg_app.rest.dtos.ChangeUserPasswordDto;
 import com.tfg.tfg_app.rest.dtos.LoginParamsDto;
 import com.tfg.tfg_app.rest.dtos.UserDto;
 
@@ -86,6 +89,18 @@ public class UserController {
 
 		return toAuthenticatedUserDto(serviceToken, user);
 
+	}
+
+	@PutMapping("/{userId}/changePassword")
+	public AuthenticatedUserDto changePassword(@PathVariable Long userId,
+			@RequestBody ChangeUserPasswordDto userPasswordDto)
+			throws InstanceNotFoundException, DuplicateInstanceException, IncorrectPasswordException {
+
+		userService.changePassword(userId, userPasswordDto.getOldPassword(), userPasswordDto.getNewPassword());
+
+		Users user = userService.checkUser(userId);
+
+		return toAuthenticatedUserDto(generateServiceToken(user), user);
 	}
 
     	/**
