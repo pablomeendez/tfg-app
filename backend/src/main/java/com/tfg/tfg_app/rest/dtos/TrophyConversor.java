@@ -8,11 +8,11 @@ import com.tfg.tfg_app.model.entities.UserTrophy;
 public class TrophyConversor {
     
     public static TrophyDto toTrophyDto(Trophy trophy) {
-        return new TrophyDto(trophy.getId(), trophy.getNameEn(), trophy.getNameEs(), trophy.getNameGl(), trophy.getDescriptionEn(), trophy.getDescriptionEs(), trophy.getDescriptionGl(), trophy.getDays(), trophy.getImage());
+        return new TrophyDto(trophy.getId(), trophy.getName(), trophy.getDescription(), trophy.getDays(), trophy.getImage());
     }
 
     public static Trophy toTrophy(TrophyDto trophyDto) {
-        return new Trophy(trophyDto.getId(), trophyDto.getNameEn(), trophyDto.getNameEs(), trophyDto.getNameGl(), trophyDto.getDescriptionEn(), trophyDto.getDescriptionEs(), trophyDto.getDescriptionGl(), trophyDto.getDays(), trophyDto.getImage());
+        return new Trophy(trophyDto.getId(), trophyDto.getName(), trophyDto.getDescription(), trophyDto.getDays(), trophyDto.getImage());
     }
 
     public static List<TrophyDto> toTrophyDtos(List<Trophy> trophies) {

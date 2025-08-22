@@ -1,25 +1,19 @@
 package com.tfg.tfg_app.rest.dtos;
 
+import java.util.Map;
+
 public class HabitDto {
     
     private Long id;
-    private String nameEn;
-    private String nameEs;
-    private String nameGl;
-    private String descriptionEn;
-    private String descriptionEs;
-    private String descriptionGl;
+    private Map<String, String> name;
+    private Map<String, String> description;
     private CategoryDto category;
     private String imageString;
 
-    public HabitDto(Long id, String nameEn, String nameEs, String nameGl, String descriptionEn, String descriptionEs, String descriptionGl, CategoryDto category, String imageString) {
+    public HabitDto(Long id, Map<String, String> name, Map<String, String> description, CategoryDto category, String imageString) {
         this.id = id;
-        this.nameEn = nameEn;
-        this.nameEs = nameEs;
-        this.nameGl = nameGl;
-        this.descriptionEn = descriptionEn;
-        this.descriptionEs = descriptionEs;
-        this.descriptionGl = descriptionGl;
+        this.name = name;
+        this.description = description;
         this.category = category;
         this.imageString = imageString;
     }
@@ -32,52 +26,20 @@ public class HabitDto {
         this.id = id;
     }
 
-    public String getNameEn() {
-        return nameEn;
+    public Map<String, String> getName() {
+        return name;
     }
 
-    public void setNameEn(String nameEn) {
-        this.nameEn = nameEn;
+    public void setName(Map<String, String> name) {
+        this.name = name;
     }
 
-    public String getNameEs() {
-        return nameEs;
+    public Map<String, String> getDescription() {
+        return description;
     }
 
-    public void setNameEs(String nameEs) {
-        this.nameEs = nameEs;
-    }
-
-    public String getNameGl() {
-        return nameGl;
-    }
-
-    public void setNameGl(String nameGl) {
-        this.nameGl = nameGl;
-    }
-
-    public String getDescriptionEn() {
-        return descriptionEn;
-    }
-
-    public void setDescriptionEn(String descriptionEn) {
-        this.descriptionEn = descriptionEn;
-    }
-
-    public String getDescriptionEs() {
-        return descriptionEs;
-    }
-
-    public void setDescriptionEs(String descriptionEs) {
-        this.descriptionEs = descriptionEs;
-    }
-
-    public String getDescriptionGl() {
-        return descriptionGl;
-    }
-
-    public void setDescriptionGl(String descriptionGl) {
-        this.descriptionGl = descriptionGl;
+    public void setDescription(Map<String, String> description) {
+        this.description = description;
     }
 
     public CategoryDto getCategory() {

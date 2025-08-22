@@ -2,7 +2,11 @@ package com.tfg.tfg_app.model.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+
+import java.util.Map;
 import java.util.Set;
+
+import com.tfg.tfg_app.model.common.MapToJsonConverter;
 
 @Entity
 @Table(name = "Category")
@@ -12,17 +16,10 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Column(nullable = false)
-    private String nameEn;
-
-    @NotBlank
-    @Column(nullable = false)
-    private String nameEs;
-
-    @NotBlank
-    @Column(nullable = false)
-    private String nameGl;
+    @Convert(converter = MapToJsonConverter.class)
+    @Column(length = 1000)
+    private Map<String, String> name;
+    
 
     @OneToMany(mappedBy = "category")
     private Set<Habit> habits;
@@ -30,11 +27,9 @@ public class Category {
     public Category() {
     }
 
-    public Category(Long id, String nameEn, String nameEs, String nameGl) {
+    public Category(Long id, Map<String, String> name) {
         this.id = id;
-        this.nameEn = nameEn;
-        this.nameEs = nameEs;
-        this.nameGl = nameGl;
+        this.name = name; 
     }
 
     public Long getId() {
@@ -45,28 +40,12 @@ public class Category {
         this.id = id;
     }
 
-    public String getNameEn() {
-        return nameEn;
-    }
+    public Map<String, String> getName() {
+        return name;
+    }   
 
-    public void setNameEn(String nameEn) {
-        this.nameEn = nameEn;
-    }
-
-    public String getNameEs() {
-        return nameEs;
-    }
-
-    public void setNameEs(String nameEs) {
-        this.nameEs = nameEs;
-    }
-
-    public String getNameGl() {
-        return nameGl;
-    }
-
-    public void setNameGl(String nameGl) {
-        this.nameGl = nameGl;
+    public void setName(Map<String, String> name) {
+        this.name = name;
     }
 
     public Set<Habit> getHabits() {

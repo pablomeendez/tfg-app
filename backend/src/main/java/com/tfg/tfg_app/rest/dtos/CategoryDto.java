@@ -1,19 +1,17 @@
 package com.tfg.tfg_app.rest.dtos;
 
+import java.util.Map;
+
 public class CategoryDto {
     private Long id;
-    private String nameEn;
-    private String nameEs;
-    private String nameGl;
+    private Map<String, String> name;
 
     public CategoryDto() {
     }
 
-    public CategoryDto(Long id, String nameEn, String nameEs, String nameGl) {
+    public CategoryDto(Long id, Map<String, String> name) {
         this.id = id;
-        this.nameEn = nameEn;
-        this.nameEs = nameEs;
-        this.nameGl = nameGl;
+        this.name = name;
     }
 
     public Long getId() {
@@ -24,28 +22,12 @@ public class CategoryDto {
         this.id = id;
     }
 
-    public String getNameEn() {
-        return nameEn;
+    public Map<String, String> getName() {
+        return name;
     }
 
-    public void setNameEn(String nameEn) {
-        this.nameEn = nameEn;
-    }
-
-    public String getNameEs() {
-        return nameEs;
-    }
-
-    public void setNameEs(String nameEs) {
-        this.nameEs = nameEs;
-    }
-
-    public String getNameGl() {
-        return nameGl;
-    }
-
-    public void setNameGl(String nameGl) {
-        this.nameGl = nameGl;
+    public void setName(Map<String, String> name) {
+        this.name = name;
     }
 
 }

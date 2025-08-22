@@ -3,7 +3,11 @@ package com.tfg.tfg_app.model.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.Map;
 import java.util.Set;
+
+import com.tfg.tfg_app.model.common.MapToJsonConverter;
 
 @Entity
 @Table(name = "Habit")
@@ -13,29 +17,13 @@ public class Habit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Column(nullable = false)
-    private String nameEn;
+    @Convert(converter = MapToJsonConverter.class)
+    @Column(length = 1000)
+    private Map<String, String> name;
 
-    @NotBlank
-    @Column(nullable = false)
-    private String nameEs;
-    
-    @NotBlank
-    @Column(nullable = false)
-    private String nameGl;
-
-    @NotBlank
-    @Column(nullable = false)
-    private String descriptionEn;
-
-    @NotBlank
-    @Column(nullable = false)
-    private String descriptionEs;
-
-    @NotBlank
-    @Column(nullable = false)
-    private String descriptionGl;
+    @Convert(converter = MapToJsonConverter.class)
+    @Column(length = 2000)
+    private Map<String, String> description;
 
     @NotNull
     @Lob
@@ -53,17 +41,14 @@ public class Habit {
     public Habit() {
     }
 
-    public Habit(Long id, String nameEn, String nameEs, String nameGl, String descriptionEn, String descriptionEs, String descriptionGl, Category category, String image) {
+    public Habit(Long id, Map<String, String> name, Map<String, String> description, Category category, String image) {
         this.id = id;
-        this.nameEn = nameEn;
-        this.nameEs = nameEs;
-        this.nameGl = nameGl;
-        this.descriptionEn = descriptionEn;
-        this.descriptionEs = descriptionEs;
-        this.descriptionGl = descriptionGl;
+        this.name = name;
+        this.description = description;
         this.category = category;
         this.image = image;
     }
+
 
     public Long getId() {
         return id;
@@ -73,52 +58,21 @@ public class Habit {
         this.id = id;
     }
 
-    public String getNameEn() {
-        return nameEn;
+
+    public Map<String, String> getName() {
+        return name;
     }
 
-    public void setNameEn(String nameEn) {
-        this.nameEn = nameEn;
+    public void setName(Map<String, String> name) {
+        this.name = name;
     }
 
-    public String getNameEs() {
-        return nameEs;
+    public Map<String, String> getDescription() {
+        return description;
     }
 
-    public void setNameEs(String nameEs) {
-        this.nameEs = nameEs;
-    }
-
-    public String getNameGl() {
-        return nameGl;
-    }
-
-    public void setNameGl(String nameGl) {
-        this.nameGl = nameGl;
-    }
-
-    public String getDescriptionEn() {
-        return descriptionEn;
-    }
-
-    public void setDescriptionEn(String descriptionEn) {
-        this.descriptionEn = descriptionEn;
-    }
-
-    public String getDescriptionEs() {
-        return descriptionEs;
-    }
-
-    public void setDescriptionEs(String descriptionEs) {
-        this.descriptionEs = descriptionEs;
-    }
-
-    public String getDescriptionGl() {
-        return descriptionGl;
-    }
-
-    public void setDescriptionGl(String descriptionGl) {
-        this.descriptionGl = descriptionGl;
+    public void setDescription(Map<String, String> description) {
+        this.description = description;
     }
 
     public String getImage() {

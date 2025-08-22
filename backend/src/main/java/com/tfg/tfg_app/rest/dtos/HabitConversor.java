@@ -11,19 +11,19 @@ import com.tfg.tfg_app.model.entities.UserTrophy;
 public class HabitConversor {
 
     public static CategoryDto toCategoryDto(Category category) {
-        return new CategoryDto(category.getId(), category.getNameEn(), category.getNameEs(), category.getNameGl());
+        return new CategoryDto(category.getId(), category.getName());
     }
 
     public static Category toCategory(CategoryDto categoryDto) {
-        return new Category(categoryDto.getId(), categoryDto.getNameEn(), categoryDto.getNameEs(), categoryDto.getNameGl());
+        return new Category(categoryDto.getId(), categoryDto.getName());
     }
     
     public static HabitDto toHabitDto (Habit habit) {
-        return new HabitDto(habit.getId(), habit.getNameEn(), habit.getNameEs(), habit.getNameGl(), habit.getDescriptionEn(), habit.getDescriptionEs(), habit.getDescriptionGl(), toCategoryDto(habit.getCategory()), habit.getImage().toString());
+        return new HabitDto(habit.getId(), habit.getName(), habit.getDescription(), toCategoryDto(habit.getCategory()), habit.getImage().toString());
     }
 
     public static Habit toHabit(HabitDto habitDto) {
-        return new Habit(habitDto.getId(), habitDto.getNameEn(), habitDto.getNameEs(), habitDto.getNameGl(), habitDto.getDescriptionEn(), habitDto.getDescriptionEs(), habitDto.getDescriptionGl(), toCategory(habitDto.getCategory()), habitDto.getImageString());
+        return new Habit(habitDto.getId(), habitDto.getName(), habitDto.getDescription(), toCategory(habitDto.getCategory()), habitDto.getImageString());
     }
 
     public static List<HabitDto> toHabitDtos(List<Habit> habits) {

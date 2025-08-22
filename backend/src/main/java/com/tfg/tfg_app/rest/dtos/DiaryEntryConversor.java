@@ -20,11 +20,11 @@ public class DiaryEntryConversor {
     }
 
     public static Mood toMood (MoodDto moodDto) {
-        return new Mood(moodDto.getId(), moodDto.getNameEn(), moodDto.getNameEs(), moodDto.getNameGl(), moodDto.getImage());
+        return new Mood(moodDto.getId(), moodDto.getName(), moodDto.getImage());
     }
 
     public static MoodDto toMoodDto (Mood mood) {
-        return new MoodDto(mood.getId(), mood.getNameEn(), mood.getNameEs(), mood.getNameGl(), mood.getImage());
+        return new MoodDto(mood.getId(), mood.getName(), mood.getImage());
     }
 
     public static DiaryEntry toDiaryEntry (DiaryEntryDto diaryEntryDto) {
