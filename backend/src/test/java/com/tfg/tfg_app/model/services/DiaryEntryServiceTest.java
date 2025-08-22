@@ -8,7 +8,9 @@ import static org.junit.Assert.assertNotEquals;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -55,16 +57,20 @@ public class DiaryEntryServiceTest {
         userService.signUp(testUser);
     
         testMood = new Mood();
-        testMood.setNameEn("Happy");
-        testMood.setNameEs("Feliz");
-        testMood.setNameGl("Feliz");
+        Map<String, String> moodNames = new HashMap<>();
+        moodNames.put("en", "Happy");
+        moodNames.put("es", "Feliz");
+        moodNames.put("gl", "Feliz");
+        testMood.setName(moodNames);
         testMood.setImage("happy_image.png");
         moodDao.save(testMood);
 
         testMood2 = new Mood();
-        testMood2.setNameEn("Sad");
-        testMood2.setNameEs("Triste");
-        testMood2.setNameGl("Triste");
+        Map<String, String> moodNames2 = new HashMap<>();
+        moodNames2.put("en", "Sad");
+        moodNames2.put("es", "Triste");
+        moodNames2.put("gl", "Triste");
+        testMood2.setName(moodNames2);
         testMood2.setImage("sad_image.png");
         moodDao.save(testMood2);
     }

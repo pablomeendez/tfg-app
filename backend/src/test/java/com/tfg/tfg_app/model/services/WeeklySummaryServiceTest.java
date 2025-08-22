@@ -4,7 +4,9 @@ import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -83,27 +85,36 @@ public class WeeklySummaryServiceTest {
         
         // Create test mood
         testMood = new Mood();
-        testMood.setNameEn("Happy");
-        testMood.setNameEs("Feliz");
-        testMood.setNameGl("Feliz");
+        Map<String, String> moodNames = new HashMap<>();
+        moodNames.put("en", "Happy");
+        moodNames.put("es", "Feliz");
+        moodNames.put("gl", "Feliz");
+        testMood.setName(moodNames);
         testMood.setImage("happy.svg");
         testMood = moodDao.save(testMood);
         
         // Create test category
         testCategory = new Category();
-        testCategory.setNameEn("Health");   
-        testCategory.setNameEs("Salud");
-        testCategory.setNameGl("Saúde");
+        Map<String, String> categoryNames = new HashMap<>();
+        categoryNames.put("en", "Health");
+        categoryNames.put("es", "Salud");
+        categoryNames.put("gl", "Saúde");
+        testCategory.setName(categoryNames);
         testCategory = categoryDao.save(testCategory);
         
         // Create test habit
         testHabit = new Habit();
-        testHabit.setNameEn("Test Habit");
-        testHabit.setNameEs("Hábito de Prueba");
-        testHabit.setNameGl("Hábito de Proba");
-        testHabit.setDescriptionEn("Test habit description");
-        testHabit.setDescriptionEs("Descripción del hábito de prueba");
-        testHabit.setDescriptionGl("Descrición do hábito de proba");
+        Map<String, String> habitNames = new HashMap<>();
+        habitNames.put("en", "Test Habit");
+        habitNames.put("es", "Hábito de Prueba");
+        habitNames.put("gl", "Hábito de Proba");
+        testHabit.setName(habitNames);
+        
+        Map<String, String> habitDescriptions = new HashMap<>();
+        habitDescriptions.put("en", "Test habit description");
+        habitDescriptions.put("es", "Descripción del hábito de prueba");
+        habitDescriptions.put("gl", "Descrición do hábito de proba");
+        testHabit.setDescription(habitDescriptions);
         testHabit.setImage("test.jpg");
         testHabit.setCategory(testCategory);
         testHabit = habitDao.save(testHabit);

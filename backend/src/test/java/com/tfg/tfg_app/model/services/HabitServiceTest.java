@@ -7,7 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -76,26 +78,35 @@ public class HabitServiceTest {
         userService.signUp(testUser);
 
         testCategory = new Category();
-        testCategory.setNameEn("Health");
-        testCategory.setNameEs("Salud");
-        testCategory.setNameGl("Saúde");
+        Map<String, String> categoryNames = new HashMap<>();
+        categoryNames.put("en", "Health");
+        categoryNames.put("es", "Salud");
+        categoryNames.put("gl", "Saúde");
+        testCategory.setName(categoryNames);
         categoryDao.save(testCategory);
 
         testHabit = new Habit();
-        testHabit.setNameEn("Exercise");
-        testHabit.setNameEs("Ejercicio");
-        testHabit.setNameGl("Exercicio");
-        testHabit.setDescriptionEn("Daily exercise routine");
-        testHabit.setDescriptionEs("Rutina de ejercicio diario");
-        testHabit.setDescriptionGl("Rutina de exercicio diario");
+        Map<String, String> habitNames = new HashMap<>();
+        habitNames.put("en", "Exercise");
+        habitNames.put("es", "Ejercicio");
+        habitNames.put("gl", "Exercicio");
+        testHabit.setName(habitNames);
+        
+        Map<String, String> habitDescriptions = new HashMap<>();
+        habitDescriptions.put("en", "Daily exercise routine");
+        habitDescriptions.put("es", "Rutina de ejercicio diario");
+        habitDescriptions.put("gl", "Rutina de exercicio diario");
+        testHabit.setDescription(habitDescriptions);
         testHabit.setImage("exercise_image.png");
         testHabit.setCategory(testCategory);
         habitDao.save(testHabit);
 
         testMood = new Mood();
-        testMood.setNameEn("Happy");
-        testMood.setNameEs("Feliz");
-        testMood.setNameGl("Feliz");
+        Map<String, String> moodNames = new HashMap<>();
+        moodNames.put("en", "Happy");
+        moodNames.put("es", "Feliz");
+        moodNames.put("gl", "Feliz");
+        testMood.setName(moodNames);
         testMood.setImage("happy_image.png");
         moodDao.save(testMood);
 
@@ -140,12 +151,17 @@ public class HabitServiceTest {
         
         // Crear otro hábito
         Habit testHabit2 = new Habit();
-        testHabit2.setNameEn("Meditation");
-        testHabit2.setNameEs("Meditación");
-        testHabit2.setNameGl("Meditación");
-        testHabit2.setDescriptionEn("Daily meditation");
-        testHabit2.setDescriptionEs("Meditación diaria");
-        testHabit2.setDescriptionGl("Meditación diaria");
+        Map<String, String> habit2Names = new HashMap<>();
+        habit2Names.put("en", "Meditation");
+        habit2Names.put("es", "Meditación");
+        habit2Names.put("gl", "Meditación");
+        testHabit2.setName(habit2Names);
+        
+        Map<String, String> habit2Descriptions = new HashMap<>();
+        habit2Descriptions.put("en", "Daily meditation");
+        habit2Descriptions.put("es", "Meditación diaria");
+        habit2Descriptions.put("gl", "Meditación diaria");
+        testHabit2.setDescription(habit2Descriptions);
         testHabit2.setImage("meditation_image.png");
         testHabit2.setCategory(testCategory);
         habitDao.save(testHabit2);

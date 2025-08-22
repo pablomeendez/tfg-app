@@ -6,7 +6,9 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -65,26 +67,53 @@ public class TrophyServiceTest {
         userService.signUp(testUser);
 
         testCategory = new Category();
-        testCategory.setNameEn("Test Category");
-        testCategory.setNameEs("Categoría de Prueba");
-        testCategory.setNameGl("Categoría de Proba");
+        Map<String, String> categoryNames = new HashMap<>();
+        categoryNames.put("en", "Test Category");
+        categoryNames.put("es", "Categoría de Prueba");
+        categoryNames.put("gl", "Categoría de Proba");
+        testCategory.setName(categoryNames);
         testCategory = categoryDao.save(testCategory);
 
         testHabit = new Habit();
-        testHabit.setNameEn("Test Habit");
-        testHabit.setNameEs("Hábito de Prueba");
-        testHabit.setNameGl("Hábito de Proba");
-        testHabit.setDescriptionEn("Test habit description");
-        testHabit.setDescriptionEs("Descripción del hábito de prueba");
-        testHabit.setDescriptionGl("Descrición do hábito de proba");
+        Map<String, String> habitNames = new HashMap<>();
+        habitNames.put("en", "Test Habit");
+        habitNames.put("es", "Hábito de Prueba");
+        habitNames.put("gl", "Hábito de Proba");
+        testHabit.setName(habitNames);
+        
+        Map<String, String> habitDescriptions = new HashMap<>();
+        habitDescriptions.put("en", "Test habit description");
+        habitDescriptions.put("es", "Descripción del hábito de prueba");
+        habitDescriptions.put("gl", "Descrición do hábito de proba");
+        testHabit.setDescription(habitDescriptions);
         testHabit.setImage("test_habit.png");
         testHabit.setCategory(testCategory);
         testHabit = habitDao.save(testHabit);
 
-        testTrophy7Days = new Trophy("Week Warrior", "Guerrero de la Semana", "Guerreiro da semana", "Complete 7 days", "Completar 7 días", "Completar 7 dias", 7, "trophy_7_days.png");
+        Map<String, String> trophy7Names = new HashMap<>();
+        trophy7Names.put("en", "Week Warrior");
+        trophy7Names.put("es", "Guerrero de la Semana");
+        trophy7Names.put("gl", "Guerreiro da semana");
+        
+        Map<String, String> trophy7Descriptions = new HashMap<>();
+        trophy7Descriptions.put("en", "Complete 7 days");
+        trophy7Descriptions.put("es", "Completar 7 días");
+        trophy7Descriptions.put("gl", "Completar 7 dias");
+        
+        testTrophy7Days = new Trophy(trophy7Names, trophy7Descriptions, 7, "trophy_7_days.png");
         testTrophy7Days = trophyDao.save(testTrophy7Days);
 
-        testTrophy30Days = new Trophy("Monthly Master", "Maestro Mensual", "Mestre Mensual", "Complete 30 days", "Completar 30 días", "Completar 30 dias", 30, "trophy_30_days.png");
+        Map<String, String> trophy30Names = new HashMap<>();
+        trophy30Names.put("en", "Monthly Master");
+        trophy30Names.put("es", "Maestro Mensual");
+        trophy30Names.put("gl", "Mestre Mensual");
+        
+        Map<String, String> trophy30Descriptions = new HashMap<>();
+        trophy30Descriptions.put("en", "Complete 30 days");
+        trophy30Descriptions.put("es", "Completar 30 días");
+        trophy30Descriptions.put("gl", "Completar 30 dias");
+        
+        testTrophy30Days = new Trophy(trophy30Names, trophy30Descriptions, 30, "trophy_30_days.png");
         testTrophy30Days = trophyDao.save(testTrophy30Days);
     }
 
@@ -94,8 +123,8 @@ public class TrophyServiceTest {
         assertNotNull(trophies);
         assertTrue(trophies.size() >= 2);
         
-        assertTrue(trophies.stream().anyMatch(t -> t.getNameEn().equals("Week Warrior")));
-        assertTrue(trophies.stream().anyMatch(t -> t.getNameEn().equals("Monthly Master")));
+        assertTrue(trophies.stream().anyMatch(t -> t.getName().get("en").equals("Week Warrior")));
+        assertTrue(trophies.stream().anyMatch(t -> t.getName().get("en").equals("Monthly Master")));
     }
 
     @Test
@@ -103,8 +132,8 @@ public class TrophyServiceTest {
         Trophy trophy = trophyService.getTrophyById(testTrophy7Days.getId());
         assertNotNull(trophy);
         assertEquals(testTrophy7Days.getId(), trophy.getId());
-        assertEquals("Week Warrior", trophy.getNameEn());
-        assertEquals("Complete 7 days", trophy.getDescriptionEn());
+        assertEquals("Week Warrior", trophy.getName().get("en"));
+        assertEquals("Complete 7 days", trophy.getDescription().get("en"));
         assertEquals(7, trophy.getDays());
     }
 
