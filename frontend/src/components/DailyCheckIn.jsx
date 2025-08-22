@@ -31,13 +31,17 @@ export const DailyCheckIn = ({ moods }) => {
                 <View className="flex flex-row flex-wrap justify-center items-center">
                   {moods.length > 0 ? (
                     moods.map((mood) => (
-                      <View className="m-2" key={mood.id}>
+                      <View className="m-2 w-20 h-28" key={mood.id}>
                         <TouchableOpacity
-                          className="rounded-full p-3 shadow-sm active:scale-95 border border-yellow-400"
+                          className="rounded-full p-3 shadow-sm active:scale-95 border border-yellow-400 w-20 h-20 justify-center items-center"
                           onPress={() => {
                             router.push({
                               pathname: "/screens/DiaryEntryForm",
-                              params: { moodId: mood.id, moodName: language === 'en' ? mood.nameEn : language === 'es' ? mood.nameEs : mood.nameGl  , moodImage: mood.image }
+                              params: { 
+                                moodId: mood.id, 
+                                moodName: JSON.stringify(mood.name), 
+                                moodImage: mood.image 
+                              }
                             });
                           }}
                         >
@@ -50,16 +54,18 @@ export const DailyCheckIn = ({ moods }) => {
                                 />
                               </View>
                             ) : (
-                              <Text className="text-gray-700 font-semibold text-sm">
-                                {mood.name || `Mood ${mood.id}`}
+                              <Text className="text-gray-700 font-semibold text-xs text-center">
+                                {language === 'en' ? mood.name.en : language === 'es' ? mood.name.es : mood.name.gl || `Mood ${mood.id}`}
                               </Text>
                             )}
                           </View>
                         </TouchableOpacity>
                         {mood.name && (
-                          <Text className="text-center text-xs text-gray-600 mt-2 font-medium">
-                            {mood.name}
-                          </Text>
+                          <View className="h-6 mt-2">
+                            <Text className="text-center text-xs text-gray-600 font-medium w-20" numberOfLines={2} ellipsizeMode="tail">
+                              {language === 'en' ? mood.name.en : language === 'es' ? mood.name.es : mood.name.gl}
+                            </Text>
+                          </View>
                         )}
                       </View>
                     ))

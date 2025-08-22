@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import diaryEntryService from "../../services/diaryEntryService";
 import { Image } from "expo-image";
 import { LoadingComponent } from "../../components/LoadingComponent";
+import { ErrorComponent } from "../../components/ErrorComponent";
 import { useTranslation } from "react-i18next";
 
 const DiaryEntryForm = () => {
@@ -27,11 +28,12 @@ const DiaryEntryForm = () => {
     const moodName = localParams.moodName;
     const moodImage = localParams.moodImage;
     const [error, setError] = useState(null);
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
+    const language = i18n.language;
 
     const mood = {
         id: moodId,
-        name: moodName,
+        name: moodName ? JSON.parse(moodName) : null,
         image: moodImage
     }
 
@@ -165,7 +167,9 @@ const DiaryEntryForm = () => {
                                     </View>
                                     <View className="flex-1">
                                         <Text className="text-lg font-semibold text-gray-800 mb-1">
-                                            {mood.name}
+                                            {mood.name && 
+                                                (language === 'en' ? mood.name.en : language === 'es' ? mood.name.es : mood.name.gl)
+                                            }
                                         </Text>
                                     </View>
                                 </View>

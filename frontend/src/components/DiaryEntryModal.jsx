@@ -57,7 +57,7 @@ export const DiaryEntryModal = ({ isVisible, onClose, selectedEntry }) => {
                                                     />
                                                 </View>
                                                 <Text className="text-purple-800 font-medium">
-                                                    {language === 'en' ? selectedEntry.mood.nameEn : language === 'es' ? selectedEntry.mood.nameEs : selectedEntry.mood.nameGl}
+                                                    {language === 'en' ? selectedEntry.mood.name.en : language === 'es' ? selectedEntry.mood.name.es : selectedEntry.mood.name.gl}
                                                 </Text>
                                             </View>
                                         </View>
