@@ -82,14 +82,10 @@ public class TrophyServiceImpl implements TrophyService {
         List<UserTrophy> existingTrophies = userTrophyDao.findByUserIdAndHabitId(userId, habitId);
 
         if (!existingTrophies.isEmpty() && existingTrophies.stream().anyMatch(ut -> ut.getTrophy().getDays() == days)) {
-            throw new TrophyAlreadyGivenException(userId, habitId);
+            return null;
         }
 
-        UserTrophy userTrophy = new UserTrophy();
-        userTrophy.setUser(user);
-        userTrophy.setTrophy(trophy);
-        userTrophy.setObtainedAt(LocalDateTime.now());
-        userTrophy.setHabit(habit);
+        UserTrophy userTrophy = new UserTrophy(user, trophy, habit, LocalDateTime.now());
 
         return userTrophyDao.save(userTrophy);
     }
@@ -114,8 +110,6 @@ public class TrophyServiceImpl implements TrophyService {
 
     @Override
     public List<UserTrophy> getUserTrophiesByUserIdAndDate(Long userId, LocalDateTime date) throws InstanceNotFoundException {
-        Users user = userService.checkUser(userId);
-
         return userTrophyDao.findByUserIdAndObtainedAtBetween(userId, date.minusDays(7), date);
     }
 }
