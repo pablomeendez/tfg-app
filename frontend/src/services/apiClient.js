@@ -3,8 +3,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Platform } from 'react-native';
 
 const getBaseURL = () => {
-    if (Platform.OS === 'android') {
-        return 'http://192.168.1.6:8080/api';
+    if (__DEV__ && Platform.OS === 'android') {
+        return 'http://192.168.18.4:8080/api';
     } else {
         return 'http://localhost:8080/api';
     }
