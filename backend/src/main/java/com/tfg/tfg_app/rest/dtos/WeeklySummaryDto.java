@@ -11,13 +11,13 @@ public class WeeklySummaryDto {
     private int habitsCompleted;
     private int totalEntries;
     private int trophiesEarned;
-    private HabitEntryDto biggestStreak;
+    private int biggestStreak;
     private MoodDto moodTrend;
 
     public WeeklySummaryDto() {
     }
 
-    public WeeklySummaryDto(Long id, UserDto user, LocalDateTime date, int habitsCompleted, int totalEntries, int trophiesEarned, HabitEntryDto biggestStreak, MoodDto moodTrend) {
+    public WeeklySummaryDto(Long id, UserDto user, LocalDateTime date, int habitsCompleted, int totalEntries, int trophiesEarned, int biggestStreak, MoodDto moodTrend) {
         this.id = id;
         this.user = user;
         this.date = date;
@@ -76,11 +76,11 @@ public class WeeklySummaryDto {
         this.trophiesEarned = trophiesEarned;
     }
 
-    public HabitEntryDto getBiggestStreak() {
+    public int getBiggestStreak() {
         return biggestStreak;
     }
 
-    public void setBiggestStreak(HabitEntryDto biggestStreak) {
+    public void setBiggestStreak(int biggestStreak) {
         this.biggestStreak = biggestStreak;
     }
 

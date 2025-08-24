@@ -8,14 +8,12 @@ public class HabitDto {
     private Map<String, String> name;
     private Map<String, String> description;
     private CategoryDto category;
-    private String imageString;
 
-    public HabitDto(Long id, Map<String, String> name, Map<String, String> description, CategoryDto category, String imageString) {
+    public HabitDto(Long id, Map<String, String> name, Map<String, String> description, CategoryDto category) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.category = category;
-        this.imageString = imageString;
     }
 
     public Long getId() {
@@ -46,11 +44,4 @@ public class HabitDto {
         return category;
     }
 
-    public String getImageString() {
-        return imageString;
-    }
-
-    public void setImageString(String imageString) {
-        this.imageString = imageString;
-    }
 }

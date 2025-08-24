@@ -10,7 +10,7 @@ import com.tfg.tfg_app.model.entities.WeeklySummary;
 public class WeeklySummaryConversor {
 
     public static WeeklySummaryDto toWeeklySummaryDto(WeeklySummary weeklySummary) {
-        return new WeeklySummaryDto(weeklySummary.getId(), UserConversor.toUserDto(weeklySummary.getUser()), weeklySummary.getDate(), weeklySummary.getHabitsCompleted(), weeklySummary.getTotalEntries(), weeklySummary.getTrophiesEarned(), HabitConversor.toHabitEntryDto(weeklySummary.getBiggestStreak()), DiaryEntryConversor.toMoodDto(weeklySummary.getMoodTrend()));
+        return new WeeklySummaryDto(weeklySummary.getId(), UserConversor.toUserDto(weeklySummary.getUser()), weeklySummary.getDate(), weeklySummary.getHabitsCompleted(), weeklySummary.getTotalEntries(), weeklySummary.getTrophiesEarned(), weeklySummary.getBiggestStreak(), DiaryEntryConversor.toMoodDto(weeklySummary.getMoodTrend()));
     }
 
     public static Page<WeeklySummaryDto> toWeeklySummaryDtoPage(Page<WeeklySummary> weeklySummaries) {

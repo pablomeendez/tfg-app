@@ -19,11 +19,11 @@ public class HabitConversor {
     }
     
     public static HabitDto toHabitDto (Habit habit) {
-        return new HabitDto(habit.getId(), habit.getName(), habit.getDescription(), toCategoryDto(habit.getCategory()), habit.getImage().toString());
+        return new HabitDto(habit.getId(), habit.getName(), habit.getDescription(), toCategoryDto(habit.getCategory()));
     }
 
     public static Habit toHabit(HabitDto habitDto) {
-        return new Habit(habitDto.getId(), habitDto.getName(), habitDto.getDescription(), toCategory(habitDto.getCategory()), habitDto.getImageString());
+        return new Habit(habitDto.getId(), habitDto.getName(), habitDto.getDescription(), toCategory(habitDto.getCategory()));
     }
 
     public static List<HabitDto> toHabitDtos(List<Habit> habits) {
