@@ -7,49 +7,25 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import { LoadingComponent } from '../../components/LoadingComponent';
-import DropDownPicker from 'react-native-dropdown-picker';
+import ChangePasswordModal from '../../components/ChangePasswordModal';
+import EditProfileModal from '../../components/EditProfileModal';
+import ProfileInfoCard from '../../components/ProfileInfoCard';
+import ActionButton from '../../components/ActionButton';
+import LanguageSelector from '../../components/LanguageSelector';
 
 export default function Profile() {
-    const { logout } = useContext(AuthContext);
+    const { logout, userId, user } = useContext(AuthContext);
     const router = useRouter();
-    const [userInfo, setUserInfo] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [userInfo, setUserInfo] = useState(user);
+    const [loading, setLoading] = useState(false);
     const { t, i18n } = useTranslation();    
-    const [languageOpen, setLanguageOpen] = useState(false);
     const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
-    const [languageItems, setLanguageItems] = useState([
-        { label: 'Español', value: 'es', icon: () => <Text>🇪🇸</Text> },
-        { label: 'English', value: 'en', icon: () => <Text>🇺🇸</Text> },
-        { label: 'Galego', value: 'gl', icon: () => <Text>🇪🇸</Text> }
-    ]);
+    const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
+    const [showEditProfileModal, setShowEditProfileModal] = useState(false);
 
-    useEffect(() => {
-        const loadUserData = async () => {
-            try {
-                const userString = await AsyncStorage.getItem('user');
-                if (userString) {
-                    const user = JSON.parse(userString);
-                    setUserInfo(user);
-                }
-                setLoading(false);
-            } catch (error) {
-                console.error('Error loading user data:', error);
-                setLoading(false);
-            }
-        };
 
-        loadUserData();
-    }, []);
-
-    const changeLanguage = async (languageCode) => {
-        try {
-            await i18n.changeLanguage(languageCode);
-            await AsyncStorage.setItem('userLanguage', languageCode);
-            setCurrentLanguage(languageCode);
-        } catch (error) {
-            console.error('Error changing language:', error);
-            Alert.alert(t('error'), t('could_not_change_language'));
-        }
+    const handleLanguageChange = (newLanguage) => {
+        setCurrentLanguage(newLanguage);
     };
 
     useEffect(() => {
@@ -117,97 +93,45 @@ export default function Profile() {
                     <View className="flex-1 px-6 py-6 bg-gray-50">
                         <Text className="text-xl font-bold text-gray-800 mb-4">{t('personal_information')}</Text>
 
-                        <View className="bg-white rounded-lg p-4 mb-3 flex-row items-center">
-                            <MaterialCommunityIcons name="identifier" size={24} color="#6B7280" />
-                            <View className="ml-3 flex-1">
-                                <Text className="text-gray-500 text-sm">{t('user_id')}</Text>
-                                <Text className="text-gray-800 text-base font-medium">#{userInfo?.id}</Text>
-                            </View>
-                        </View>
+                        <ProfileInfoCard
+                            icon="identifier"
+                            iconColor="#6B7280"
+                            label={t('user_id')}
+                            value={`#${userInfo?.id}`}
+                        />
 
-                        <View className="bg-white rounded-lg p-4 mb-3 flex-row items-center">
-                            <MaterialCommunityIcons name="account-circle" size={24} color="#3B82F6" />
-                            <View className="ml-3 flex-1">
-                                <Text className="text-gray-500 text-sm">{t('username')}</Text>
-                                <Text className="text-gray-800 text-base font-medium">{userInfo?.userName}</Text>
-                            </View>
-                        </View>
+                        <ProfileInfoCard
+                            icon="account-circle"
+                            iconColor="#3B82F6"
+                            label={t('username')}
+                            value={userInfo?.userName}
+                        />
 
-                        <View className="bg-white rounded-lg p-4 mb-3 flex-row items-center">
-                            <MaterialCommunityIcons name="account" size={24} color="#10B981" />
-                            <View className="ml-3 flex-1">
-                                <Text className="text-gray-500 text-sm">{t('name')}</Text>
-                                <Text className="text-gray-800 text-base font-medium">{userInfo?.firstName}</Text>
-                            </View>
-                        </View>
+                        <ProfileInfoCard
+                            icon="account"
+                            iconColor="#10B981"
+                            label={t('name')}
+                            value={userInfo?.firstName}
+                        />
 
-                        <View className="bg-white rounded-lg p-4 mb-3 flex-row items-center">
-                            <MaterialCommunityIcons name="account-outline" size={24} color="#10B981" />
-                            <View className="ml-3 flex-1">
-                                <Text className="text-gray-500 text-sm">{t('last_name')}</Text>
-                                <Text className="text-gray-800 text-base font-medium">{userInfo?.lastName}</Text>
-                            </View>
-                        </View>
+                        <ProfileInfoCard
+                            icon="account-outline"
+                            iconColor="#10B981"
+                            label={t('last_name')}
+                            value={userInfo?.lastName}
+                        />
 
-                        <View className="bg-white rounded-lg p-4 mb-3 flex-row items-center">
-                            <MaterialCommunityIcons name="email" size={24} color="#8B5CF6" />
-                            <View className="ml-3 flex-1">
-                                <Text className="text-gray-500 text-sm">{t('email')}</Text>
-                                <Text className="text-gray-800 text-base font-medium">{userInfo?.email}</Text>
-                            </View>
-                        </View>
+                        <ProfileInfoCard
+                            icon="email"
+                            iconColor="#8B5CF6"
+                            label={t('email')}
+                            value={userInfo?.email}
+                        />
 
-                        {/* Selector de idioma */}
-                        <View className="bg-white rounded-lg p-4 mb-3" style={{ zIndex: 1000 }}>
-                            <View className="flex-row items-center mb-3">
-                                <MaterialCommunityIcons name="translate" size={24} color="#F59E0B" />
-                                <Text className="text-gray-500 text-sm ml-3">{t('language')}</Text>
-                            </View>
-                            <DropDownPicker
-                                open={languageOpen}
-                                value={currentLanguage}
-                                items={languageItems}
-                                setOpen={setLanguageOpen}
-                                setValue={setCurrentLanguage}
-                                setItems={setLanguageItems}
-                                onChangeValue={(value) => {
-                                    if (value) {
-                                        changeLanguage(value);
-                                    }
-                                }}
-                                placeholder={t('select_language')}
-                                style={{
-                                    backgroundColor: '#F9FAFB',
-                                    borderColor: '#D1D5DB',
-                                    borderRadius: 8,
-                                    minHeight: 45,
-                                }}
-                                textStyle={{
-                                    color: '#374151',
-                                    fontSize: 16,
-                                    fontWeight: '500',
-                                }}
-                                dropDownContainerStyle={{
-                                    backgroundColor: '#FFFFFF',
-                                    borderColor: '#D1D5DB',
-                                    borderRadius: 8,
-                                    marginTop: 5,
-                                }}
-                                selectedItemContainerStyle={{
-                                    backgroundColor: '#EBF4FF',
-                                }}
-                                selectedItemLabelStyle={{
-                                    color: '#1D4ED8',
-                                    fontWeight: '600',
-                                }}
-                                zIndex={1000}
-                                zIndexInverse={3000}
-                                listMode="SCROLLVIEW"
-                                scrollViewProps={{
-                                    nestedScrollEnabled: true,
-                                }}
-                            />
-                        </View>
+                        <LanguageSelector
+                            currentLanguage={currentLanguage}
+                            onLanguageChange={handleLanguageChange}
+                        />
 
                         <TouchableOpacity 
                             className="bg-red-500 rounded-lg p-4 flex-row items-center justify-center"
