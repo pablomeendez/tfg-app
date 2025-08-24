@@ -44,7 +44,6 @@ CREATE TABLE IF NOT EXISTS Habit (
     id Long NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(1000) DEFAULT '{}',
     description VARCHAR(2000) DEFAULT '{}',
-    image VARCHAR(255) NOT NULL,
     categoryId Long NOT NULL,
     CONSTRAINT fk_habit_category FOREIGN KEY (categoryId) REFERENCES Category(id)
 );
@@ -80,7 +79,6 @@ CREATE TABLE IF NOT EXISTS Trophy (
 
 CREATE TABLE IF NOT EXISTS UserTrophy (
     id Long NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
     obtainedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     userId Long NOT NULL,
     trophyId Long NOT NULL,
