@@ -22,9 +22,7 @@ public class WeeklySummary {
     private int trophiesEarned;
 
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "biggestStreak", nullable = false)
-    private HabitEntry biggestStreak;
+    private int biggestStreak;
 
     @NotNull
     @ManyToOne
@@ -44,7 +42,7 @@ public class WeeklySummary {
     
     }
 
-    public WeeklySummary(int habitsCompleted, int totalEntries, int trophiesEarned, HabitEntry biggestStreak, Users user, Mood moodTrend, LocalDateTime date) {
+    public WeeklySummary(int habitsCompleted, int totalEntries, int trophiesEarned, int biggestStreak, Users user, Mood moodTrend, LocalDateTime date) {
         this.habitsCompleted = habitsCompleted;
         this.totalEntries = totalEntries;
         this.trophiesEarned = trophiesEarned;
@@ -86,11 +84,11 @@ public class WeeklySummary {
         this.trophiesEarned = trophiesEarned;
     }
 
-    public HabitEntry getBiggestStreak() {
+    public int getBiggestStreak() {
         return biggestStreak;
     }
 
-    public void setBiggestStreak(HabitEntry biggestStreak) {
+    public void setBiggestStreak(int biggestStreak) {
         this.biggestStreak = biggestStreak;
     }
 

@@ -26,11 +26,6 @@ public class Habit {
     private Map<String, String> description;
 
     @NotNull
-    @Lob
-    @Column(nullable = false)
-    private String image;
-
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "categoryId", nullable = false)
     private Category category;
@@ -41,12 +36,11 @@ public class Habit {
     public Habit() {
     }
 
-    public Habit(Long id, Map<String, String> name, Map<String, String> description, Category category, String image) {
+    public Habit(Long id, Map<String, String> name, Map<String, String> description, Category category) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.category = category;
-        this.image = image;
     }
 
 
@@ -73,14 +67,6 @@ public class Habit {
 
     public void setDescription(Map<String, String> description) {
         this.description = description;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public Category getCategory() {

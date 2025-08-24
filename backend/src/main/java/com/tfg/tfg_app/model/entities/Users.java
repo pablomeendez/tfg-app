@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Entity
 @Table(name = "Users")
@@ -54,21 +53,6 @@ public class Users {
 
     @Column(nullable = false)
     private Boolean firstEntry = true;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<DiaryEntry> diaryEntries;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<UserHabit> userHabits;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<HabitEntry> habitEntries;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<UserTrophy> userTrophies;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<WeeklySummary> weeklySummaries;
 
     public Users() {
         this.firstEntry = true; 
@@ -188,43 +172,4 @@ public class Users {
         this.firstEntry = firstEntry != null ? firstEntry : true;
     }
 
-    public Set<DiaryEntry> getDiaryEntries() {
-        return diaryEntries;
-    }
-
-    public void setDiaryEntries(Set<DiaryEntry> diaryEntries) {
-        this.diaryEntries = diaryEntries;
-    }
-
-    public Set<UserHabit> getUserHabits() {
-        return userHabits;
-    }
-
-    public void setUserHabits(Set<UserHabit> userHabits) {
-        this.userHabits = userHabits;
-    }
-
-    public Set<HabitEntry> getHabitEntries() {
-        return habitEntries;
-    }
-
-    public void setHabitEntries(Set<HabitEntry> habitEntries) {
-        this.habitEntries = habitEntries;
-    }
-
-    public Set<UserTrophy> getUserTrophies() {
-        return userTrophies;
-    }
-
-    public void setUserTrophies(Set<UserTrophy> userTrophies) {
-        this.userTrophies = userTrophies;
-    }
-
-    public Set<WeeklySummary> getWeeklySummaries() {
-        return weeklySummaries;
-    }
-
-    public void setWeeklySummaries(Set<WeeklySummary> weeklySummaries) {
-        this.weeklySummaries = weeklySummaries;
-    }
 } 
