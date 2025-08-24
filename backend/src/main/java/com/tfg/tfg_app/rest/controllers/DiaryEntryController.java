@@ -42,19 +42,6 @@ public class DiaryEntryController {
         return toDiaryEntryResponseDto(diaryEntryService.createDiaryEntry(userId, toDiaryEntry(diaryEntryDto), diaryEntryDto.getImages(), HabitConversor.toUserHabits(diaryEntryDto.getHabits())));
     }
 
-    @DeleteMapping("/")
-    public void deleteDiaryEntry(@RequestParam Long diaryEntryId) throws InstanceNotFoundException {
-
-        DiaryEntry diaryEntry = diaryEntryService.getDiaryEntryById(diaryEntryId);
-
-        if (diaryEntry == null) {
-            throw new InstanceNotFoundException("diaryEntry:", diaryEntryId);
-        }
-    
-        diaryEntryService.deleteDiaryEntry(diaryEntry);
-        
-    }
-
     @GetMapping("/")
     public Page<DiaryEntryResponseDto> getDiaryEntriesByUser (@RequestAttribute Long userId, @RequestParam int page, @RequestParam int size) {
 
