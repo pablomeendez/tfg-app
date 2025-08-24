@@ -98,16 +98,6 @@ public class DiaryEntryServiceImpl implements DiaryEntryService {
     }
 
     @Override
-    public void deleteDiaryEntry(DiaryEntry diaryEntry) throws InstanceNotFoundException {
-
-        if (!diaryEntryDao.findById(diaryEntry.getId()).isPresent()) {
-            throw new InstanceNotFoundException("Diary entry not found", diaryEntry);
-        }
-
-        diaryEntryDao.delete(diaryEntry);
-    }
-
-    @Override
     public DiaryEntry getDiaryEntryById(Long id) throws InstanceNotFoundException {
         return diaryEntryDao.findById(id)
             .orElseThrow(() -> new InstanceNotFoundException("Diary entry not found", id));

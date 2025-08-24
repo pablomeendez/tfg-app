@@ -9,14 +9,6 @@ import com.tfg.tfg_app.model.entities.HabitEntry;
 import com.tfg.tfg_app.model.entities.UserHabit;
 
 public interface HabitService {
-
-    //Habit createHabit(Habit habit);
-
-    //Habit updateHabit(Habit habit);
-
-    //void deleteHabit(Habit habit);
-
-    //Habit getHabitById(Long habitId);
     
     List<Habit> getAllHabits();
 

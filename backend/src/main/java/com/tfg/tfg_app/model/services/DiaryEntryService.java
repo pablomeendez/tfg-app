@@ -16,9 +16,7 @@ import com.tfg.tfg_app.model.services.exceptions.TrophyAlreadyGivenException;
 public interface DiaryEntryService {
 
     DiaryEntry createDiaryEntry(Long userId, DiaryEntry diaryEntry, List<byte[]> images, List<UserHabit> habits) throws DuplicateInstanceException, DuplicatedEntryException, InstanceNotFoundException, TrophyAlreadyGivenException;
-
-    void deleteDiaryEntry(DiaryEntry diaryEntry) throws InstanceNotFoundException;
-
+    
     DiaryEntry getDiaryEntryById(Long id) throws InstanceNotFoundException;
 
     Page<DiaryEntry> getDiaryEntriesByUserId(Long userId, int page, int size);
