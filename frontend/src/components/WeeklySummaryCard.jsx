@@ -2,9 +2,13 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
+import i18n from '../app/i18n/i18n';
 
 const WeeklySummaryCard = ({ summary }) => {
     const { t } = useTranslation();
+
+    const language = i18n.language;
+
   if (!summary) return null;
 
   const formatDate = (dateString) => {
@@ -56,7 +60,7 @@ const WeeklySummaryCard = ({ summary }) => {
               <MaterialCommunityIcons name="fire" size={20} color="#EF4444" />
               <Text className="ml-2 text-gray-700">{t('longest_streak')}</Text>
             </View>
-            <Text className="font-semibold text-red-600">{summary.biggestStreak.streak} {t('days')}</Text>
+            <Text className="font-semibold text-red-600">{summary.biggestStreak} {t('days')}</Text>
           </View>
         )}
 
@@ -66,7 +70,7 @@ const WeeklySummaryCard = ({ summary }) => {
               <MaterialCommunityIcons name="emoticon" size={20} color="#8B5CF6" />
               <Text className="ml-2 text-gray-700">{t('predomint_mood')}</Text>
             </View>
-            <Text className="font-semibold text-purple-600">{summary.moodTrend.name}</Text>
+            <Text className="font-semibold text-purple-600">{language === "en" ? summary.moodTrend.name.en : language === "es" ? summary.moodTrend.name.es : summary.moodTrend.name.gl}</Text>
           </View>
         )}
       </View>

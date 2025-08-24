@@ -13,10 +13,10 @@ export const TrophyCard = ({ index, userTrophy, language }) => {
                 </View>
                 <View className="flex-1">
                     <Text className="text-lg font-bold text-gray-800">
-                        {language === 'en' ? userTrophy.trophy.nameEn : language === 'es' ? userTrophy.trophy.nameEs : userTrophy.trophy.nameGl}
+                        {language === 'en' ? userTrophy.trophy.name.en : language === 'es' ? userTrophy.trophy.name.es : userTrophy.trophy.name.gl}
                     </Text>
                     <Text className="text-gray-600 mt-1">
-                        {language === 'en' ? userTrophy.trophy.descriptionEn : language === 'es' ? userTrophy.trophy.descriptionEs : userTrophy.trophy.descriptionGl}
+                        {language === 'en' ? userTrophy.trophy.description.en : language === 'es' ? userTrophy.trophy.description.es : userTrophy.trophy.description.gl}
                     </Text>
                     <Text className="text-green-600 text-sm font-medium mt-2">
                         {t('days_streak', { count: userTrophy.trophy.days })} {t('completed')}
