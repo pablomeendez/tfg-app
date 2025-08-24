@@ -115,7 +115,6 @@ public class WeeklySummaryServiceTest {
         habitDescriptions.put("es", "Descripción del hábito de prueba");
         habitDescriptions.put("gl", "Descrición do hábito de proba");
         testHabit.setDescription(habitDescriptions);
-        testHabit.setImage("test.jpg");
         testHabit.setCategory(testCategory);
         testHabit = habitDao.save(testHabit);
         
@@ -124,7 +123,7 @@ public class WeeklySummaryServiceTest {
         
         DiaryEntry diaryEntry = new DiaryEntry("Test diary entry", LocalDateTime.now(), testUser, testMood);
         diaryEntry = diaryEntryService.createDiaryEntry(testUser.getId(), diaryEntry, new ArrayList<>(), new ArrayList<>());
-        
+
         HabitEntry habitEntry = new HabitEntry();
         habitEntry.setUser(testUser);
         habitEntry.setHabit(testHabit);

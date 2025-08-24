@@ -98,26 +98,6 @@ public class DiaryEntryServiceTest {
     }
 
 
-
-    @Test
-    public void testDeleteDiaryEntry() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException, DuplicatedEntryException, TrophyAlreadyGivenException {
-        Users loggedInUser = userService.login("pablo", "1234");
-        DiaryEntry diaryEntry = diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("content", LocalDateTime.now(), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
-        
-        diaryEntryService.deleteDiaryEntry(diaryEntry);
-        
-        // Verify it's deleted by trying to find it
-        assertThrows(InstanceNotFoundException.class, () -> diaryEntryService.getDiaryEntryById(diaryEntry.getId()));
-    }
-
-    @Test
-    public void testDeleteDiaryEntryWithNonExistentId() {
-        DiaryEntry nonExistentEntry = new DiaryEntry("content", LocalDateTime.now(), testUser, testMood);
-        nonExistentEntry.setId(999L);
-        
-        assertThrows(InstanceNotFoundException.class, () -> diaryEntryService.deleteDiaryEntry(nonExistentEntry));
-    }
-
     @Test
     public void testGetDiaryEntryById() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException, DuplicatedEntryException, TrophyAlreadyGivenException {
         Users loggedInUser = userService.login("pablo", "1234");
@@ -204,19 +184,6 @@ public class DiaryEntryServiceTest {
     }
 
     @Test
-    public void testCreateEntryAfterDeletingPrevious() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException, DuplicatedEntryException, TrophyAlreadyGivenException {
-        Users loggedInUser = userService.login("pablo", "1234");
-        LocalDateTime sameDate = LocalDateTime.now().minusDays(5);
-        
-        DiaryEntry firstEntry = diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("Content 1", sameDate, loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
-        
-        diaryEntryService.deleteDiaryEntry(firstEntry);
-        
-        DiaryEntry newEntry = diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("Content 2", sameDate, loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
-        assertNotNull(newEntry.getId());
-    }
-
-    @Test
     public void testCreateEntryWithVeryLongContent() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException {
         Users loggedInUser = userService.login("pablo", "1234");
         String longContent = "This is a very long content that should be stored as TEXT in the database. ".repeat(100);
@@ -288,20 +255,6 @@ public class DiaryEntryServiceTest {
         assertEquals(3, entries.size());
     }
 
-    @Test
-    public void testDeleteAllEntriesForUser() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException, DuplicatedEntryException, TrophyAlreadyGivenException {
-        Users loggedInUser = userService.login("pablo", "1234");
-
-        DiaryEntry entry1 = diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("Content 1", LocalDateTime.now(), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
-        DiaryEntry entry2 = diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("Content 2", LocalDateTime.now().plusDays(1), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
-
-        diaryEntryService.deleteDiaryEntry(entry1);
-        diaryEntryService.deleteDiaryEntry(entry2);
-        
-        java.util.List<DiaryEntry> entries = diaryEntryService.getDiaryEntriesByUserId(loggedInUser.getId(), 0, 10).getContent();
-        assertEquals(0, entries.size());
-    }
-
 
     @Test
     public void testCreateEntryWithInvalidUserId() {
@@ -317,17 +270,6 @@ public class DiaryEntryServiceTest {
         
         assertThrows(DataIntegrityViolationException.class, () -> 
             diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("Content", LocalDateTime.now(), loggedInUser, invalidMood), new ArrayList<>(), new ArrayList<>()));
-    }
-
-
-
-    @Test
-    public void testDeleteDiaryEntryTwice() throws Exception {
-        Users loggedInUser = userService.login("pablo", "1234");
-        DiaryEntry entry = diaryEntryService.createDiaryEntry(loggedInUser.getId(),
-            new DiaryEntry("Content", LocalDateTime.now(), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
-        diaryEntryService.deleteDiaryEntry(entry);
-        assertThrows(InstanceNotFoundException.class, () -> diaryEntryService.deleteDiaryEntry(entry));
     }
 
     @Test

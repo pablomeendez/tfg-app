@@ -86,7 +86,6 @@ public class TrophyServiceTest {
         habitDescriptions.put("es", "Descripción del hábito de prueba");
         habitDescriptions.put("gl", "Descrición do hábito de proba");
         testHabit.setDescription(habitDescriptions);
-        testHabit.setImage("test_habit.png");
         testHabit.setCategory(testCategory);
         testHabit = habitDao.save(testHabit);
 

@@ -97,7 +97,6 @@ public class HabitServiceTest {
         habitDescriptions.put("es", "Rutina de ejercicio diario");
         habitDescriptions.put("gl", "Rutina de exercicio diario");
         testHabit.setDescription(habitDescriptions);
-        testHabit.setImage("exercise_image.png");
         testHabit.setCategory(testCategory);
         habitDao.save(testHabit);
 
@@ -162,7 +161,6 @@ public class HabitServiceTest {
         habit2Descriptions.put("es", "Meditación diaria");
         habit2Descriptions.put("gl", "Meditación diaria");
         testHabit2.setDescription(habit2Descriptions);
-        testHabit2.setImage("meditation_image.png");
         testHabit2.setCategory(testCategory);
         habitDao.save(testHabit2);
         
