@@ -134,36 +134,4 @@ public class UserServiceTest {
 		assertThrows(InstanceNotFoundException.class,
 				() -> userService.updateProfile(NON_EXISTENT_ID, "X", "X", "X", false));
 	}
-
-	@Test
-	public void testChangePassword() throws DuplicateInstanceException, InstanceNotFoundException,
-			IncorrectPasswordException, IncorrectLoginException {
-
-		Users user = createUser("user");
-		String oldPassword = user.getPassword();
-		String newPassword = 'X' + oldPassword;
-
-		userService.signUp(user);
-		userService.changePassword(user.getId(), oldPassword, newPassword);
-		userService.login(user.getUserName(), newPassword);
-
-	}
-
-	@Test
-	public void testChangePasswordWithNonExistentId() {
-		assertThrows(InstanceNotFoundException.class, () -> userService.changePassword(NON_EXISTENT_ID, "X", "Y"));
-	}
-
-	@Test
-	public void testChangePasswordWithIncorrectPassword() throws DuplicateInstanceException {
-
-		Users user = createUser("user");
-		String oldPassword = user.getPassword();
-		String newPassword = 'X' + oldPassword;
-
-		userService.signUp(user);
-		assertThrows(IncorrectPasswordException.class,
-				() -> userService.changePassword(user.getId(), 'Y' + oldPassword, newPassword));
-
-	}
 }

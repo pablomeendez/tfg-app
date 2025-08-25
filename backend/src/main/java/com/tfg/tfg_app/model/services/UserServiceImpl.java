@@ -109,26 +109,4 @@ public class UserServiceImpl implements UserService {
 		return userDao.save(user);
 
 	}
-
-    	/**
-	 * Change password.
-	 *
-	 * @param id          the id
-	 * @param oldPassword the old password
-	 * @param newPassword the new password
-	 * @throws InstanceNotFoundException  the instance not found exception
-	 * @throws IncorrectPasswordException the incorrect password exception
-	 */
-	@Override
-	public void changePassword(Long id, String oldPassword, String newPassword)
-			throws InstanceNotFoundException, IncorrectPasswordException {
-
-		Users user = permissionChecker.checkUser(id);
-
-		if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
-			throw new IncorrectPasswordException();
-		} else {
-			user.setPassword(passwordEncoder.encode(newPassword));
-		}
-	}
 }

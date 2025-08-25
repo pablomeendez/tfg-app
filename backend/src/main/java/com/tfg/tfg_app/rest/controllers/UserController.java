@@ -90,19 +90,6 @@ public class UserController {
 		return toAuthenticatedUserDto(serviceToken, user);
 
 	}
-
-	@PutMapping("/{userId}/changePassword")
-	public AuthenticatedUserDto changePassword(@PathVariable Long userId,
-			@RequestBody ChangeUserPasswordDto userPasswordDto)
-			throws InstanceNotFoundException, DuplicateInstanceException, IncorrectPasswordException {
-
-		userService.changePassword(userId, userPasswordDto.getOldPassword(), userPasswordDto.getNewPassword());
-
-		Users user = userService.checkUser(userId);
-
-		return toAuthenticatedUserDto(generateServiceToken(user), user);
-	}
-
     	/**
 	 * Generate service token.
 	 *
