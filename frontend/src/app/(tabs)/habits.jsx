@@ -2,15 +2,18 @@ import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity } from 'rea
 import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import habitService from '../../services/habitService';
-import HabitCard from '../../components/HabitCard';
+import HabitCard from '../../components/habits/HabitCard';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { ErrorComponent } from '../../components/ErrorComponent';
-import { LoadingComponent } from '../../components/LoadingComponent';
+import { ErrorComponent } from '../../components/common/ErrorComponent';
+import { LoadingComponent } from '../../components/common/LoadingComponent';
+import useStore from '../../store/store';
 
 export default function Habits() { 
-    const [allHabits, setAllHabits] = useState([]);
-    const [myHabits, setMyHabits] = useState([]);
+    const allHabits = useStore((state) => state.habits);
+    const setAllHabits = useStore((state) => state.setHabits);
+    const myHabits = useStore((state) => state.userHabits);
+    const setMyHabits = useStore((state) => state.setUserHabits);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { t } = useTranslation();
@@ -18,13 +21,16 @@ export default function Habits() {
     useEffect(() => {
         const fetchHabits = async () => {
             try {
-                const response = await habitService.getAllHabits();
+                if (allHabits.length === 0) {
+                    const response = await habitService.getAllHabits();
+                    setAllHabits(response.data);
+                }
                 const myHabitsResponse = await habitService.getHabitsByUser();
-                setAllHabits(response.data);
                 setMyHabits(myHabitsResponse.data); 
-                setLoading(false);
             } catch (err) {
                 setError(err.message);
+                setLoading(false);
+            } finally {
                 setLoading(false);
             }
         };
@@ -76,11 +82,10 @@ export default function Habits() {
                             <HabitCard habit={userHabit.habit} />
                             <View className="flex-row justify-center items-center mt-2 mb-3">
                                 <TouchableOpacity 
-                                    className="bg-red-500 w-9/12 justify-center h-10 rounded-lg pb-2" 
-                                    onPress={() => {
-                                        handleDeleteHabit(userHabit.id)
-                                    }}>
-                                    <Text className="text-center text-white font-semibold">{t('remove')}</Text> 
+                                    className="bg-red-500 rounded-md items-center justify-center w-9/12 h-10 mt-0"
+                                    onPress={() => handleDeleteHabit(userHabit.id)}
+                                >
+                                    <Text className="text-white text-lg font-semibold">{t('remove')}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -96,17 +101,20 @@ export default function Habits() {
                             <HabitCard habit={habit} />
                             {myHabits.some(myHabit => myHabit.habit.id === habit.id) ? 
                                 <View className="flex-row justify-center items-center mt-2 mb-2">
-                                    <View 
-                                        className="bg-gray-500 w-9/12 justify-center h-10 rounded-lg">
-                                        <Text className="text-center text-white font-semibold">{t('already_added')}</Text>
-                                    </View>
+                                    <TouchableOpacity 
+                                        className="bg-gray-500 rounded-md items-center justify-center w-9/12 h-10 mt-0 p-2 opacity-50"
+                                        onPress={() => {}}
+                                        disabled={true}
+                                    >
+                                        <Text className="text-white text-lg font-semibold">{t('already_added')}</Text>
+                                    </TouchableOpacity>
                                 </View> : (
                                 <View className="flex-row justify-center items-center mt-2 mb-2">
                                     <TouchableOpacity 
-                                        className="bg-blue-500 w-9/12 justify-center h-10 rounded-lg" 
+                                        className="bg-blue-600 rounded-md items-center justify-center w-9/12 h-10 mt-0"
                                         onPress={() => handleAddHabit(habit.id)}
-                                        >
-                                        <Text className="text-center text-white font-semibold">{t('add')}</Text>
+                                    >
+                                        <Text className="text-white text-lg font-semibold">{t('add')}</Text>
                                     </TouchableOpacity>
                                 </View>
                             ) }
