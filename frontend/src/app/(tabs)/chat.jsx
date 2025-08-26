@@ -1,12 +1,13 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useState, useEffect, useRef, useContext } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { MaterialIcons } from '@expo/vector-icons';
 import assistantService from '../../services/assistantService';
 import { AuthContext } from '../../context/AuthContext';
-import { LoadingComponent } from '../../components/LoadingComponent';
-import { ErrorComponent } from '../../components/ErrorComponent';
+import { LoadingComponent } from '../../components/common/LoadingComponent';
+import { ErrorComponent } from '../../components/common/ErrorComponent';
+import ChatMessage from '../../components/chat/ChatMessage';
+import ChatInput from '../../components/chat/ChatInput';
 
 export default function Chat() {
     const [messages, setMessages] = useState([]);
@@ -82,36 +83,6 @@ export default function Chat() {
         scrollToBottom();
     }, [messages]);
 
-    const renderMessage = (message) => (
-        <View
-            key={message.id}
-            className={`mb-4 ${message.isUser ? 'items-end' : 'items-start'}`}
-        >
-            <View
-                className={`max-w-[80%] p-3 rounded-2xl ${
-                    message.isUser
-                        ? 'bg-blue-500 rounded-br-sm'
-                        : 'bg-gray-200 rounded-bl-sm'
-                }`}
-            >
-                <Text
-                    className={`text-base ${
-                        message.isUser ? 'text-white' : 'text-gray-800'
-                    }`}
-                >
-                    {message.text}
-                </Text>
-                <Text
-                    className={`text-xs mt-1 ${
-                        message.isUser ? 'text-blue-100' : 'text-gray-500'
-                    }`}
-                >
-                    {message.timestamp}
-                </Text>
-            </View>
-        </View>
-    );
-
     return (
         <SafeAreaView className="flex-1 bg-white">
             <KeyboardAvoidingView 
@@ -141,7 +112,9 @@ export default function Chat() {
                     showsVerticalScrollIndicator={false}
                     onContentSizeChange={scrollToBottom}
                 >
-                    {messages.map(renderMessage)}
+                    {messages.map(message => (
+                        <ChatMessage key={message.id} message={message} />
+                    ))}
                     
                     {loading && (
                         <View className="items-start mb-4">
@@ -163,34 +136,13 @@ export default function Chat() {
 
                 {/* Input */}
                 <View className="border-t border-gray-200 p-4">
-                    <View className="flex-row items-center bg-gray-100 rounded-full px-4 py-2">
-                        <TextInput
-                            className="flex-1 text-base py-2"
-                            placeholder={t('chat_input_placeholder') || 'Escribe tu mensaje...'}
-                            value={inputText}
-                            onChangeText={setInputText}
-                            multiline
-                            maxLength={500}
-                            editable={!loading}
-                            onSubmitEditing={sendMessage}
-                            blurOnSubmit={false}
-                        />
-                        <TouchableOpacity
-                            onPress={sendMessage}
-                            disabled={!inputText.trim() || loading}
-                            className={`ml-2 p-2 rounded-full ${
-                                inputText.trim() && !loading
-                                    ? 'bg-blue-500'
-                                    : 'bg-gray-300'
-                            }`}
-                        >
-                            <MaterialIcons
-                                name="send"
-                                size={20}
-                                color={inputText.trim() && !loading ? 'white' : 'gray'}
-                            />
-                        </TouchableOpacity>
-                    </View>
+                    <ChatInput
+                        inputText={inputText}
+                        setInputText={setInputText}
+                        onSend={sendMessage}
+                        loading={loading}
+                        placeholder={t('chat_input_placeholder') || 'Escribe tu mensaje...'}
+                    />
                     <Text className="text-xs text-gray-500 text-center mt-2">
                         {t('chat_disclaimer') || 'El asistente utiliza IA y puede cometer errores. No reemplaza el consejo médico profesional.'}
                     </Text>
