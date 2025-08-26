@@ -2,23 +2,22 @@ import { useState, useContext } from 'react';
 import {
   View,
   Text,
-  TextInput,
   Alert,
   Pressable,
+  TouchableOpacity
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { AuthContext } from '../../context/AuthContext';
-import useTogglePasswordVisibility from '../../hooks/useTogglePasswordVisibility';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import userService from '../../services/userService';
 import { useTranslation } from 'react-i18next';
+import AuthInput from '../../components/ui/AuthInput';
+import PasswordInput from '../../components/ui/PasswordInput';
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { login } = useContext(AuthContext);
   const router = useRouter();
-  const { passwordVisibility, eyeIcon, handlePasswordVisibility } = useTogglePasswordVisibility();
   const { t } = useTranslation();
 
   const handleLogin = async () => {
@@ -33,7 +32,7 @@ export default function Login() {
       if (user.firstEntry) {
         user.firstEntry = false;
         const updateResponse = await userService.updateProfile(user.id, user);
-        router.replace('/screens/HabitForm');
+        router.replace('../screens/HabitForm');
       } else {
         router.replace('/(tabs)');
       }
@@ -48,31 +47,24 @@ export default function Login() {
         <Text className="text-2xl font-bold mb-5 text-center">Login</Text>
 
         <View className="gap-3">
-          <TextInput
-            className="border-[1px] p-3 rounded-md font-normal"
+          <AuthInput
             placeholder={t('username')}
             value={username}
             onChangeText={setUsername}
-            autoCapitalize="none"
           />
 
-          <View className="flex-row items-center border-[1px] rounded-md font-normal">
-            <TextInput
-                className="flex-1 p-3"
-                placeholder={t('password')}
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={passwordVisibility}
-                autoCapitalize="none"
-            />
-            <Pressable className="pr-3" onPress={handlePasswordVisibility}>
-                <MaterialCommunityIcons name={eyeIcon} size={18} color="#232323" />
-            </Pressable>
-          </View>
+          <PasswordInput
+            placeholder={t('password')}
+            value={password}
+            onChangeText={setPassword}
+          />
 
-          <Pressable className="bg-blue-600 p-4 rounded-md items-center mt-3" onPress={handleLogin}>
-            <Text className="text-[#fff] text-xl font-semibold">{t('login')}</Text>
-          </Pressable>
+          <TouchableOpacity 
+            className="bg-blue-600 rounded-md items-center justify-center p-4 mt-3"
+            onPress={handleLogin}
+          >
+            <Text className="text-white text-lg font-semibold">{t('login')}</Text>
+          </TouchableOpacity>
 
           <Pressable className="items-center mt-1" onPress={() => {router.navigate('/register')}}>
             <Text className="underline"> {t('not_registered')} </Text>
