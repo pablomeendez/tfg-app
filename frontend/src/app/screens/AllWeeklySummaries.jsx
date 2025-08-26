@@ -9,12 +9,12 @@ import { useEffect, useState, useContext } from "react";
 import { useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import weeklySummaryService from "../../services/weeklySummaryService";
-import WeeklySummaryCard from "../../components/WeeklySummaryCard";
+import WeeklySummaryCard from "../../components/diary/WeeklySummaryCard";
 import { AuthContext } from "../../context/AuthContext";
-import { PageNavigation } from "../../components/PageNavigation";
+import { PageNavigation } from "../../components/common/PageNavigation";
+import { ErrorComponent } from "../../components/common/ErrorComponent";
 import { useTranslation } from "react-i18next";
-import { ErrorComponent } from "../../components/ErrorComponent";
-import { LoadingComponent } from "../../components/LoadingComponent";
+import { LoadingComponent } from "../../components/common/LoadingComponent";
 
 export default function AllWeeklySummaries() {
     const router = useRouter();

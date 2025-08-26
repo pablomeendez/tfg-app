@@ -1,13 +1,15 @@
-import React, { useState, useEffect, useContext, useTransition } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native'; // AGREGAR ActivityIndicator y ScrollView
+import React, { useState, useEffect, useContext } from 'react';
+import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from '../../context/AuthContext';
 import habitService from '../../services/habitService';
-import HabitCard from '../../components/HabitCard';
-import { ErrorComponent } from '../../components/ErrorComponent';
-import { LoadingComponent } from '../../components/LoadingComponent';
+import HabitCard from '../../components/habits/HabitCard';
+import { ErrorComponent } from '../../components/common/ErrorComponent';
+import { LoadingComponent } from '../../components/common/LoadingComponent';
+import { useTranslation } from 'react-i18next';
+
 
 const HabitForm = () => {
     const [allHabits, setAllHabits] = useState([]);
@@ -16,7 +18,7 @@ const HabitForm = () => {
     const { userId } = useContext(AuthContext);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-    const { t } = useTransition();
+    const { t } = useTranslation();
 
     useEffect(() => {
         const fetchHabits = async () => {
@@ -85,56 +87,57 @@ const HabitForm = () => {
 
 
     return (
-        <SafeAreaView className="flex-1"> 
+        <SafeAreaView className="flex-1 bg-white"> 
             {error ? (
                 <ErrorComponent error={error} />
             ) : loading ? (
                 <LoadingComponent />
-            ) : 
-            <View>
-                <ScrollView className="flex-1 p-4"> 
-                    <Text className="text-2xl font-bold mb-4 text-center">{t('habit_form')}</Text> 
-                    {allHabits.map((habit, index) => (
-                        <View key={`habit-${habit.id || index}`} className="mb-4"> 
-                            <HabitCard habit={habit} />
-                            <View className="flex-row justify-center items-center mt-2"> 
-                            {myHabits.some(myHabit => myHabit.habit?.id === habit.id) ? 
-                                <TouchableOpacity 
-                                    className="bg-red-500 w-9/12 justify-center h-10 rounded-lg" 
-                                    onPress={() => {
-                                        const userHabit = myHabits.find(myHabit => myHabit.habit?.id === habit.id);
-                                        if (userHabit) {
-                                            handleDeleteHabit(userHabit.id);
-                                        }
-                                    }}>
-                                    <Text className="text-center text-white font-semibold">{t('remove')}</Text> 
-                                </TouchableOpacity>
-                            : (
-                                <TouchableOpacity 
-                                    className="bg-blue-500 w-9/12 justify-center h-10 rounded-lg" 
-                                    onPress={() => handleAddHabit(habit.id)}
-                                >
-                                    <Text className="text-center text-white font-semibold">{t('add')}</Text>
-                                </TouchableOpacity>
-                            )}
+            ) : (
+                <>
+                    <ScrollView className="flex-1 p-4"> 
+                        <Text className="text-2xl font-bold mb-4 text-center">{t('habit_form')}</Text> 
+                        {allHabits.map((habit, index) => (
+                            <View key={`habit-${habit.id || index}`} className="mb-4"> 
+                                <HabitCard habit={habit} />
+                                <View className="flex-row justify-center items-center mt-2"> 
+                                {myHabits.some(myHabit => myHabit.habit?.id === habit.id) ? 
+                                    <TouchableOpacity 
+                                        className="bg-red-500 w-9/12 justify-center h-10 rounded-lg" 
+                                        onPress={() => {
+                                            const userHabit = myHabits.find(myHabit => myHabit.habit?.id === habit.id);
+                                            if (userHabit) {
+                                                handleDeleteHabit(userHabit.id);
+                                            }
+                                        }}>
+                                        <Text className="text-center text-white font-semibold">{t('remove')}</Text> 
+                                    </TouchableOpacity>
+                                : (
+                                    <TouchableOpacity 
+                                        className="bg-blue-500 w-9/12 justify-center h-10 rounded-lg" 
+                                        onPress={() => handleAddHabit(habit.id)}
+                                    >
+                                        <Text className="text-center text-white font-semibold">{t('add')}</Text>
+                                    </TouchableOpacity>
+                                )}
+                            </View>
                         </View>
+                    ))}
+                    
+                    {allHabits.length === 0 && (
+                        <Text className="text-gray-500 text-center py-4">{t('no_habits_available')}</Text>
+                    )}
+                    </ScrollView>
+                    
+                    <View className="p-4"> 
+                        <TouchableOpacity 
+                            className="bg-green-600 p-4 rounded-lg" 
+                            onPress={() => router.replace('/(tabs)')} 
+                        >
+                            <Text className="text-center text-white text-lg font-semibold">{t('done')}</Text> 
+                        </TouchableOpacity>
                     </View>
-                ))}
-                
-                {allHabits.length === 0 && (
-                    <Text className="text-gray-500 text-center py-4">{t('no_habits_available')}</Text>
-                )}
-                </ScrollView>
-                
-                <View className="p-4"> 
-                    <TouchableOpacity 
-                        className="bg-green-600 p-4 rounded-lg" 
-                        onPress={() => router.replace('/(tabs)')} 
-                    >
-                        <Text className="text-center text-white text-lg font-semibold">{t('done')}</Text> 
-                    </TouchableOpacity>
-                </View>
-            </View>}
+                </>
+            )}
         </SafeAreaView>
     )
 }
