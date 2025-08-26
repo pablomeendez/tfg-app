@@ -2,12 +2,12 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import diaryEntryService from '../../services/diaryEntryService';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {DiaryEntryModal} from '../../components/DiaryEntryModal';
-import DiaryEntryCard from '../../components/DiaryEntryCard';
-import {PageNavigation} from '../../components/PageNavigation';
+import {DiaryEntryModal} from '../../components/diary/DiaryEntryModal';
+import DiaryEntryCard from '../../components/diary/DiaryEntryCard';
+import {PageNavigation} from '../../components/common/PageNavigation';
+import { ErrorComponent } from '../../components/common/ErrorComponent';
+import { LoadingComponent } from '../../components/common/LoadingComponent';
 import { useTranslation } from 'react-i18next';
-import { ErrorComponent } from '../../components/ErrorComponent';
-import { LoadingComponent } from '../../components/LoadingComponent';
 
 export default function Diary() {
     const [diaryEntries, setDiaryEntries] = useState([]);
