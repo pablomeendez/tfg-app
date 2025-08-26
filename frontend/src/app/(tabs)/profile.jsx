@@ -6,9 +6,9 @@ import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
-import { LoadingComponent } from '../../components/LoadingComponent';
-import ProfileInfoCard from '../../components/ProfileInfoCard';
-import LanguageSelector from '../../components/LanguageSelector';
+import { LoadingComponent } from '../../components/common/LoadingComponent';
+import ProfileInfoCard from '../../components/profile/ProfileInfoCard';
+import LanguageSelector from '../../components/profile/LanguageSelector';
 
 export default function Profile() {
     const { logout, userId, user } = useContext(AuthContext);
@@ -128,11 +128,10 @@ export default function Profile() {
                         />
 
                         <TouchableOpacity 
-                            className="bg-red-500 rounded-lg p-4 flex-row items-center justify-center"
+                            className="bg-red-500 rounded-md items-center justify-center p-4 mt-3"
                             onPress={handleLogout}
                         >
-                            <MaterialCommunityIcons name="logout" size={20} color="white" />
-                            <Text className="text-white text-lg font-semibold ml-2">{t('log_out')}</Text>
+                            <Text className="text-white text-lg font-semibold">{t('log_out')}</Text>
                         </TouchableOpacity>
                     </View>
                 </ScrollView>
