@@ -14,15 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
-import com.tfg.tfg_app.model.entities.HabitEntry;
-import com.tfg.tfg_app.model.entities.UserTrophy;
 import com.tfg.tfg_app.model.services.HabitService;
-import com.tfg.tfg_app.model.services.TrophyService;
-import com.tfg.tfg_app.model.services.exceptions.TrophyAlreadyGivenException;
 import com.tfg.tfg_app.rest.dtos.HabitDto;
 import com.tfg.tfg_app.rest.dtos.HabitEntryDto;
-import com.tfg.tfg_app.rest.dtos.HabitEntryParamsDto;
-import com.tfg.tfg_app.rest.dtos.HabitEntryWithTrophyDto;
 import com.tfg.tfg_app.rest.dtos.UserHabitDto;
 import static com.tfg.tfg_app.rest.dtos.HabitConversor.*;
 
@@ -40,24 +34,19 @@ public class HabitController {
         return toHabitDtos(habitService.getAllHabits());
     }
 
-    @PostMapping("/userHabit")
+    @PostMapping("/user-habit")
     UserHabitDto createUserHabit(@RequestAttribute Long userId, @RequestBody Long habitId) throws InstanceNotFoundException {
         return toUserHabitDto(habitService.createUserHabit(userId, habitId));
     }
 
-    @DeleteMapping("/userHabit/{id}")
+    @DeleteMapping("/user-habit/{id}")
     void deleteUserHabit(@RequestAttribute Long userId, @PathVariable Long id) throws InstanceNotFoundException {
         habitService.deleteUserHabit(id);
     }
 
-    @GetMapping("")
+    @GetMapping("/user-habit")
     List<UserHabitDto> getHabitsByUserId(@RequestAttribute Long userId) throws InstanceNotFoundException {
         return toUserHabitDtos(habitService.getHabitsByUserId(userId));
-    }
-
-    @DeleteMapping("/entry/{habitEntryId}")
-    HabitEntryDto deleteHabitEntry(@RequestAttribute Long userId, @PathVariable Long habitEntryId) throws InstanceNotFoundException {
-        return toHabitEntryDto(habitService.deleteHabitEntry(userId, habitEntryId));
     }
 
     @GetMapping("/entries")

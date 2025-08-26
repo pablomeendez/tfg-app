@@ -3,7 +3,6 @@ package com.tfg.tfg_app.rest.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -17,11 +16,9 @@ import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.entities.Users;
 import com.tfg.tfg_app.model.services.UserService;
 import com.tfg.tfg_app.model.services.exceptions.IncorrectLoginException;
-import com.tfg.tfg_app.model.services.exceptions.IncorrectPasswordException;
 import com.tfg.tfg_app.rest.common.JwtGenerator;
 import com.tfg.tfg_app.rest.common.JwtInfo;
 import com.tfg.tfg_app.rest.dtos.AuthenticatedUserDto;
-import com.tfg.tfg_app.rest.dtos.ChangeUserPasswordDto;
 import com.tfg.tfg_app.rest.dtos.LoginParamsDto;
 import com.tfg.tfg_app.rest.dtos.UserDto;
 
@@ -39,7 +36,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/signUp")
+    @PostMapping("/signup")
     public ResponseEntity<AuthenticatedUserDto> signUp(
         @Validated({ UserDto.AllValidations.class }) @RequestBody UserDto userDto) throws DuplicateInstanceException {
 
@@ -58,7 +55,7 @@ public class UserController {
 	public AuthenticatedUserDto updateUser(
 			@RequestAttribute Long userId,
 			@Validated({ UserDto.UpdateValidations.class }) @RequestBody UserDto userDto)
-			throws InstanceNotFoundException, DuplicateInstanceException {
+			throws InstanceNotFoundException {
 
 		Users user = toUser(userDto);
 		userService.updateProfile(userId, user.getName(), user.getLastName(), user.getEmail(), user.getFirstEntry());
@@ -81,7 +78,7 @@ public class UserController {
 		return toAuthenticatedUserDto(generateServiceToken(user), user);
 	}
 
-	@PostMapping("/loginFromServiceToken")
+	@PostMapping("/login-service-token")
 	public AuthenticatedUserDto loginFromServiceToken(@RequestAttribute Long userId,
 			@RequestAttribute String serviceToken) throws InstanceNotFoundException {
 

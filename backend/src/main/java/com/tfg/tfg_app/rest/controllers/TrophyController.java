@@ -22,17 +22,17 @@ public class TrophyController {
     @Autowired
     private TrophyService trophyService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public List<TrophyDto> getAllTrophies() {
         return TrophyConversor.toTrophyDtos(trophyService.getAllTrophies());
     }
 
-    @GetMapping("/userTrophy")
+    @GetMapping("/user-trophy")
     public List<UserTrophyDto> getUserTrophiesByUser(@RequestAttribute Long userId) throws InstanceNotFoundException{
         return TrophyConversor.toUserTrophyDtos(trophyService.getUserTrophies(userId));
     }
 
-    @GetMapping("/userTrophy/habit")
+    @GetMapping("/user-trophy/habit")
     public List<UserTrophyDto> getUserTrophiesByUserAndHabit(@RequestAttribute Long userId, @RequestParam Long habitId) throws InstanceNotFoundException {
         return TrophyConversor.toUserTrophyDtos(trophyService.getUserTrophiesByUserIdAndHabitId(userId, habitId));
     }

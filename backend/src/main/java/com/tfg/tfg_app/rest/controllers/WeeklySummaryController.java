@@ -1,7 +1,5 @@
 package com.tfg.tfg_app.rest.controllers;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +14,7 @@ import com.tfg.tfg_app.rest.dtos.WeeklySummaryConversor;
 import com.tfg.tfg_app.rest.dtos.WeeklySummaryDto;
 
 @RestController
-@RequestMapping("/api/weeklySummary")
+@RequestMapping("/api/weekly-summary")
 public class WeeklySummaryController {
 
     @Autowired
