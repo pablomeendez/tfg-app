@@ -3,7 +3,7 @@ import apiClient from './apiClient';
 
 const userService = {
     register: (userName, password, name, lastName, email) => {
-        return apiClient.post('/users/signUp', {
+        return apiClient.post('/users/signup', {
             userName: userName, 
             password: password, 
             firstName: name, 
