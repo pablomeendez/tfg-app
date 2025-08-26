@@ -34,7 +34,7 @@ public class WeeklySummaryServiceImpl implements WeeklySummaryService {
     @Autowired
     private TrophyService trophyService;
 
-    @Scheduled(cron = "00 * * * * *")
+    @Scheduled(cron = "59 * * * * *")
     public void generateWeeklySummariesForAllUsers() {
         try {
             List<Users> allUsers = userService.getAllUsers(); // Necesitarás implementar este método
@@ -57,8 +57,8 @@ public class WeeklySummaryServiceImpl implements WeeklySummaryService {
 
         Users user = userService.checkUser(userId); 
 
-        int habitsCompleted = habitService.getUserHabitsAfterDate(userId, date).size();
-        int totalEntries = diaryEntryService.getDiaryEntriesByUserIdAndDate(userId, date).size();
+        int habitsCompleted = habitService.getUserHabitsAfterDate(userId, date.minusDays(7), date).size();
+        int totalEntries = diaryEntryService.getDiaryEntriesByUserIdAndDate(userId, date.minusDays(7), date).size();
         int trophiesEarned = trophyService.getUserTrophiesByUserIdAndDate(userId, date).size();
 
         HabitEntry biggestStreak = habitService.getUserBiggestStreak(userId);
@@ -67,19 +67,16 @@ public class WeeklySummaryServiceImpl implements WeeklySummaryService {
             biggestStreak = new HabitEntry(); 
         }
 
-        Mood moodTrend = diaryEntryService.getMostFrequentMood(userId, date).getMood();
+        Mood moodTrend = diaryEntryService.getWeeksMostFrequentMood(userId, date.minusDays(7), date).getMood();
 
         if (moodTrend == null) {
             moodTrend = new Mood(); 
         }
 
-        return weeklySummaryDao.save(new WeeklySummary(habitsCompleted, totalEntries, trophiesEarned, biggestStreak, user, moodTrend, date));
+        return weeklySummaryDao.save(new WeeklySummary(habitsCompleted, totalEntries, trophiesEarned, biggestStreak.getStreak(), user, moodTrend, date));
     }
 
     public Page<WeeklySummary> getWeeklySummariesByUserId(Long userId, int page, int size) throws InstanceNotFoundException {
-
-        Users user = userService.checkUser(userId);
-
         return weeklySummaryDao.findByUserIdOrderByDateDesc(userId, PageRequest.of(page, size));
     } 
 
