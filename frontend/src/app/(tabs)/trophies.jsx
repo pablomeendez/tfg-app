@@ -1,12 +1,12 @@
-import { useState, useEffect, useContext, useTransition } from "react";
+import { useState, useEffect, useContext } from "react";
 import { View, Text, ActivityIndicator, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import trophyService from "../../services/trophyService";
 import { useTranslation } from "react-i18next";
-import { LoadingComponent } from "../../components/LoadingComponent";
-import i18n from "../i18n/i18n";
-import { TrophyCard } from "../../components/TrophyCard";
+import { LoadingComponent } from "../../components/common/LoadingComponent";
+import i18n from "../../i18n/i18n";
+import TrophyCard from "../../components/trophies/TrophyCard";
 
 export default function Trophies() {
     const [trophies, setTrophies] = useState([]);
