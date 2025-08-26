@@ -24,7 +24,7 @@ const userService = {
         return apiClient.put(`/users/${userId}`, userData);
     },
     loginFromServiceToken: async (userId, serviceToken) => {
-        return apiClient.post('/users/loginFromServiceToken', {
+        return apiClient.post('/users/login-service-token', {
             userId: userId,
             serviceToken: serviceToken
         });

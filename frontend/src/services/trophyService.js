@@ -5,10 +5,10 @@ const trophyService = {
         return await apiClient.get("/trophies");
     },
     getTrophiesByUser: async () => {
-        return await apiClient.get(`/trophies/userTrophy`);
+        return await apiClient.get(`/trophies/user-trophy`);
     },
     getTrophiesByUserAndHabit: async (habitId) => {
-        return await apiClient.get(`/trophies/userTrophy/habit?habitId=${habitId}`);
+        return await apiClient.get(`/trophies/user-trophy/habit?habitId=${habitId}`);
     }
 };
 

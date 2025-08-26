@@ -2,24 +2,17 @@ import apiClient  from "./apiClient";
 
 const diaryEntryService = {
     createDiaryEntry: (description, images, mood, selectedHabits) => {
-        return apiClient.post('/diaryEntry', {description: description, images: images, mood: mood, habits: selectedHabits});
-    },
-    updateDiaryEntry: (diaryEntryId, description, images, moodId) => {
-        return apiClient.put(`/diaryEntry/${diaryEntryId}`, {description: description, images: images, moodId: moodId});
-    },
-
-    deleteDiaryEntry: (diaryEntryId) => {
-        return apiClient.delete(`/diaryEntry/?diaryEntryId=${diaryEntryId}`);
+        return apiClient.post('/diary-entry', {description: description, images: images, mood: mood, habits: selectedHabits});
     },
 
     getDiaryEntries: (page, size) => {
-        return apiClient.get(`/diaryEntry/?page=${page}&size=${size}`);
+        return apiClient.get(`/diary-entry?page=${page}&size=${size}`);
     },
     getAllMoods: () => {
-        return apiClient.get('/diaryEntry/moods');
+        return apiClient.get('/diary-entry/moods');
     },
     getLatestDiaryEntry: () => {
-        return apiClient.get(`/diaryEntry/latest`);
+        return apiClient.get(`/diary-entry/latest`);
     }
 }
 
