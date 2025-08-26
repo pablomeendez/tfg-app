@@ -2,7 +2,9 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import i18n from '../app/i18n/i18n';
+import MultiLanguageText from './../common/MultiLanguageText';
+import StatRow from './StatRow';
+import i18n from './../../i18n/i18n';
 
 const WeeklySummaryCard = ({ summary }) => {
     const { t } = useTranslation();
@@ -46,32 +48,36 @@ const WeeklySummaryCard = ({ summary }) => {
           <Text className="font-semibold text-green-600">{summary.habitsCompleted}</Text>
         </View>
 
-        <View className="flex-row items-center justify-between py-1">
-          <View className="flex-row items-center">
-            <MaterialCommunityIcons name="trophy" size={20} color="#F59E0B" />
-            <Text className="ml-2 text-gray-700">{t('trophies_earned')}</Text>
-          </View>
-          <Text className="font-semibold text-yellow-600">{summary.trophiesEarned}</Text>
-        </View>
+        <StatRow
+          icon="trophy"
+          iconColor="#F59E0B"
+          label={t('trophies_earned')}
+          value={summary.trophiesEarned}
+          valueColor="#D97706"
+        />
 
         {summary.biggestStreak && (
-          <View className="flex-row items-center justify-between py-1">
-            <View className="flex-row items-center">
-              <MaterialCommunityIcons name="fire" size={20} color="#EF4444" />
-              <Text className="ml-2 text-gray-700">{t('longest_streak')}</Text>
-            </View>
-            <Text className="font-semibold text-red-600">{summary.biggestStreak} {t('days')}</Text>
-          </View>
+          <StatRow
+            icon="fire"
+            iconColor="#EF4444"
+            label={t('longest_streak')}
+            value={`${summary.biggestStreak} ${t('days')}`}
+            valueColor="#DC2626"
+          />
         )}
 
         {summary.moodTrend && (
-          <View className="flex-row items-center justify-between py-1">
-            <View className="flex-row items-center">
-              <MaterialCommunityIcons name="emoticon" size={20} color="#8B5CF6" />
-              <Text className="ml-2 text-gray-700">{t('predomint_mood')}</Text>
-            </View>
-            <Text className="font-semibold text-purple-600">{language === "en" ? summary.moodTrend.name.en : language === "es" ? summary.moodTrend.name.es : summary.moodTrend.name.gl}</Text>
-          </View>
+          <StatRow
+            icon="emoticon"
+            iconColor="#8B5CF6"
+            label={t('predomint_mood')}
+            value={
+              <MultiLanguageText 
+                textObject={summary.moodTrend.name}
+                className="font-semibold text-purple-600"
+              />
+            }
+          />
         )}
       </View>
     </View>

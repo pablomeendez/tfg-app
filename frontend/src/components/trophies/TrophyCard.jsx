@@ -1,6 +1,7 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
+import MultiLanguageText from "../common/MultiLanguageText";
 
 export const TrophyCard = ({ index, userTrophy, language }) => {
     const { t } = useTranslation();
@@ -12,12 +13,14 @@ export const TrophyCard = ({ index, userTrophy, language }) => {
                     <MaterialCommunityIcons name="trophy" size={24} color="#F59E0B" />
                 </View>
                 <View className="flex-1">
-                    <Text className="text-lg font-bold text-gray-800">
-                        {language === 'en' ? userTrophy.trophy.name.en : language === 'es' ? userTrophy.trophy.name.es : userTrophy.trophy.name.gl}
-                    </Text>
-                    <Text className="text-gray-600 mt-1">
-                        {language === 'en' ? userTrophy.trophy.description.en : language === 'es' ? userTrophy.trophy.description.es : userTrophy.trophy.description.gl}
-                    </Text>
+                    <MultiLanguageText
+                        textObject={userTrophy.trophy.name}
+                        className="text-lg font-bold text-gray-800"
+                    />
+                    <MultiLanguageText
+                        textObject={userTrophy.trophy.description}
+                        className="text-gray-600 mt-1"
+                    />
                     <Text className="text-green-600 text-sm font-medium mt-2">
                         {t('days_streak', { count: userTrophy.trophy.days })} {t('completed')}
                     </Text>

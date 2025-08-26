@@ -2,7 +2,8 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import i18n from '../app/i18n/i18n';
+import i18n from './../../i18n/i18n';
+import MoodItem from './MoodItem';
 
 export const DailyCheckIn = ({ moods }) => {
   const { t } = useTranslation();
@@ -31,12 +32,13 @@ export const DailyCheckIn = ({ moods }) => {
                 <View className="flex flex-row flex-wrap justify-center items-center">
                   {moods.length > 0 ? (
                     moods.map((mood) => (
-                      <View className="m-2 w-20 h-28" key={mood.id}>
-                        <TouchableOpacity
-                          className="rounded-full p-3 shadow-sm active:scale-95 border border-yellow-400 w-20 h-20 justify-center items-center"
+                      <View className="m-2" key={mood.id}>
+                        <MoodItem
+                          mood={mood}
+                          style="dailyCheckIn"
                           onPress={() => {
                             router.push({
-                              pathname: "/screens/DiaryEntryForm",
+                              pathname: "screens/DiaryEntryForm",
                               params: { 
                                 moodId: mood.id, 
                                 moodName: JSON.stringify(mood.name), 
@@ -44,29 +46,7 @@ export const DailyCheckIn = ({ moods }) => {
                               }
                             });
                           }}
-                        >
-                          <View className="flex items-center justify-center">
-                            {mood.image ? (
-                              <View className="bg-yellow-300 rounded-full">
-                                <Image 
-                                  source={{ uri: mood.image }} 
-                                  style={{ width: 45, height: 45 }} 
-                                />
-                              </View>
-                            ) : (
-                              <Text className="text-gray-700 font-semibold text-xs text-center">
-                                {language === 'en' ? mood.name.en : language === 'es' ? mood.name.es : mood.name.gl || `Mood ${mood.id}`}
-                              </Text>
-                            )}
-                          </View>
-                        </TouchableOpacity>
-                        {mood.name && (
-                          <View className="h-6 mt-2">
-                            <Text className="text-center text-xs text-gray-600 font-medium w-20" numberOfLines={2} ellipsizeMode="tail">
-                              {language === 'en' ? mood.name.en : language === 'es' ? mood.name.es : mood.name.gl}
-                            </Text>
-                          </View>
-                        )}
+                        />
                       </View>
                     ))
                   ) : (

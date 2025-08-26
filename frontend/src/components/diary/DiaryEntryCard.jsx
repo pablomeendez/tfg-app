@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
+import MultiLanguageText from './../common/MultiLanguageText';
 import { View, Text, TouchableOpacity } from 'react-native';
-import i18n from '../app/i18n/i18n';
+import i18n from './../../i18n/i18n';
 
 const DiaryEntryCard = ({ entry, onPress }) => {
     const language = i18n.language;
@@ -30,7 +31,10 @@ const DiaryEntryCard = ({ entry, onPress }) => {
                         <View key={index} className="flex-1 flex-wrap flex-row gap-4 rounded-lg p-2 mb-1 border-l-4 border-green-500 my-2">
                             <View>
                                 <Text className="text-green-800 font-medium">{language === 'en' ? habitEntry.habit.description.en : language === 'es' ? habitEntry.habit.description.es : habitEntry.habit.description.gl}</Text>
-                                <Text className="text-green-600 text-xs">{language === 'en' ? habitEntry.habit.category.name.en : language === 'es' ? habitEntry.habit.category.name.es : habitEntry.habit.category.name.gl}</Text>
+                                <MultiLanguageText
+                                    textObject={habitEntry.habit.category.name}
+                                    className="text-green-600 text-xs"
+                                />
                             </View>
                             <View>
                                 <Text className="text-green-600">{t('days_streak', { count: habitEntry.streak })}</Text>
