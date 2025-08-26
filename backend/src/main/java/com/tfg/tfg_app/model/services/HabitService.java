@@ -26,6 +26,6 @@ public interface HabitService {
 
     HabitEntry getUserBiggestStreak(Long userId) throws InstanceNotFoundException;
 
-    List<HabitEntry> getUserHabitsAfterDate(Long userId, LocalDateTime date) throws InstanceNotFoundException;
-    
+    List<HabitEntry> getUserHabitsAfterDate(Long userId, LocalDateTime startDate, LocalDateTime endDate) throws InstanceNotFoundException;
+
 }

@@ -71,9 +71,6 @@ public class HabitServiceImpl implements HabitService {
     }
 
     public List<UserHabit> getHabitsByUserId(Long userId) throws InstanceNotFoundException {
-
-        Users user = userService.checkUser(userId);
-
         return userHabitDao.findByUserId(userId);
     }
 
@@ -142,9 +139,9 @@ public class HabitServiceImpl implements HabitService {
         return habitEntryDao.findFirstByUserIdOrderByStreakDesc(user.getId());
     }
 
-    public List<HabitEntry> getUserHabitsAfterDate(Long userId, LocalDateTime date) throws InstanceNotFoundException {
+    public List<HabitEntry> getUserHabitsAfterDate(Long userId, LocalDateTime startDate, LocalDateTime endDate) throws InstanceNotFoundException {
         Users user = userService.checkUser(userId);
-        return habitEntryDao.findByUserIdAndDateBetween(user.getId(), date.minusDays(7), date);
+        return habitEntryDao.findByUserIdAndDateBetween(user.getId(), startDate, endDate);
     }
 
 }

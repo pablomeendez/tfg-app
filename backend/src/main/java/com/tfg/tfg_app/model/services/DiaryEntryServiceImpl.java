@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import com.tfg.tfg_app.model.common.exceptions.DuplicateInstanceException;
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.entities.DiaryEntry;
 import com.tfg.tfg_app.model.entities.DiaryEntryDao;
@@ -24,7 +23,6 @@ import com.tfg.tfg_app.model.entities.MoodDao;
 import com.tfg.tfg_app.model.entities.UserHabit;
 import com.tfg.tfg_app.model.entities.Users;
 import com.tfg.tfg_app.model.services.exceptions.DuplicatedEntryException;
-import com.tfg.tfg_app.model.services.exceptions.TrophyAlreadyGivenException;
 
 @Service
 public class DiaryEntryServiceImpl implements DiaryEntryService {
@@ -48,7 +46,7 @@ public class DiaryEntryServiceImpl implements DiaryEntryService {
     private ImagesDao imagesDao;
 
     @Override
-    public DiaryEntry createDiaryEntry(Long userId, DiaryEntry diaryEntry, List<byte[]> images, List<UserHabit> habits) throws DuplicateInstanceException, DuplicatedEntryException, InstanceNotFoundException, TrophyAlreadyGivenException {
+    public DiaryEntry createDiaryEntry(Long userId, DiaryEntry diaryEntry, List<byte[]> images, List<UserHabit> habits) throws DuplicatedEntryException, InstanceNotFoundException {
 
         Users user = userService.checkUser(userId);
         
@@ -75,8 +73,6 @@ public class DiaryEntryServiceImpl implements DiaryEntryService {
                 trophyService.checkAndAwardUserTrophy(userId, habitEntryResult.getHabit().getId(), habitEntryResult.getStreak());
             } catch (InstanceNotFoundException  e) {
                 throw new RuntimeException("Error creating habit entry: " + e.getMessage(), e);
-            } catch (TrophyAlreadyGivenException e) {
-                throw new RuntimeException("Trophy already given: " + e.getMessage(), e)    ;
             }
         });
 
@@ -114,13 +110,13 @@ public class DiaryEntryServiceImpl implements DiaryEntryService {
     }
 
     @Override
-    public DiaryEntry getMostFrequentMood(Long userId, LocalDateTime date) {
-        return diaryEntryDao.findMostFrequentMood(userId, date.minusDays(7), date);
+    public DiaryEntry getWeeksMostFrequentMood(Long userId, LocalDateTime startDate, LocalDateTime endDate) {
+        return diaryEntryDao.findMostFrequentMood(userId, startDate, endDate);
     }
 
     @Override
-    public List<DiaryEntry> getDiaryEntriesByUserIdAndDate(Long userId, LocalDateTime date) {
-        return diaryEntryDao.findByUserIdAndDateBetween(userId, date.minusDays(7), date);
+    public List<DiaryEntry> getDiaryEntriesByUserIdAndDate(Long userId, LocalDateTime startDate, LocalDateTime endDate) {
+        return diaryEntryDao.findByUserIdAndDateBetween(userId, startDate, endDate);
     }
 
     @Override
