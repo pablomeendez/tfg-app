@@ -15,7 +15,6 @@ import com.tfg.tfg_app.model.entities.TrophyDao;
 import com.tfg.tfg_app.model.entities.UserTrophy;
 import com.tfg.tfg_app.model.entities.UserTrophyDao;
 import com.tfg.tfg_app.model.entities.Users;
-import com.tfg.tfg_app.model.services.exceptions.TrophyAlreadyGivenException;
 
 @Service
 public class TrophyServiceImpl implements TrophyService {
@@ -38,23 +37,7 @@ public class TrophyServiceImpl implements TrophyService {
     }
 
     @Override
-    public List<Trophy> getTrophiesByUserId(Long userId) {
-        List<UserTrophy> userTrophies = userTrophyDao.findByUserId(userId);
-        return userTrophies.stream()
-                .map(UserTrophy::getTrophy)
-                .distinct()
-                .collect(java.util.stream.Collectors.toList());
-    }
-
-    @Override
-    public Trophy getTrophyById(Long trophyId) throws InstanceNotFoundException {
-        return trophyDao.findById(trophyId)
-                .orElseThrow(() -> new InstanceNotFoundException(
-                        "Trophy with ID " + trophyId + " not found.", Trophy.class));
-    }
-
-    @Override
-    public UserTrophy checkAndAwardUserTrophy(Long userId, Long habitId, int days) throws InstanceNotFoundException, TrophyAlreadyGivenException {
+    public UserTrophy checkAndAwardUserTrophy(Long userId, Long habitId, int days) throws InstanceNotFoundException {
 
         Users user = userService.checkUser(userId);
         if (user == null) {

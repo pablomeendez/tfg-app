@@ -29,7 +29,6 @@ import com.tfg.tfg_app.model.entities.MoodDao;
 import com.tfg.tfg_app.model.entities.Users;
 import com.tfg.tfg_app.model.services.exceptions.DuplicatedEntryException;
 import com.tfg.tfg_app.model.services.exceptions.IncorrectLoginException;
-import com.tfg.tfg_app.model.services.exceptions.TrophyAlreadyGivenException;
 
 import jakarta.transaction.Transactional;
 
@@ -76,7 +75,7 @@ public class DiaryEntryServiceTest {
     }
 
     @Test
-    public void testCreateDiaryEntry() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException, DuplicatedEntryException, TrophyAlreadyGivenException {
+    public void testCreateDiaryEntry() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException, DuplicatedEntryException {
         Users loggedInUser = userService.login("pablo", "1234");
         DiaryEntry diaryEntry = diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("content", LocalDateTime.now(), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
         DiaryEntry foundDiaryEntry = diaryEntryService.getDiaryEntryById(diaryEntry.getId());
@@ -99,7 +98,7 @@ public class DiaryEntryServiceTest {
 
 
     @Test
-    public void testGetDiaryEntryById() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException, DuplicatedEntryException, TrophyAlreadyGivenException {
+    public void testGetDiaryEntryById() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException, DuplicatedEntryException {
         Users loggedInUser = userService.login("pablo", "1234");
         DiaryEntry createdEntry = diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("content", LocalDateTime.now(), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
         
@@ -116,7 +115,7 @@ public class DiaryEntryServiceTest {
     }
 
     @Test
-    public void testGetDiaryEntriesByUserId() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException, DuplicatedEntryException , TrophyAlreadyGivenException {
+    public void testGetDiaryEntriesByUserId() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException, DuplicatedEntryException  {
         Users loggedInUser = userService.login("pablo", "1234");
         
         DiaryEntry entry1 = diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("content1", LocalDateTime.now(), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
@@ -147,7 +146,7 @@ public class DiaryEntryServiceTest {
     }
     
     @Test
-    public void testCreateMultipleDiaryEntriesForSameUser() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException, TrophyAlreadyGivenException {
+    public void testCreateMultipleDiaryEntriesForSameUser() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
         Users loggedInUser = userService.login("pablo", "1234");
 
         diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("content1", LocalDateTime.now(), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
@@ -156,7 +155,7 @@ public class DiaryEntryServiceTest {
     }
 
     @Test
-    public void testDiaryEntryPersistence() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException, DuplicatedEntryException, TrophyAlreadyGivenException {
+    public void testDiaryEntryPersistence() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException, DuplicatedEntryException {
         Users loggedInUser = userService.login("pablo", "1234");
         LocalDateTime testDate = LocalDateTime.now();
 
@@ -169,7 +168,7 @@ public class DiaryEntryServiceTest {
     }
 
     @Test
-    public void testCreateEntriesDifferentDates() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException, TrophyAlreadyGivenException {
+    public void testCreateEntriesDifferentDates() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
         Users loggedInUser = userService.login("pablo", "1234");
 
         DiaryEntry entry1 = diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("Content 1", LocalDateTime.now(), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
@@ -193,7 +192,7 @@ public class DiaryEntryServiceTest {
     }
 
     @Test
-    public void testCreateEntryWithSpecialCharacters() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException, TrophyAlreadyGivenException {
+    public void testCreateEntryWithSpecialCharacters() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
         Users loggedInUser = userService.login("pablo", "1234");
         String specialContent = "Contenido con símbolos: @#$%^&*()_+-=[]{}|;':\",./<>?";
         
@@ -204,7 +203,7 @@ public class DiaryEntryServiceTest {
 
 
     @Test
-    public void testMultipleUsersCanCreateEntriesSameDate() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException, TrophyAlreadyGivenException {
+    public void testMultipleUsersCanCreateEntriesSameDate() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
         Users user2 = new Users("maria", "5678", "María", "López", "maria@gmail.com");
         userService.signUp(user2);
         Users loggedInUser1 = userService.login("pablo", "1234");
@@ -222,7 +221,7 @@ public class DiaryEntryServiceTest {
 
 
     @Test
-    public void testCreateEntryWithPastDate() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException, TrophyAlreadyGivenException {
+    public void testCreateEntryWithPastDate() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
         Users loggedInUser = userService.login("pablo", "1234");
         LocalDateTime pastDate = LocalDateTime.now().minusDays(5);
 
@@ -231,7 +230,7 @@ public class DiaryEntryServiceTest {
     }
 
     @Test
-    public void testCreateEntryWithFutureDate() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException, TrophyAlreadyGivenException {
+    public void testCreateEntryWithFutureDate() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
         Users loggedInUser = userService.login("pablo", "1234");
         LocalDateTime futureDate = LocalDateTime.now().plusDays(5);
 
@@ -244,7 +243,7 @@ public class DiaryEntryServiceTest {
 
 
     @Test
-    public void testGetAllEntriesForUser() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException, TrophyAlreadyGivenException {
+    public void testGetAllEntriesForUser() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
         Users loggedInUser = userService.login("pablo", "1234");
 
         diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("Content 1", LocalDateTime.now(), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());

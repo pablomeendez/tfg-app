@@ -2,7 +2,6 @@ package com.tfg.tfg_app.rest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -15,19 +14,17 @@ import static com.tfg.tfg_app.rest.dtos.DiaryEntryConversor.*;
 
 import java.util.List;
 
-import com.tfg.tfg_app.model.common.exceptions.DuplicateInstanceException;
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.entities.DiaryEntry;
 import com.tfg.tfg_app.model.services.DiaryEntryService;
 import com.tfg.tfg_app.model.services.exceptions.DuplicatedEntryException;
-import com.tfg.tfg_app.model.services.exceptions.TrophyAlreadyGivenException;
 import com.tfg.tfg_app.rest.dtos.DiaryEntryDto;
 import com.tfg.tfg_app.rest.dtos.DiaryEntryResponseDto;
 import com.tfg.tfg_app.rest.dtos.HabitConversor;
 import com.tfg.tfg_app.rest.dtos.MoodDto;
 
 @RestController
-@RequestMapping("/api/diaryEntry")
+@RequestMapping("/api/diary-entry")
 public class DiaryEntryController {
     
     @Autowired
@@ -37,12 +34,11 @@ public class DiaryEntryController {
     public DiaryEntryResponseDto createDiaryEntry(
         @RequestAttribute Long userId,
         @RequestBody DiaryEntryDto diaryEntryDto
-    ) throws DuplicateInstanceException, DuplicatedEntryException, InstanceNotFoundException, TrophyAlreadyGivenException {
-
+    ) throws DuplicatedEntryException, InstanceNotFoundException {
         return toDiaryEntryResponseDto(diaryEntryService.createDiaryEntry(userId, toDiaryEntry(diaryEntryDto), diaryEntryDto.getImages(), HabitConversor.toUserHabits(diaryEntryDto.getHabits())));
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public Page<DiaryEntryResponseDto> getDiaryEntriesByUser (@RequestAttribute Long userId, @RequestParam int page, @RequestParam int size) {
 
         return toDiaryEntryResponsesDto(diaryEntryService.getDiaryEntriesByUserId(userId, page, size));

@@ -17,9 +17,7 @@ import com.tfg.tfg_app.model.common.exceptions.DuplicateInstanceException;
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.services.exceptions.DuplicatedEntryException;
 import com.tfg.tfg_app.model.services.exceptions.IncorrectLoginException;
-import com.tfg.tfg_app.model.services.exceptions.IncorrectPasswordException;
 import com.tfg.tfg_app.model.services.exceptions.PermissionException;
-import com.tfg.tfg_app.model.services.exceptions.TrophyAlreadyGivenException;
 
 import jakarta.validation.ConstraintViolationException;
 
@@ -40,9 +38,6 @@ public class CommonControllerAdvice {
 
 	/** The Constant INCORRECT_LOGIN_EXCEPTION_CODE. */
 	private static final String INCORRECT_LOGIN_EXCEPTION_CODE = "project.exceptions.IncorrectLoginException";
-
-	/** The Constant INCORRECT_PASSWORD_EXCEPTION_CODE. */
-	private static final String INCORRECT_PASS_EXCEPTION_CODE = "project.exceptions.IncorrectPasswordException";
 
 	private static final String CONSTRAINT_VIOLATION_EXCEPTION_CODE = "project.exceptions.ConstraintViolationException";
 
@@ -158,25 +153,6 @@ public class CommonControllerAdvice {
 
 	}
 
-		/**
-	 * Handle incorrect password exception.
-	 *
-	 * @param exception the exception
-	 * @param locale    the locale
-	 * @return the errors dto
-	 */
-	@ExceptionHandler(IncorrectPasswordException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ResponseBody
-	public ErrorsDto handleIncorrectPasswordException(IncorrectPasswordException exception, Locale locale) {
-
-		String errorMessage = messageSource.getMessage(INCORRECT_PASS_EXCEPTION_CODE, null,
-				INCORRECT_PASS_EXCEPTION_CODE, locale);
-
-		return new ErrorsDto(errorMessage);
-
-	}
-
 	@ExceptionHandler(DuplicatedEntryException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
@@ -189,14 +165,4 @@ public class CommonControllerAdvice {
 
 	}
 
-	@ExceptionHandler(TrophyAlreadyGivenException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ResponseBody
-	public ErrorsDto handleTrophyAlreadyGivenException(TrophyAlreadyGivenException exception, Locale locale) {
-		String errorMessage = messageSource.getMessage("project.exceptions.TrophyAlreadyGivenException",
-				new Object[] { exception.getTrophyId(), exception.getUserId() }, "Trophy already given",
-				locale);
-
-		return new ErrorsDto(errorMessage);
-	}
 }

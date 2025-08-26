@@ -17,7 +17,6 @@ import com.tfg.tfg_app.model.common.exceptions.DuplicateInstanceException;
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.entities.Users;
 import com.tfg.tfg_app.model.services.exceptions.IncorrectLoginException;
-import com.tfg.tfg_app.model.services.exceptions.IncorrectPasswordException;
 
 /**
  * The Class UserServiceTest.
@@ -29,7 +28,6 @@ import com.tfg.tfg_app.model.services.exceptions.IncorrectPasswordException;
 public class UserServiceTest {
 
 	private final Long NON_EXISTENT_ID = Long.valueOf(-1);
-	private final String NON_EXISTENT_USERNAME = "nonExistentUsername";
 
 	/** The user service. */
 	@Autowired

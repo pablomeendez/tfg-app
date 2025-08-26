@@ -13,7 +13,6 @@ import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.entities.Users;
 import com.tfg.tfg_app.model.entities.UsersDao;
 import com.tfg.tfg_app.model.services.exceptions.IncorrectLoginException;
-import com.tfg.tfg_app.model.services.exceptions.IncorrectPasswordException;
 
 
 

@@ -21,7 +21,6 @@ import com.tfg.tfg_app.Application;
 import com.tfg.tfg_app.model.common.exceptions.DuplicateInstanceException;
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.services.exceptions.DuplicatedEntryException;
-import com.tfg.tfg_app.model.services.exceptions.TrophyAlreadyGivenException;
 import com.tfg.tfg_app.model.entities.Category;
 import com.tfg.tfg_app.model.entities.CategoryDao;
 import com.tfg.tfg_app.model.entities.DiaryEntry;
@@ -70,7 +69,7 @@ public class WeeklySummaryServiceTest {
     private Habit testHabit;
     
     @Before
-    public void setUp() throws DuplicateInstanceException, InstanceNotFoundException, DuplicatedEntryException, TrophyAlreadyGivenException {
+    public void setUp() throws DuplicateInstanceException, InstanceNotFoundException, DuplicatedEntryException {
         // Create test data
         Users testUser = new Users();
         testUser.setUserName("testUser");

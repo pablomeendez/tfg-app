@@ -33,7 +33,6 @@ import com.tfg.tfg_app.model.entities.MoodDao;
 import com.tfg.tfg_app.model.entities.UserHabit;
 import com.tfg.tfg_app.model.entities.Users;
 import com.tfg.tfg_app.model.services.exceptions.DuplicatedEntryException;
-import com.tfg.tfg_app.model.services.exceptions.TrophyAlreadyGivenException;
 
 import jakarta.transaction.Transactional;
 
@@ -73,7 +72,7 @@ public class HabitServiceTest {
     private Mood testMood;
 
     @Before
-    public void setUp() throws DuplicateInstanceException, DuplicatedEntryException, InstanceNotFoundException, TrophyAlreadyGivenException {
+    public void setUp() throws DuplicateInstanceException, DuplicatedEntryException, InstanceNotFoundException {
         testUser = new Users("testuser", "password123", "Test", "User", "test@example.com");
         userService.signUp(testUser);
 
