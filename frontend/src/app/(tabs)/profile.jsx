@@ -7,10 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from 'react-i18next';
 import { LoadingComponent } from '../../components/LoadingComponent';
-import ChangePasswordModal from '../../components/ChangePasswordModal';
-import EditProfileModal from '../../components/EditProfileModal';
 import ProfileInfoCard from '../../components/ProfileInfoCard';
-import ActionButton from '../../components/ActionButton';
 import LanguageSelector from '../../components/LanguageSelector';
 
 export default function Profile() {
@@ -20,9 +17,6 @@ export default function Profile() {
     const [loading, setLoading] = useState(false);
     const { t, i18n } = useTranslation();    
     const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
-    const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
-    const [showEditProfileModal, setShowEditProfileModal] = useState(false);
-
 
     const handleLanguageChange = (newLanguage) => {
         setCurrentLanguage(newLanguage);
