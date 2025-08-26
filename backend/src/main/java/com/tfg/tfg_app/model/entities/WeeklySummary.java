@@ -25,12 +25,12 @@ public class WeeklySummary {
     private int biggestStreak;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     private Users user;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "moodTrendId", nullable = false)
     private Mood moodTrend;
 

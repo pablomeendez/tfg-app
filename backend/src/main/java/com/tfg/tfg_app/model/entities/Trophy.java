@@ -1,7 +1,6 @@
 package com.tfg.tfg_app.model.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Map;
@@ -34,7 +33,7 @@ public class Trophy {
     @Column(nullable = false)
     private String image;
 
-    @OneToMany(mappedBy = "trophy")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trophy")
     private Set<UserTrophy> userTrophies;
 
     public Trophy() {

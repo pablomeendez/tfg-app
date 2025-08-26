@@ -17,18 +17,18 @@ public class UserTrophy {
     private LocalDateTime obtainedAt;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
     private Users user;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trophyId", nullable = false)
     private Trophy trophy;
 
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "habitId", nullable = false)
     private Habit habit;
 

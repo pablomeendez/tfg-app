@@ -22,7 +22,7 @@ public class Images {
     private LocalDateTime uploadDate;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diaryEntryId", nullable = false)
     private DiaryEntry diaryEntry;
 

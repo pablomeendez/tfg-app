@@ -1,7 +1,6 @@
 package com.tfg.tfg_app.model.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
 import java.util.Map;
 import java.util.Set;
@@ -21,7 +20,7 @@ public class Category {
     private Map<String, String> name;
     
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
     private Set<Habit> habits;
 
     public Category() {

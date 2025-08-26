@@ -29,14 +29,14 @@ public class DiaryEntry {
     private Users user;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "moodId", nullable = false)
     private Mood mood;
 
-    @OneToMany(mappedBy = "diaryEntry", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "diaryEntry", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Images> images;
 
-    @OneToMany(mappedBy = "diaryEntry", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "diaryEntry", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<HabitEntry> habitEntries;
 
     public DiaryEntry() {

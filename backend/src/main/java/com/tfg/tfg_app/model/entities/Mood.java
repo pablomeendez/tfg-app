@@ -1,7 +1,6 @@
 package com.tfg.tfg_app.model.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
 import java.util.Map;
 import java.util.Set;
@@ -23,7 +22,7 @@ public class Mood {
     @Lob
     private String image;
 
-    @OneToMany(mappedBy = "mood")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "mood")
     private Set<DiaryEntry> diaryEntries;
 
     public Mood() {
