@@ -3,8 +3,6 @@ package com.tfg.tfg_app.rest.dtos;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.h2.engine.User;
-
 public class DiaryEntryDto {
     
     private String description;
