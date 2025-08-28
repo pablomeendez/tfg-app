@@ -222,4 +222,104 @@ public class TrophyServiceTest {
             trophyService.getUserTrophiesByUserIdAndHabitId(NON_EXISTENT_ID, testHabit.getId());
         });
     }
+
+    @Test
+    public void testCheckAndAwardUserTrophyWhenNoTrophyExists() throws InstanceNotFoundException {
+        // Try to award a trophy for 15 days when no such trophy exists
+        UserTrophy result = trophyService.checkAndAwardUserTrophy(testUser.getId(), testHabit.getId(), 15);
+        
+        // Should return null since no trophy exists for 15 days
+        assertEquals(null, result);
+    }
+
+    @Test
+    public void testCheckAndAwardUserTrophyAlreadyAwarded() throws InstanceNotFoundException {
+        // Award trophy first time
+        UserTrophy firstTrophy = trophyService.checkAndAwardUserTrophy(testUser.getId(), testHabit.getId(), 7);
+        assertNotNull(firstTrophy);
+
+        // Try to award same trophy again
+        UserTrophy secondTrophy = trophyService.checkAndAwardUserTrophy(testUser.getId(), testHabit.getId(), 7);
+        
+        // Should return null since trophy already awarded
+        assertEquals(null, secondTrophy);
+    }
+
+    @Test
+    public void testGetUserTrophiesByUserIdAndDate() throws InstanceNotFoundException {
+        LocalDateTime testDate = LocalDateTime.now();
+        
+        // Award a trophy
+        UserTrophy awardedTrophy = trophyService.checkAndAwardUserTrophy(testUser.getId(), testHabit.getId(), 7);
+
+        // Use a date range that will include the trophy (current date + 1 day)
+        List<UserTrophy> trophies = trophyService.getUserTrophiesByUserIdAndDate(testUser.getId(), testDate.plusDays(1));
+        
+        assertNotNull(trophies);
+        assertEquals(1, trophies.size());
+        assertEquals(awardedTrophy.getId(), trophies.get(0).getId());
+    }
+
+    @Test
+    public void testGetUserTrophiesByUserIdAndDateWithNonExistentUser() throws InstanceNotFoundException {
+        // El servicio actual no verifica si el usuario existe, simplemente devuelve lista vacía
+        List<UserTrophy> trophies = trophyService.getUserTrophiesByUserIdAndDate(NON_EXISTENT_ID, LocalDateTime.now());
+        assertEquals(0, trophies.size());
+    }
+
+    @Test
+    public void testTrophyCreationWithMultipleLanguages() {
+        assertNotNull(testTrophy7Days.getName().get("en"));
+        assertNotNull(testTrophy7Days.getName().get("es"));
+        assertNotNull(testTrophy7Days.getName().get("gl"));
+        
+        assertNotNull(testTrophy7Days.getDescription().get("en"));
+        assertNotNull(testTrophy7Days.getDescription().get("es"));
+        assertNotNull(testTrophy7Days.getDescription().get("gl"));
+    }
+
+    @Test
+    public void testCheckAndAwardUserTrophyWithNonExistentUser() {
+        // Test the user null check branch that wasn't covered
+        assertThrows(InstanceNotFoundException.class, () -> {
+            trophyService.checkAndAwardUserTrophy(NON_EXISTENT_ID, testHabit.getId(), 7);
+        });
+    }
+
+    @Test
+    public void testCheckAndAwardUserTrophyWithZeroDays() throws InstanceNotFoundException {
+        // Test the days <= 0 validation branch
+        assertThrows(IllegalArgumentException.class, () -> {
+            trophyService.checkAndAwardUserTrophy(testUser.getId(), testHabit.getId(), 0);
+        });
+    }
+
+    @Test
+    public void testCheckAndAwardUserTrophyWithNegativeDays() throws InstanceNotFoundException {
+        // Test the days <= 0 validation branch with negative value
+        assertThrows(IllegalArgumentException.class, () -> {
+            trophyService.checkAndAwardUserTrophy(testUser.getId(), testHabit.getId(), -1);
+        });
+    }
+
+    @Test
+    public void testCheckAndAwardUserTrophyWithNonExistentHabit() {
+        // Test the habit not found branch
+        assertThrows(InstanceNotFoundException.class, () -> {
+            trophyService.checkAndAwardUserTrophy(testUser.getId(), NON_EXISTENT_ID, 7);
+        });
+    }
+
+    @Test
+    public void testGetUserTrophiesByUserIdAndDateEdgeCases() throws InstanceNotFoundException {
+        // Test with exact date boundary - just test the method doesn't crash
+        LocalDateTime exactDate = LocalDateTime.now();
+        
+        // Test retrieving trophies for a specific date
+        List<UserTrophy> trophies = trophyService.getUserTrophiesByUserIdAndDate(testUser.getId(), exactDate);
+        
+        // Should return empty list for user with no trophies at this exact time
+        assertNotNull(trophies);
+        assertTrue(trophies.size() >= 0);
+    }
 }

@@ -1,6 +1,7 @@
 package com.tfg.tfg_app.model.services;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -244,5 +245,139 @@ public class HabitServiceTest {
     public void testCreateHabitEntryWithNonExistentUserHabit() {
         assertThrows(InstanceNotFoundException.class, 
             () -> habitService.createHabitEntry(testUser.getId(), NON_EXISTENT_ID, testDiaryEntry.getId()));
+    }
+
+    @Test
+    public void testDeleteUserHabit() throws InstanceNotFoundException {
+        UserHabit userHabit = habitService.createUserHabit(testUser.getId(), testHabit.getId());
+        assertNotNull(userHabit.getId());
+
+        habitService.deleteUserHabit(userHabit.getId());
+
+        // Verify habit was deleted by checking it's not in the user's habits
+        List<UserHabit> userHabits = habitService.getHabitsByUserId(testUser.getId());
+        assertFalse(userHabits.stream().anyMatch(uh -> uh.getId().equals(userHabit.getId())));
+    }
+
+    @Test
+    public void testDeleteUserHabitWithNonExistentId() {
+        assertThrows(InstanceNotFoundException.class, 
+            () -> habitService.deleteUserHabit(NON_EXISTENT_ID));
+    }
+
+    @Test
+    public void testGetHabitEntriesByUserIdAndHabitId() throws InstanceNotFoundException, DuplicatedEntryException {
+        UserHabit userHabit = habitService.createUserHabit(testUser.getId(), testHabit.getId());
+        
+        // Create multiple habit entries
+        HabitEntry entry1 = habitService.createHabitEntry(testUser.getId(), userHabit.getId(), testDiaryEntry.getId());
+        
+        // Create another diary entry for the next day
+        DiaryEntry diaryEntry2 = new DiaryEntry("Test diary entry 2", LocalDateTime.now().plusDays(1), testUser, testMood);
+        diaryEntry2 = diaryEntryService.createDiaryEntry(testUser.getId(), diaryEntry2, new ArrayList<>(), new ArrayList<>());
+        
+        HabitEntry entry2 = habitService.createHabitEntry(testUser.getId(), userHabit.getId(), diaryEntry2.getId());
+
+        List<HabitEntry> habitEntries = habitService.getHabitEntriesByUserIdAndHabitId(testUser.getId(), testHabit.getId());
+        
+        assertNotNull(habitEntries);
+        assertTrue(habitEntries.size() >= 2);
+        assertTrue(habitEntries.stream().anyMatch(he -> he.getId().equals(entry1.getId())));
+        assertTrue(habitEntries.stream().anyMatch(he -> he.getId().equals(entry2.getId())));
+    }
+
+    @Test
+    public void testGetUserBiggestStreak() throws InstanceNotFoundException {
+        UserHabit userHabit = habitService.createUserHabit(testUser.getId(), testHabit.getId());
+        
+        // Create habit entry with a streak
+        HabitEntry habitEntry = habitService.createHabitEntry(testUser.getId(), userHabit.getId(), testDiaryEntry.getId());
+        
+        HabitEntry biggestStreak = habitService.getUserBiggestStreak(testUser.getId());
+        
+        assertNotNull(biggestStreak);
+        assertEquals(habitEntry.getStreak(), biggestStreak.getStreak());
+    }
+
+    @Test
+    public void testGetUserBiggestStreakWithNonExistentUser() {
+        assertThrows(InstanceNotFoundException.class, 
+            () -> habitService.getUserBiggestStreak(NON_EXISTENT_ID));
+    }
+
+    @Test
+    public void testGetUserHabitsAfterDate() throws InstanceNotFoundException {
+        UserHabit userHabit = habitService.createUserHabit(testUser.getId(), testHabit.getId());
+        LocalDateTime startDate = LocalDateTime.now().minusDays(1);
+        LocalDateTime endDate = LocalDateTime.now().plusDays(1);
+        
+        // Create habit entry
+        habitService.createHabitEntry(testUser.getId(), userHabit.getId(), testDiaryEntry.getId());
+
+        List<HabitEntry> habitEntries = habitService.getUserHabitsAfterDate(testUser.getId(), startDate, endDate);
+        
+        assertNotNull(habitEntries);
+        assertTrue(habitEntries.size() >= 1);
+        assertTrue(habitEntries.stream().allMatch(he -> 
+            he.getDate().isAfter(startDate) || he.getDate().isEqual(startDate)));
+    }
+
+    @Test
+    public void testDeleteHabitEntry() throws InstanceNotFoundException {
+        UserHabit userHabit = habitService.createUserHabit(testUser.getId(), testHabit.getId());
+        HabitEntry habitEntry = habitService.createHabitEntry(testUser.getId(), userHabit.getId(), testDiaryEntry.getId());
+        
+        HabitEntry deletedEntry = habitService.deleteHabitEntry(testUser.getId(), habitEntry.getId());
+        
+        assertNotNull(deletedEntry);
+        assertEquals(habitEntry.getId(), deletedEntry.getId());
+    }
+
+    @Test
+    public void testDeleteHabitEntryWithNonExistentId() {
+        assertThrows(InstanceNotFoundException.class, 
+            () -> habitService.deleteHabitEntry(testUser.getId(), NON_EXISTENT_ID));
+    }
+
+    @Test
+    public void testCreateHabitEntryWithNonExistentUserHabitId() {
+        // Test edge case where userHabit ID doesn't exist
+        assertThrows(InstanceNotFoundException.class, 
+            () -> habitService.createHabitEntry(testUser.getId(), NON_EXISTENT_ID, testDiaryEntry.getId()));
+    }
+
+    @Test
+    public void testCreateHabitEntryWithNonExistentDiaryEntryId() throws InstanceNotFoundException {
+        UserHabit userHabit = habitService.createUserHabit(testUser.getId(), testHabit.getId());
+        
+        // Test edge case where diary entry ID doesn't exist
+        assertThrows(InstanceNotFoundException.class, 
+            () -> habitService.createHabitEntry(testUser.getId(), userHabit.getId(), NON_EXISTENT_ID));
+    }
+
+    @Test
+    public void testDeleteHabitEntryWithNonExistentUserId() {
+        // Test edge case where user doesn't exist
+        assertThrows(InstanceNotFoundException.class, 
+            () -> habitService.deleteHabitEntry(NON_EXISTENT_ID, 1L));
+    }
+
+    @Test
+    public void testGetUserHabitsAfterDateWithNonExistentUserId() {
+        // Test edge case where user doesn't exist
+        assertThrows(InstanceNotFoundException.class, 
+            () -> habitService.getUserHabitsAfterDate(NON_EXISTENT_ID, LocalDateTime.now(), LocalDateTime.now()));
+    }
+
+    @Test
+    public void testGetUserBiggestStreakWithNoHabits() throws InstanceNotFoundException, DuplicateInstanceException {
+        // Create a new user with no habit entries
+        Users userWithNoHabits = new Users("nohabits", "password123", "No", "Habits", "nohabits@example.com");
+        userService.signUp(userWithNoHabits);
+        
+        HabitEntry biggestStreak = habitService.getUserBiggestStreak(userWithNoHabits.getId());
+        
+        // Should return null when user has no habit entries
+        assertEquals(null, biggestStreak);
     }
 }

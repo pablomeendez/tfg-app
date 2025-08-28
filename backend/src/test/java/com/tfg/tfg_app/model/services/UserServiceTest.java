@@ -1,8 +1,10 @@
 package com.tfg.tfg_app.model.services;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.List;
 
 import jakarta.transaction.Transactional;
 
@@ -40,7 +42,9 @@ public class UserServiceTest {
 	 * @return the user
 	 */
 	private Users createUser(String userName) {
-		return new Users(userName, "password", "firstName", "lastName", userName + "@" + userName + ".com");
+		// Add timestamp to make usernames unique across test executions
+		String uniqueUserName = userName + "_" + System.currentTimeMillis();
+		return new Users(uniqueUserName, "password", "firstName", "lastName", uniqueUserName + "@" + uniqueUserName + ".com");
 	}
 
 	/**
@@ -131,5 +135,45 @@ public class UserServiceTest {
 	public void testUpdateProfileWithNonExistentId() {
 		assertThrows(InstanceNotFoundException.class,
 				() -> userService.updateProfile(NON_EXISTENT_ID, "X", "X", "X", false));
+	}
+
+	@Test
+	public void testGetAllUsers() throws DuplicateInstanceException, InstanceNotFoundException {
+		// Get initial count
+		List<Users> initialUsers = userService.getAllUsers();
+		int initialCount = initialUsers.size();
+
+		// Create new users
+		Users user1 = createUser("user1");
+		Users user2 = createUser("user2");
+		
+		userService.signUp(user1);
+		userService.signUp(user2);
+
+		List<Users> allUsers = userService.getAllUsers();
+		assertTrue(allUsers.size() >= initialCount + 2);
+		assertTrue(allUsers.stream().anyMatch(u -> u.getUserName().equals(user1.getUserName())));
+		assertTrue(allUsers.stream().anyMatch(u -> u.getUserName().equals(user2.getUserName())));
+	}
+
+	@Test
+	public void testUpdateProfileWithFirstEntry() throws InstanceNotFoundException, DuplicateInstanceException {
+		Users user = createUser("user");
+		userService.signUp(user);
+
+		// Test updating firstEntry flag
+		userService.updateProfile(user.getId(), user.getName(), user.getLastName(), user.getEmail(), true);
+
+		Users updatedUser = userService.checkUser(user.getId());
+		assertTrue(updatedUser.getFirstEntry());
+	}
+
+	@Test
+	public void testUserRoleAssignment() throws DuplicateInstanceException, InstanceNotFoundException {
+		Users user = createUser("user");
+		userService.signUp(user);
+
+		Users savedUser = userService.checkUser(user.getId());
+		assertEquals(Users.Role.USER, savedUser.getRole());
 	}
 }

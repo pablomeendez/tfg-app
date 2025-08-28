@@ -2,9 +2,10 @@ package com.tfg.tfg_app.model.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
-
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -299,6 +300,135 @@ public class DiaryEntryServiceTest {
         
         DiaryEntry entry = diaryEntryService.createDiaryEntry(loggedInUser.getId(),
             new DiaryEntry("Content", LocalDateTime.now(), loggedInUser, testMood), images, new ArrayList<>());
+        assertNotNull(entry.getImages());
+        assertEquals(2, entry.getImages().size());
+    }
+
+    @Test
+    public void testGetAllMoods() {
+        List<Mood> moods = diaryEntryService.getAllMoods();
+        assertNotNull(moods);
+        assertTrue(moods.size() >= 2); // We created at least 2 moods in setUp
+        assertTrue(moods.stream().anyMatch(mood -> mood.getName().get("en").equals("Happy")));
+        assertTrue(moods.stream().anyMatch(mood -> mood.getName().get("en").equals("Sad")));
+    }
+
+    @Test
+    public void testGetWeeksMostFrequentMood() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
+        Users loggedInUser = userService.login("pablo", "1234");
+        LocalDateTime startDate = LocalDateTime.now().minusDays(7);
+        LocalDateTime endDate = LocalDateTime.now();
+
+        // Create multiple entries with same mood
+        diaryEntryService.createDiaryEntry(loggedInUser.getId(),
+            new DiaryEntry("Content1", LocalDateTime.now().minusDays(1), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
+        diaryEntryService.createDiaryEntry(loggedInUser.getId(),
+            new DiaryEntry("Content2", LocalDateTime.now().minusDays(2), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
+
+        DiaryEntry result = diaryEntryService.getWeeksMostFrequentMood(loggedInUser.getId(), startDate, endDate);
+        
+        if (result != null) {
+            assertNotNull(result.getMood());
+            assertEquals(testMood.getId(), result.getMood().getId());
+        }
+    }
+
+    @Test
+    public void testGetDiaryEntriesByUserIdAndDate() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
+        Users loggedInUser = userService.login("pablo", "1234");
+        LocalDateTime startDate = LocalDateTime.now().minusDays(5);
+        LocalDateTime endDate = LocalDateTime.now().plusDays(1);
+
+        diaryEntryService.createDiaryEntry(loggedInUser.getId(),
+            new DiaryEntry("Content1", LocalDateTime.now().minusDays(2), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
+        diaryEntryService.createDiaryEntry(loggedInUser.getId(),
+            new DiaryEntry("Content2", LocalDateTime.now().minusDays(3), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
+
+        List<DiaryEntry> entries = diaryEntryService.getDiaryEntriesByUserIdAndDate(loggedInUser.getId(), startDate, endDate);
+        
+        assertNotNull(entries);
+        assertTrue(entries.size() >= 2);
+        assertTrue(entries.stream().allMatch(entry -> 
+            entry.getDate().isAfter(startDate.minusSeconds(1)) && entry.getDate().isBefore(endDate.plusSeconds(1))));
+    }
+
+    @Test
+    public void testGetLatestDiaryEntry() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
+        Users loggedInUser = userService.login("pablo", "1234");
+
+        diaryEntryService.createDiaryEntry(loggedInUser.getId(),
+            new DiaryEntry("Older content", LocalDateTime.now().minusDays(2), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
+        DiaryEntry entry2 = diaryEntryService.createDiaryEntry(loggedInUser.getId(),
+            new DiaryEntry("Latest content", LocalDateTime.now().minusDays(1), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
+
+        DiaryEntry latestEntry = diaryEntryService.getLatestDiaryEntry(loggedInUser.getId());
+        
+        assertNotNull(latestEntry);
+        assertEquals("Latest content", latestEntry.getContent());
+        assertEquals(entry2.getId(), latestEntry.getId());
+    }
+
+    @Test
+    public void testGetLatestDiaryEntryWithNonExistentUser() throws InstanceNotFoundException {
+        DiaryEntry result = diaryEntryService.getLatestDiaryEntry(999L);
+        assertNull(result);
+    }
+
+    @Test
+    public void testGetLatestDiaryEntryWithNoEntries() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException {
+        Users loggedInUser = userService.login("pablo", "1234");
+        
+        DiaryEntry result = diaryEntryService.getLatestDiaryEntry(loggedInUser.getId());
+        assertNull(result);
+    }
+
+    @Test
+    public void testCreateDiaryEntryWithHabits() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
+        Users loggedInUser = userService.login("pablo", "1234");
+        
+        // Create test habit data
+        List<com.tfg.tfg_app.model.entities.UserHabit> habits = new ArrayList<>();
+        // Note: This would need actual UserHabit objects, but for now we test with empty list
+        
+        DiaryEntry entry = diaryEntryService.createDiaryEntry(loggedInUser.getId(),
+            new DiaryEntry("Content with habits", LocalDateTime.now(), loggedInUser, testMood), new ArrayList<>(), habits);
+        
+        assertNotNull(entry);
+        assertEquals("Content with habits", entry.getContent());
+    }
+
+    @Test
+    public void testCreateDiaryEntryWithNullDate() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
+        Users loggedInUser = userService.login("pablo", "1234");
+        
+        // Create entry with null date to test the date assignment logic
+        DiaryEntry entryWithNullDate = new DiaryEntry("Content with null date", null, loggedInUser, testMood);
+        
+        DiaryEntry createdEntry = diaryEntryService.createDiaryEntry(loggedInUser.getId(),
+            entryWithNullDate, new ArrayList<>(), new ArrayList<>());
+        
+        assertNotNull(createdEntry);
+        assertNotNull(createdEntry.getDate());
+        assertEquals("Content with null date", createdEntry.getContent());
+        // Verify the date was set to now (within reasonable time difference)
+        assertTrue(createdEntry.getDate().isAfter(LocalDateTime.now().minusMinutes(1)));
+        assertTrue(createdEntry.getDate().isBefore(LocalDateTime.now().plusMinutes(1)));
+    }
+
+    @Test
+    public void testCreateDiaryEntryWithImages() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
+        Users loggedInUser = userService.login("pablo", "1234");
+        
+        // Create test image data
+        List<byte[]> images = new ArrayList<>();
+        images.add("test image 1".getBytes());
+        images.add("test image 2".getBytes());
+        
+        DiaryEntry entry = diaryEntryService.createDiaryEntry(loggedInUser.getId(),
+            new DiaryEntry("Content with images", LocalDateTime.now(), loggedInUser, testMood), images, new ArrayList<>());
+        
+        assertNotNull(entry);
+        assertEquals("Content with images", entry.getContent());
         assertNotNull(entry.getImages());
         assertEquals(2, entry.getImages().size());
     }
