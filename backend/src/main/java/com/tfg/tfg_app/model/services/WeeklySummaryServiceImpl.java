@@ -77,6 +77,7 @@ public class WeeklySummaryServiceImpl implements WeeklySummaryService {
     }
 
     public Page<WeeklySummary> getWeeklySummariesByUserId(Long userId, int page, int size) throws InstanceNotFoundException {
+        userService.checkUser(userId);
         return weeklySummaryDao.findByUserIdOrderByDateDesc(userId, PageRequest.of(page, size));
     } 
 

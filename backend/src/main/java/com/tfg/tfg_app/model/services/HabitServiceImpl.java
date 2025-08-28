@@ -71,6 +71,8 @@ public class HabitServiceImpl implements HabitService {
     }
 
     public List<UserHabit> getHabitsByUserId(Long userId) throws InstanceNotFoundException {
+        userService.checkUser(userId);
+
         return userHabitDao.findByUserId(userId);
     }
 
