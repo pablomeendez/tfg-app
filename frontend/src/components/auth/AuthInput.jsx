@@ -1,6 +1,5 @@
 import { TextInput } from 'react-native';
 
-// Componente que replica tu input de auth exacto
 const AuthInput = ({ 
     placeholder, 
     value, 
