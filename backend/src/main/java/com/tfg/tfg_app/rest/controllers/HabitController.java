@@ -27,8 +27,6 @@ public class HabitController {
     @Autowired
     private HabitService habitService;
 
-    @Autowired
-    
     @GetMapping("/all")
     List<HabitDto> getAllHabits(){  
         return toHabitDtos(habitService.getAllHabits());
