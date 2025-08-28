@@ -4,8 +4,8 @@ import { AuthContext } from "../../context/AuthContext";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
-import AuthInput from '../../components/ui/AuthInput';
-import PasswordInput from '../../components/ui/PasswordInput';
+import AuthInput from '../../components/auth/AuthInput';
+import PasswordInput from '../../components/auth/PasswordInput';
 
 
 export default function Register() {

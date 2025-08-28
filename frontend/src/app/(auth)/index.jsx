@@ -10,8 +10,8 @@ import { useRouter } from 'expo-router';
 import { AuthContext } from '../../context/AuthContext';
 import userService from '../../services/userService';
 import { useTranslation } from 'react-i18next';
-import AuthInput from '../../components/ui/AuthInput';
-import PasswordInput from '../../components/ui/PasswordInput';
+import AuthInput from '../../components/auth/AuthInput';
+import PasswordInput from '../../components/auth/PasswordInput';
 
 export default function Login() {
   const [username, setUsername] = useState('');
