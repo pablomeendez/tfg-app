@@ -5,8 +5,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import trophyService from "../../services/trophyService";
 import { useTranslation } from "react-i18next";
 import { LoadingComponent } from "../../components/common/LoadingComponent";
+import EmptyStateCard from "../../components/common/EmptyStateCard";
 import i18n from "../../i18n/i18n";
-import TrophyCard from "../../components/trophies/TrophyCard";
+import {TrophyCard} from "../../components/trophies/TrophyCard";
 
 export default function Trophies() {
     const [trophies, setTrophies] = useState([]);
@@ -88,14 +89,15 @@ export default function Trophies() {
                             </View>
                         ))
                     ) : (
-                        <View className="bg-white rounded-xl p-8 items-center">
-                            <MaterialCommunityIcons name="trophy-outline" size={64} color="#D1D5DB" />
-                            <Text className="text-gray-500 text-lg font-medium mt-4">{t('no_trophies_yet')}</Text>
-                            <Text className="text-gray-400 text-center mt-2">
-                                
-                                {t('complete_habits_to_earn_trophy')}
-                            </Text>
-                        </View>
+                        <EmptyStateCard
+                            icon="trophy-outline"
+                            iconSize={64}
+                            iconColor="#D1D5DB"
+                            title={t('no_trophies_yet')}
+                            subtitle={t('complete_habits_to_earn_trophy')}
+                            backgroundColor="bg-white"
+                            padding="p-8"
+                        />
                     )}
                 </ScrollView>
             </View>}

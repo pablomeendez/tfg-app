@@ -7,6 +7,7 @@ import DiaryEntryCard from '../../components/diary/DiaryEntryCard';
 import {PageNavigation} from '../../components/common/PageNavigation';
 import { ErrorComponent } from '../../components/common/ErrorComponent';
 import { LoadingComponent } from '../../components/common/LoadingComponent';
+import EmptyStateCard from '../../components/common/EmptyStateCard';
 import { useTranslation } from 'react-i18next';
 
 export default function Diary() {
@@ -73,11 +74,11 @@ export default function Diary() {
                             />
                         ))
                     ) : (
-                        <View className="bg-white rounded-lg p-6 mt-4">
-                            <Text className="text-center text-gray-400 mt-2">
-                                {t('no_entries')}
-                            </Text>
-                        </View>
+                        <EmptyStateCard
+                            icon="book-outline"
+                            title={t('no_entries')}
+                            subtitle={t('start_writing_your_first_entry')}
+                        />
                     )
                 }
                 </ScrollView>

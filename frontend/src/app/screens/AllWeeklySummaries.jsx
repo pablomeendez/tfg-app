@@ -15,6 +15,7 @@ import { PageNavigation } from "../../components/common/PageNavigation";
 import { ErrorComponent } from "../../components/common/ErrorComponent";
 import { useTranslation } from "react-i18next";
 import { LoadingComponent } from "../../components/common/LoadingComponent";
+import EmptyStateCard from "../../components/common/EmptyStateCard";
 
 export default function AllWeeklySummaries() {
     const router = useRouter();
@@ -91,22 +92,16 @@ export default function AllWeeklySummaries() {
                                 />
                             ))
                         ) : (
-                            <View className="flex-1 items-center justify-center p-8">
-                                <MaterialCommunityIcons
-                                    name="chart-line"
-                                    size={64}
-                                    color="#9CA3AF"
-                                />
-                                <Text className="text-xl text-gray-600 text-center mt-4">
-                                    {t('no_weekly_summary')}
-                                </Text>
-                                <Text className="text-gray-500 text-center mt-2">
-                                    {t('summaries_generated_on_sundays')}
-                                </Text>
-                                <Text className="text-gray-500 text-center mt-1">
-                                    {t('keep_using_app_to_see_progress')}
-                                </Text>
-                            </View>
+                            <EmptyStateCard
+                                icon="chart-line"
+                                iconSize={64}
+                                iconColor="#9CA3AF"
+                                title={t('no_weekly_summary')}
+                                subtitle={`${t('summaries_generated_on_sundays')}\n${t('keep_using_app_to_see_progress')}`}
+                                backgroundColor="bg-white"
+                                padding="p-8"
+                                titleColor="text-xl text-gray-600"
+                            />
                         )}
                     </ScrollView>
                 </View>
