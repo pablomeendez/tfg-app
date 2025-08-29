@@ -127,5 +127,7 @@
     "chat_thinking": "Pensando...",
     "chat_input_placeholder": "Escribe a túa mensaxe...",
     "chat_disclaimer": "O asistente utiliza IA e pode cometer erros. Non substitúe o consello médico profesional.",
-    "weekly_summary": "Resumo Semanal"
+    "congratulations": "Parabéns!",
+    "you_have_earned_a_new_trophy": "¡Gañaches un novo trofeo!",
+    "ok": "OK"
 }

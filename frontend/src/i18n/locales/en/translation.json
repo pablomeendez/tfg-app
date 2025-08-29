@@ -127,5 +127,7 @@
     "chat_thinking": "Thinking...",
     "chat_input_placeholder": "Type your message...",
     "chat_disclaimer": "The assistant uses AI and may make mistakes. It does not replace professional medical advice.",
-    "weekly_summary": "Weekly Summary"
+    "congratulations": "Congratulations!",
+    "you_have_earned_a_new_trophy": "You have earned a new trophy!",
+    "ok": "OK"
 }

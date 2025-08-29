@@ -56,9 +56,16 @@ const DiaryEntryForm = () => {
     const handleSubmit = async () => {
         setLoading(true);
         try {
-            await diaryEntryService.createDiaryEntry(description, selectedImages, mood, selectedHabits);
-            
+            const createdEntry = await diaryEntryService.createDiaryEntry(description, selectedImages, mood, selectedHabits);
+            if (createdEntry.data.habitEntries.some(entry => entry.userTrophy)) {
+                Alert.alert(
+                    t('congratulations'),
+                    t('you_have_earned_a_new_trophy'),
+                    [{ text: t('ok'), style: 'default' }]
+                );
+            }
             router.replace('/(tabs)');
+
         } catch (error) {
             setError(error.message);
         } finally {
