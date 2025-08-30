@@ -41,12 +41,3 @@ project:
     signKey: WzROun12eUiDvko3UrJ74gNeJz2TWEWPMTh6DxyE8HWXIf4hETUrkM4IUGqqHq66PuVS
     expirationMinutes: 1440
 
-langchain4j:
-  open-ai:
-    chat-model:
-      api-key: ${OPENAI_API_KEY}
-      model-name: ${OPENAI_MODEL}
-      log-requests: true
-      log-responses: true
-      temperature: 0.7
-
