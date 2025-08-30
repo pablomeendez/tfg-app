@@ -27,7 +27,7 @@ public class AssistantController {
             return ResponseEntity.ok(response.aiMessage().text());
         } catch (Exception e) {     
             System.err.println("Error en chat assistant: " + e.getMessage());
-            return ResponseEntity.ok("Lo siento, el asistente de IA no está disponible en este momento. Por favor, inténtalo más tarde.");
+            return ResponseEntity.badRequest().body("Lo siento, el asistente de IA no está disponible en este momento. Por favor, inténtalo más tarde.");
         }
     }
 
