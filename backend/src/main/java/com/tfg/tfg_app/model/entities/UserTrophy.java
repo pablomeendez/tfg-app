@@ -26,6 +26,10 @@ public class UserTrophy {
     @JoinColumn(name = "trophyId", nullable = false)
     private Trophy trophy;
 
+    @NotNull
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "habitEntryId", nullable = false)
+    private HabitEntry habitEntry;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,19 +39,21 @@ public class UserTrophy {
     public UserTrophy() {
     }
 
-    public UserTrophy(Users user, Trophy trophy, Habit habit, LocalDateTime obtainedAt) {
+    public UserTrophy(Users user, Trophy trophy, Habit habit, HabitEntry habitEntry, LocalDateTime obtainedAt) {
         this.user = user;
         this.trophy = trophy;
         this.habit = habit;
+        this.habitEntry = habitEntry;
         this.obtainedAt = obtainedAt;
     }
 
-    public UserTrophy( Long id, Users user, Trophy trophy, Habit habit, LocalDateTime obtainedAt) {
+    public UserTrophy(Long id, Users user, Trophy trophy, Habit habit, HabitEntry habitEntry, LocalDateTime obtainedAt) {
         this.id = id;
         this.obtainedAt = obtainedAt;
         this.user = user;
         this.trophy = trophy;
         this.habit = habit;
+        this.habitEntry = habitEntry;
     }
 
     public Long getId() {
@@ -88,5 +94,13 @@ public class UserTrophy {
 
     public void setHabit(Habit habit) {
         this.habit = habit;
+    }
+
+    public HabitEntry getHabitEntry() {
+        return habitEntry;
+    }
+
+    public void setHabitEntry(HabitEntry habitEntry) {
+        this.habitEntry = habitEntry;
     }
 }

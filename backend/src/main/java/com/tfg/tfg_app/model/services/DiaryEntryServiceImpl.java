@@ -11,16 +11,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.entities.DiaryEntry;
 import com.tfg.tfg_app.model.entities.DiaryEntryDao;
 import com.tfg.tfg_app.model.entities.HabitEntry;
+import com.tfg.tfg_app.model.entities.HabitEntryDao;
 import com.tfg.tfg_app.model.entities.Images;
 import com.tfg.tfg_app.model.entities.ImagesDao;
 import com.tfg.tfg_app.model.entities.Mood;
 import com.tfg.tfg_app.model.entities.MoodDao;
 import com.tfg.tfg_app.model.entities.UserHabit;
+import com.tfg.tfg_app.model.entities.UserTrophy;
 import com.tfg.tfg_app.model.entities.Users;
 import com.tfg.tfg_app.model.services.exceptions.DuplicatedEntryException;
 
@@ -46,6 +49,7 @@ public class DiaryEntryServiceImpl implements DiaryEntryService {
     private ImagesDao imagesDao;
 
     @Override
+    @Transactional
     public DiaryEntry createDiaryEntry(Long userId, DiaryEntry diaryEntry, List<byte[]> images, List<UserHabit> habits) throws DuplicatedEntryException, InstanceNotFoundException {
 
         Users user = userService.checkUser(userId);
@@ -69,8 +73,9 @@ public class DiaryEntryServiceImpl implements DiaryEntryService {
         habits.forEach(userHabit -> {
             try {
                 HabitEntry habitEntryResult = habitService.createHabitEntry(userId, userHabit.getId(), createdDiaryEntry.getId());
+                UserTrophy userTrophy = trophyService.checkAndAwardUserTrophy(userId, habitEntryResult.getId(), habitEntryResult.getStreak());
+                habitEntryResult.setUserTrophy(userTrophy);
                 habitEntries.add(habitEntryResult);
-                trophyService.checkAndAwardUserTrophy(userId, habitEntryResult.getHabit().getId(), habitEntryResult.getStreak());
             } catch (InstanceNotFoundException  e) {
                 throw new RuntimeException("Error creating habit entry: " + e.getMessage(), e);
             }

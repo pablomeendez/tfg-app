@@ -11,7 +11,7 @@ public interface TrophyService {
 
     List<Trophy> getAllTrophies();
 
-    UserTrophy checkAndAwardUserTrophy(Long userId, Long habitId, int days) throws InstanceNotFoundException;
+    UserTrophy checkAndAwardUserTrophy(Long userId, Long habitEntryId, int days) throws InstanceNotFoundException;
 
     List<UserTrophy> getUserTrophies(Long userId) throws InstanceNotFoundException;
 

@@ -35,6 +35,9 @@ public class HabitEntry {
     @JoinColumn(name = "diaryEntryId", nullable = false)    
     private DiaryEntry diaryEntry;
 
+    @OneToOne(mappedBy = "habitEntry", fetch = FetchType.LAZY)
+    private UserTrophy userTrophy;
+
 
     public HabitEntry() {
     }   
@@ -93,5 +96,13 @@ public class HabitEntry {
 
     public void setDiaryEntry(DiaryEntry diaryEntry) {
         this.diaryEntry = diaryEntry;
+    }
+
+    public UserTrophy getUserTrophy() {
+        return userTrophy;
+    }
+
+    public void setUserTrophy(UserTrophy userTrophy) {
+        this.userTrophy = userTrophy;
     }
 }
