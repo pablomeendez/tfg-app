@@ -380,4 +380,52 @@ public class HabitServiceTest {
         // Should return null when user has no habit entries
         assertEquals(null, biggestStreak);
     }
+
+    @Test
+    public void testGetHabitsByUserIdWithNoHabits() throws DuplicateInstanceException, InstanceNotFoundException {
+        // Create a user with no habits
+        Users userWithNoHabits = new Users("nohabits2", "password123", "No", "Habits2", "nohabits2@example.com");
+        userService.signUp(userWithNoHabits);
+        
+        List<UserHabit> habits = habitService.getHabitsByUserId(userWithNoHabits.getId());
+        assertNotNull(habits);
+        assertTrue("New user should have no habits", habits.isEmpty());
+    }
+
+    @Test
+    public void testCreateDuplicateUserHabit() throws DuplicateInstanceException, InstanceNotFoundException {
+        // Create user habit first
+        UserHabit userHabit = habitService.createUserHabit(testUser.getId(), testHabit.getId());
+        assertNotNull(userHabit);
+        
+        // Try to create duplicate - test that it doesn't crash the system
+        // The service may handle this by returning the existing habit or creating a new one
+        UserHabit duplicateHabit = habitService.createUserHabit(testUser.getId(), testHabit.getId());
+        assertNotNull(duplicateHabit);
+        
+        // Verify both habits are related to the same user and habit
+        assertEquals(testUser.getId(), duplicateHabit.getUser().getId());
+        assertEquals(testHabit.getId(), duplicateHabit.getHabit().getId());
+    }
+
+    @Test
+    public void testGetHabitEntriesByUserIdAndHabitIdWithNoEntries() throws DuplicateInstanceException, InstanceNotFoundException {
+        // Create a user habit but no entries
+        habitService.createUserHabit(testUser.getId(), testHabit.getId());
+        
+        List<HabitEntry> entries = habitService.getHabitEntriesByUserIdAndHabitId(testUser.getId(), testHabit.getId());
+        assertNotNull(entries);
+        assertTrue("Should return empty list when no entries exist", entries.isEmpty());
+    }
+
+    @Test
+    public void testGetUserHabitsAfterDateWithInvalidDateRange() throws DuplicateInstanceException, InstanceNotFoundException {
+        // Test with end date before start date
+        LocalDateTime startDate = LocalDateTime.now();
+        LocalDateTime endDate = LocalDateTime.now().minusDays(5); // End before start
+        
+        List<HabitEntry> entries = habitService.getUserHabitsAfterDate(testUser.getId(), startDate, endDate);
+        assertNotNull(entries);
+        assertTrue("Should return empty list for invalid date range", entries.isEmpty());
+    }
 }
