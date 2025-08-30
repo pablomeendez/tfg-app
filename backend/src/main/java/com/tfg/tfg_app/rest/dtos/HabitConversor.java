@@ -1,5 +1,6 @@
 package com.tfg.tfg_app.rest.dtos;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.tfg.tfg_app.model.entities.Category;
@@ -47,8 +48,12 @@ public class HabitConversor {
         return userHabitDtos.stream().map(HabitConversor::toUserHabit).toList();
     }
 
+    public static HabitEntry toHabitEntry(HabitEntryDto habitEntryDto) {
+        return new HabitEntry(UserConversor.toUser(habitEntryDto.getUser()), toHabit(habitEntryDto.getHabit()), DiaryEntryConversor.toDiaryEntry(habitEntryDto.getDiaryEntry()), LocalDateTime.parse(habitEntryDto.getDate()), habitEntryDto.getStreak());
+    }
+
     public static HabitEntryDto toHabitEntryDto(HabitEntry habitEntry) {
-        return new HabitEntryDto(habitEntry.getId(), UserConversor.toUserDto(habitEntry.getUser()), toHabitDto(habitEntry.getHabit()), DiaryEntryConversor.toDiaryEntryDto(habitEntry.getDiaryEntry()), habitEntry.getDate().toString(), habitEntry.getStreak());
+        return new HabitEntryDto(habitEntry.getId(), UserConversor.toUserDto(habitEntry.getUser()), toHabitDto(habitEntry.getHabit()), DiaryEntryConversor.toDiaryEntryDto(habitEntry.getDiaryEntry()), habitEntry.getDate().toString(), TrophyConversor.toUserTrophyDto(habitEntry.getUserTrophy()), habitEntry.getStreak());
     }
 
     public static List<HabitEntryDto> toHabitEntryDtos(List<HabitEntry> habitEntries) {

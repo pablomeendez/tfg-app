@@ -20,6 +20,9 @@ public class TrophyConversor {
     }
 
     public static UserTrophyDto toUserTrophyDto(UserTrophy userTrophy) {
+        if (userTrophy == null) {
+            return null;
+        }
         return new UserTrophyDto(userTrophy.getId(), UserConversor.toUserDto(userTrophy.getUser()), TrophyConversor.toTrophyDto(userTrophy.getTrophy()), HabitConversor.toHabitDto(userTrophy.getHabit()), userTrophy.getObtainedAt());
     }
 
@@ -27,8 +30,5 @@ public class TrophyConversor {
         return userTrophies.stream().map(TrophyConversor::toUserTrophyDto).toList();
     }
 
-    public static UserTrophy toUserTrophy(UserTrophyDto userTrophyDto) {
-        return new UserTrophy(userTrophyDto.getId(), UserConversor.toUser(userTrophyDto.getUser()), TrophyConversor.toTrophy(userTrophyDto.getTrophy()), HabitConversor.toHabit(userTrophyDto.getHabit()), userTrophyDto.getObtainedAt());
-    }
     
 }

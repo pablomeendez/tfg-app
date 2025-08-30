@@ -83,9 +83,11 @@ CREATE TABLE IF NOT EXISTS UserTrophy (
     userId Long NOT NULL,
     trophyId Long NOT NULL,
     habitId Long NOT NULL,
+    habitEntryId Long NOT NULL,
     CONSTRAINT fk_user_trophy_habit FOREIGN KEY (habitId) REFERENCES Habit(id),
     CONSTRAINT fk_user_trophy_user FOREIGN KEY (userId) REFERENCES Users(id),
-    CONSTRAINT fk_user_trophy_trophy FOREIGN KEY (trophyId) REFERENCES Trophy(id)
+    CONSTRAINT fk_user_trophy_trophy FOREIGN KEY (trophyId) REFERENCES Trophy(id),
+    CONSTRAINT fk_user_trophy_habit_entry FOREIGN KEY (habitEntryId) REFERENCES HabitEntry(id)
 );
 
 CREATE TABLE IF NOT EXISTS WeeklySummary (
