@@ -10,9 +10,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
+import com.tfg.tfg_app.model.entities.DiaryEntry;
 import com.tfg.tfg_app.model.entities.HabitEntry;
 import com.tfg.tfg_app.model.entities.Mood;
 import com.tfg.tfg_app.model.entities.Users;
+import com.tfg.tfg_app.model.entities.UsersDao;
 import com.tfg.tfg_app.model.entities.WeeklySummary;
 import com.tfg.tfg_app.model.entities.WeeklySummaryDao;
 
@@ -21,7 +23,10 @@ public class WeeklySummaryServiceImpl implements WeeklySummaryService {
 
     @Autowired
     private WeeklySummaryDao weeklySummaryDao;
-    
+
+    @Autowired
+    private UsersDao usersDao;
+
     @Autowired
     private UserService userService;
     
@@ -37,7 +42,7 @@ public class WeeklySummaryServiceImpl implements WeeklySummaryService {
     @Scheduled(cron = "59 * * * * *")
     public void generateWeeklySummariesForAllUsers() {
         try {
-            List<Users> allUsers = userService.getAllUsers(); // Necesitarás implementar este método
+            List<Users> allUsers = usersDao.findAll();
             LocalDateTime now = LocalDateTime.now();
             
             for (Users user : allUsers) {
@@ -57,23 +62,30 @@ public class WeeklySummaryServiceImpl implements WeeklySummaryService {
 
         Users user = userService.checkUser(userId); 
 
-        int habitsCompleted = habitService.getUserHabitsAfterDate(userId, date.minusDays(7), date).size();
         int totalEntries = diaryEntryService.getDiaryEntriesByUserIdAndDate(userId, date.minusDays(7), date).size();
+        
+        if (totalEntries == 0) {
+            return null;
+        }
+
+        int habitsCompleted = habitService.getUserHabitsAfterDate(userId, date.minusDays(7), date).size();
         int trophiesEarned = trophyService.getUserTrophiesByUserIdAndDate(userId, date).size();
 
         HabitEntry biggestStreak = habitService.getUserBiggestStreak(userId);
+        int biggestStreakValue = 0;
 
-        if (biggestStreak == null) {
-            biggestStreak = new HabitEntry(); 
+        if (biggestStreak != null) {
+            biggestStreakValue = biggestStreak.getStreak();
         }
 
-        Mood moodTrend = diaryEntryService.getWeeksMostFrequentMood(userId, date.minusDays(7), date).getMood();
-
-        if (moodTrend == null) {
-            moodTrend = new Mood(); 
+        DiaryEntry mostFrequentMoodEntry = diaryEntryService.getWeeksMostFrequentMood(userId, date.minusDays(7), date);
+        Mood moodTrend = null;
+        
+        if (mostFrequentMoodEntry != null && mostFrequentMoodEntry.getMood() != null) {
+            moodTrend = mostFrequentMoodEntry.getMood();
         }
 
-        return weeklySummaryDao.save(new WeeklySummary(habitsCompleted, totalEntries, trophiesEarned, biggestStreak.getStreak(), user, moodTrend, date));
+        return weeklySummaryDao.save(new WeeklySummary(habitsCompleted, totalEntries, trophiesEarned, biggestStreakValue, user, moodTrend, date));
     }
 
     public Page<WeeklySummary> getWeeklySummariesByUserId(Long userId, int page, int size) throws InstanceNotFoundException {
