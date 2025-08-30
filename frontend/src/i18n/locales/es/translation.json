@@ -124,8 +124,13 @@
     "chat_thinking": "Pensando...",
     "chat_input_placeholder": "Escribe tu mensaje...",
     "chat_disclaimer": "El asistente utiliza IA y puede cometer errores. No reemplaza el consejo médico profesional.",
+    "error_default_message": "Ha ocurrido un error inesperado",
+    "error_retry_button": "Reintentar",
+    "error_close_button": "Cerrar",
+    "error_auto_close_message": "Se cerrará automáticamente en unos segundos",
     "weekly_summary": "Resumen Semanal",
     "congratulations": "¡Felicidades!",
     "you_have_earned_a_new_trophy": "¡Has ganado un nuevo trofeo!",
-    "ok": "OK"
+    "ok": "OK",
+    "start_writing_your_first_entry": "Comienza a escribir tu primera entrada"
 }

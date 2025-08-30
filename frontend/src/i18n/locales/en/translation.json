@@ -127,7 +127,12 @@
     "chat_thinking": "Thinking...",
     "chat_input_placeholder": "Type your message...",
     "chat_disclaimer": "The assistant uses AI and may make mistakes. It does not replace professional medical advice.",
+    "error_default_message": "An unexpected error occurred",
+    "error_retry_button": "Retry",
+    "error_close_button": "Close",
+    "error_auto_close_message": "Will close automatically in a few seconds",
     "congratulations": "Congratulations!",
     "you_have_earned_a_new_trophy": "You have earned a new trophy!",
-    "ok": "OK"
+    "ok": "OK",
+    "start_writing_your_first_entry": "Start writing your first entry"
 }
