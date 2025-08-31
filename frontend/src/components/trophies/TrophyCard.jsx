@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import MultiLanguageText from "../common/MultiLanguageText";
 
-export const TrophyCard = ({ index, userTrophy, language }) => {
+export const TrophyCard = ({ index, userTrophy }) => {
     const { t } = useTranslation();
 
     return (
@@ -21,12 +21,17 @@ export const TrophyCard = ({ index, userTrophy, language }) => {
                         textObject={userTrophy.trophy.description}
                         className="text-gray-600 mt-1"
                     />
+                    <MultiLanguageText
+                        textObject={userTrophy.habit.name}
+                        className="text-gray-600 mt-1"
+                    />
                     <Text className="text-green-600 text-sm font-medium mt-2">
                         {t('days_streak', { count: userTrophy.trophy.days })} {t('completed')}
                     </Text>
                     <Text className="text-gray-500 text-xs mt-1">
                         {t('earned_on', { date: new Date(userTrophy.obtainedAt).toLocaleDateString() })}
                     </Text>
+                    
                 </View>
             </View>
         </View>
