@@ -17,7 +17,6 @@ import com.tfg.tfg_app.model.common.exceptions.InstanceNotFoundException;
 import com.tfg.tfg_app.model.entities.DiaryEntry;
 import com.tfg.tfg_app.model.entities.DiaryEntryDao;
 import com.tfg.tfg_app.model.entities.HabitEntry;
-import com.tfg.tfg_app.model.entities.HabitEntryDao;
 import com.tfg.tfg_app.model.entities.Images;
 import com.tfg.tfg_app.model.entities.ImagesDao;
 import com.tfg.tfg_app.model.entities.Mood;
