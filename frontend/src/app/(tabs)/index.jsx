@@ -1,16 +1,19 @@
 import { Text, View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
-import {  useRouter, useFocusEffect } from 'expo-router';
+import { useRouter, useFocusEffect } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect, useState, useContext, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import { AuthContext } from '../../context/AuthContext';
 import diaryEntryService from '../../services/diaryEntryService';
 import weeklySummaryService from '../../services/weeklySummaryService';
-import WeeklySummaryCard from '../../components/WeeklySummaryCard';
-import { AuthContext } from '../../context/AuthContext';
-import { CompleteEntry } from '../../components/CompleteEntry';
-import {DailyCheckIn} from '../../components/DailyCheckIn';
-import { useTranslation } from 'react-i18next';
-import { ErrorComponent } from '../../components/ErrorComponent';
-import { LoadingComponent } from '../../components/LoadingComponent';
+import {DailyCheckIn} from '../../components/diary/DailyCheckIn';
+import {CompleteEntry} from '../../components/diary/CompleteEntry';
+import WeeklySummaryCard from '../../components/weeklySummary/WeeklySummaryCard';
+import { LoadingComponent } from '../../components/common/LoadingComponent';
+import { ErrorComponent } from '../../components/common/ErrorComponent';
+import EmptyStateCard from '../../components/common/EmptyStateCard';
+import useStore from '../../store/store';
+import LatestWeeklySummary from '../../components/weeklySummary/LatestWeeklySummary';
 
 
 export default function Index() {
@@ -36,19 +39,19 @@ export default function Index() {
         setMoods([]);
       }
 
-        const latestEntryResponse = await diaryEntryService.getLatestDiaryEntry();
-        if (latestEntryResponse && latestEntryResponse.data) {
-          setLatestEntry(latestEntryResponse.data);
-        } else {
-          setLatestEntry(null);
-        }
+      const latestEntryResponse = await diaryEntryService.getLatestDiaryEntry();
+      if (latestEntryResponse && latestEntryResponse.data) {
+        setLatestEntry(latestEntryResponse.data);
+      } else {
+        setLatestEntry(null);
+      }
 
-        const summaryResponse = await weeklySummaryService.getWeeklySummaryByUser(0, 1);
-        if (summaryResponse && summaryResponse.data && summaryResponse.data.content && summaryResponse.data.content.length > 0) {
-          setWeeklySummary(summaryResponse.data.content[0]);
-        } else {
-          setWeeklySummary(null);
-        }
+      const summaryResponse = await weeklySummaryService.getWeeklySummaryByUser(0, 1);
+      if (summaryResponse && summaryResponse.data && summaryResponse.data.content && summaryResponse.data.content.length > 0) {
+        setWeeklySummary(summaryResponse.data.content[0]);
+      } else {
+        setWeeklySummary(null);
+      }
 
     } catch (error) {
       setError(error.message);
@@ -71,9 +74,9 @@ export default function Index() {
 
   const shouldShowMoodForm = () => {
     const currentHour = new Date().getHours();
-    const isInTimeRange = currentHour >= 3 && currentHour < 4;
+    const isInTimeRange = currentHour >= 22 && currentHour < 24;
     const hasNoEntryToday = !isLatestEntryFromToday();
-    return isInTimeRange && hasNoEntryToday;
+    return (isInTimeRange && hasNoEntryToday) || !latestEntry;
   };
 
   return (
@@ -104,36 +107,22 @@ export default function Index() {
                 </View>
               </View>
           ) : (
-            <View className="bg-gray-100 rounded-lg m-3 p-4">
-              <Text className="text-gray-600 text-center">{t('no_diary_entries')}</Text>
-              <Text className="text-gray-500 text-center text-sm mt-1">
-                {t('start_by_creating_entry')}
-              </Text>
-            </View>
+            <EmptyStateCard
+              icon="book-open-outline"
+              title={t('no_diary_entries')}
+              subtitle={t('start_by_creating_entry')}
+            />
           )
         )}
 
         {weeklySummary ? (
-          <View>
-            <WeeklySummaryCard summary={weeklySummary} />
-            <TouchableOpacity 
-              className="bg-blue-500 rounded-lg m-3 p-3"
-              onPress={() => {
-                router.push('/screens/AllWeeklySummaries');
-              }}
-            >
-              <Text className="text-white text-center font-semibold">
-                {t('view_all_summaries')}
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <LatestWeeklySummary weeklySummary={weeklySummary} />
         ) : (
-          <View className="bg-gray-100 rounded-lg m-3 p-4">
-            <Text className="text-gray-600 text-center">{t('no_weekly_summary')}</Text>
-            <Text className="text-gray-500 text-center text-sm mt-1">
-              {t('summaries_generated_on_sundays')}
-            </Text>
-          </View>
+          <EmptyStateCard
+            icon="chart-line"
+            title={t('no_weekly_summary')}
+            subtitle={t('summaries_generated_on_sundays')}
+          />
         )}
       </ScrollView>
       }
