@@ -9,7 +9,7 @@ import { useEffect, useState, useContext } from "react";
 import { useRouter } from "expo-router";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import weeklySummaryService from "../../services/weeklySummaryService";
-import WeeklySummaryCard from "../../components/diary/WeeklySummaryCard";
+import WeeklySummaryCard from "../../components/weeklySummary/WeeklySummaryCard";
 import { AuthContext } from "../../context/AuthContext";
 import { PageNavigation } from "../../components/common/PageNavigation";
 import { ErrorComponent } from "../../components/common/ErrorComponent";

@@ -2,9 +2,9 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
-import MultiLanguageText from './../common/MultiLanguageText';
-import StatRow from './StatRow';
-import i18n from './../../i18n/i18n';
+import MultiLanguageText from '../common/MultiLanguageText';
+import StatRow from '../diary/StatRow';
+import i18n from '../../i18n/i18n';
 
 const WeeklySummaryCard = ({ summary }) => {
     const { t } = useTranslation();

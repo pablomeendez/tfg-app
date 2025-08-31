@@ -2,7 +2,6 @@ import { View, TextInput, Pressable } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import useTogglePasswordVisibility from '../../hooks/useTogglePasswordVisibility';
 
-// Componente que replica tu password input exacto
 const PasswordInput = ({ 
     placeholder, 
     value, 
