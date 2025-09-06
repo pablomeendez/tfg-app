@@ -1,9 +1,10 @@
 import { useContext, useState } from "react";
-import { View, Text, TouchableOpacity, Alert } from "react-native";
+import { View, Text, TouchableOpacity, Alert, ScrollView } from "react-native";
 import { AuthContext } from "../../context/AuthContext";
 import { useRouter } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AuthInput from '../../components/auth/AuthInput';
 import PasswordInput from '../../components/auth/PasswordInput';
 
@@ -37,50 +38,74 @@ export default function Register() {
     }
       
     return (
-        <SafeAreaView className="flex-1">
-            <View className="flex-1 p-5 justify-center gap-2">
-                <TouchableOpacity className="absolute left-0 top-0 m-4 z-10" onPress={() => router.back()}>
-                    <Text className="text-blue-600 text-lg">Back</Text>
-                </TouchableOpacity>
-                <Text className="text-2xl font-bold mb-5 text-center">Register</Text>
-                    <AuthInput
-                        placeholder={t('username')}
-                        value={params.username}
-                        onChangeText={(e) => setParams({...params, username: e})}
-                    />
-                    
-                    <PasswordInput
-                        placeholder={t('password')}
-                        value={params.password}
-                        onChangeText={(e) => setParams({...params, password: e})}
-                    />
-
-                    <AuthInput
-                        placeholder={t('name')}
-                        value={params.name}
-                        onChangeText={(e) => setParams({...params, name: e})}
-                    />
-
-                    <AuthInput
-                        placeholder={t('last_name')}
-                        value={params.lastName}
-                        onChangeText={(e) => setParams({...params, lastName: e})}
-                    />
-
-                    <AuthInput
-                        placeholder={t('email')}
-                        value={params.email}
-                        onChangeText={(e) => setParams({...params, email: e})}
-                        keyboardType="email-address"
-                    />
-
+        <SafeAreaView className="flex-1 bg-gray-50">
+            <View className="bg-white px-6 py-4">
+                <View className="flex-row items-center justify-between">
                     <TouchableOpacity 
-                        className="bg-blue-600 rounded-md items-center justify-center p-4 mt-3"
-                        onPress={handleRegister}
+                        className="bg-gray-100 rounded-full p-2" 
+                        onPress={() => router.back()}
                     >
-                        <Text className="text-white text-lg font-semibold">{t('register')}</Text>
+                        <MaterialCommunityIcons name="arrow-left" size={24} color="#6B7280" />
                     </TouchableOpacity>
+                    <Text className="text-lg font-semibold text-gray-800">{t('create_account')}</Text>
+                    <View className="w-10" />
                 </View>
-            </SafeAreaView>
+            </View>
+
+            <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+                <View className="px-6 py-8">
+                    <View className="items-center mb-8">
+                        <View className="bg-green-100 w-16 h-16 rounded-full items-center justify-center mb-4">
+                            <MaterialCommunityIcons name="account-plus" size={32} color="#10B981" />
+                        </View>
+                        <Text className="text-2xl font-bold text-gray-800">{t('join_us')}</Text>
+                        <Text className="text-gray-600 mt-1 text-center">{t('create_your_wellness_account')}</Text>
+                    </View>
+
+                    {/* Form */}
+                    <View className="bg-white rounded-xl p-6 border border-gray-100">
+                        <View className="space-y-4">
+                            <AuthInput
+                                placeholder={t('username')}
+                                value={params.username}
+                                onChangeText={(e) => setParams({...params, username: e})}
+                            />
+                            
+                            <PasswordInput
+                                placeholder={t('password')}
+                                value={params.password}
+                                onChangeText={(e) => setParams({...params, password: e})}
+                            />
+
+                            <AuthInput
+                                placeholder={t('name')}
+                                value={params.name}
+                                onChangeText={(e) => setParams({...params, name: e})}
+                            />
+
+                            <AuthInput
+                                placeholder={t('last_name')}
+                                value={params.lastName}
+                                onChangeText={(e) => setParams({...params, lastName: e})}
+                            />
+
+                            <AuthInput
+                                placeholder={t('email')}
+                                value={params.email}
+                                onChangeText={(e) => setParams({...params, email: e})}
+                                keyboardType="email-address"
+                            />
+
+                            <TouchableOpacity 
+                                className="bg-green-600 rounded-lg items-center justify-center p-4 mt-6"
+                                onPress={handleRegister}
+                            >
+                                <Text className="text-white text-lg font-semibold">{t('register')}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 };

@@ -10,12 +10,14 @@ const AuthInput = ({
 }) => {
     return (
         <TextInput
-            className="border-[1px] p-3 rounded-md font-normal"
+            className="bg-gray-50 border border-gray-200 px-4 py-5 rounded-lg text-gray-800 text-base min-h-[60px]"
             placeholder={placeholder}
+            placeholderTextColor="#9CA3AF"
             value={value}
             onChangeText={onChangeText}
             autoCapitalize={autoCapitalize}
             keyboardType={keyboardType}
+            textAlignVertical="center"
             {...props}
         />
     );
