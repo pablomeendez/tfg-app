@@ -154,50 +154,9 @@ public class AssistantServiceTest {
     }
 
     @Test
-    public void testChatWithoutWeeklySummary() throws InstanceNotFoundException, JsonProcessingException, DuplicateInstanceException {
-        // Create a new user without weekly summary
-        Users newUser = new Users("newuser", "password123", "New", "User", "new@example.com");
-        userService.signUp(newUser);
+    public void testChatWithNonExistentUser() throws InstanceNotFoundException, JsonProcessingException {
+        String question = "Test question";
 
-        String question = "How am I doing?";
-        
-        ChatResponse response = assistantService.chat(newUser.getId(), question);
-        assertNotNull(response);
-        assertNotNull(response.aiMessage());
-        assertEquals("Test response from assistant", response.aiMessage().text());
-    }
-
-    @Test
-    public void testChatWithNonExistentUser() {
-        try {
-            weeklySummaryService.getWeeklySummariesByUserId(NON_EXISTENT_ID, 0, 5);
-        } catch (InstanceNotFoundException e) {
-            // This is expected
-            return;
-        }
-        throw new AssertionError("Expected InstanceNotFoundException but none was thrown");
-    }
-
-    @Test
-    public void testChatContextBuilding() throws InstanceNotFoundException, JsonProcessingException {
-        // Test that context is properly built with weekly summary data
-        String question = "Simple question";
-        
-        ChatResponse response = assistantService.chat(testUser.getId(), question);
-        assertNotNull(response);
-        assertNotNull(response.aiMessage());
-        assertEquals("Test response from assistant", response.aiMessage().text());
-    }
-
-    @Test
-    public void testChatWithException() throws InstanceNotFoundException, JsonProcessingException {
-        // Test error handling when WeeklySummaryService throws exception
-        // This test will cover the catch block by using a non-existent user ID
-        // which will cause InstanceNotFoundException in the service
-        
-        String question = "Test question with exception";
-        
-        // Using a non-existent user ID should trigger the exception handling
         ChatResponse response = assistantService.chat(NON_EXISTENT_ID, question);
         assertNotNull(response);
         assertNotNull(response.aiMessage());

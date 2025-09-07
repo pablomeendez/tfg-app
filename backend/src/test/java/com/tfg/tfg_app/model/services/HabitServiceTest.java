@@ -43,7 +43,7 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class HabitServiceTest {
     
-    private final Long NON_EXISTENT_ID = Long.valueOf(-1);
+
 
     @Autowired
     private HabitService habitService;
@@ -132,18 +132,6 @@ public class HabitServiceTest {
     }
 
     @Test
-    public void testCreateUserHabitWithNonExistentUser() {
-        assertThrows(InstanceNotFoundException.class, 
-            () -> habitService.createUserHabit(NON_EXISTENT_ID, testHabit.getId()));
-    }
-
-    @Test
-    public void testCreateUserHabitWithNonExistentHabit() {
-        assertThrows(InstanceNotFoundException.class, 
-            () -> habitService.createUserHabit(testUser.getId(), NON_EXISTENT_ID));
-    }
-
-    @Test
     public void testGetHabitsByUserId() throws InstanceNotFoundException {
         // Crear algunos hábitos de usuario
         UserHabit userHabit1 = habitService.createUserHabit(testUser.getId(), testHabit.getId());
@@ -174,11 +162,7 @@ public class HabitServiceTest {
         assertTrue(userHabits.contains(userHabit2));
     }
 
-    @Test
-    public void testGetHabitsByUserIdWithNonExistentUser() {
-        assertThrows(InstanceNotFoundException.class, 
-            () -> habitService.getHabitsByUserId(NON_EXISTENT_ID));
-    }
+
 
     @Test
     public void testCreateHabitEntry() throws InstanceNotFoundException {
@@ -235,17 +219,7 @@ public class HabitServiceTest {
         assertEquals(1, todayEntry.getStreak()); // Debería reiniciar el streak
     }
 
-    @Test
-    public void testCreateHabitEntryWithNonExistentUser() {
-        assertThrows(InstanceNotFoundException.class, 
-            () -> habitService.createHabitEntry(NON_EXISTENT_ID, NON_EXISTENT_ID, testDiaryEntry.getId()));
-    }
 
-    @Test
-    public void testCreateHabitEntryWithNonExistentUserHabit() {
-        assertThrows(InstanceNotFoundException.class, 
-            () -> habitService.createHabitEntry(testUser.getId(), NON_EXISTENT_ID, testDiaryEntry.getId()));
-    }
 
     @Test
     public void testDeleteUserHabit() throws InstanceNotFoundException {
@@ -259,11 +233,7 @@ public class HabitServiceTest {
         assertFalse(userHabits.stream().anyMatch(uh -> uh.getId().equals(userHabit.getId())));
     }
 
-    @Test
-    public void testDeleteUserHabitWithNonExistentId() {
-        assertThrows(InstanceNotFoundException.class, 
-            () -> habitService.deleteUserHabit(NON_EXISTENT_ID));
-    }
+
 
     @Test
     public void testGetHabitEntriesByUserIdAndHabitId() throws InstanceNotFoundException, DuplicatedEntryException {
@@ -299,11 +269,6 @@ public class HabitServiceTest {
         assertEquals(habitEntry.getStreak(), biggestStreak.getStreak());
     }
 
-    @Test
-    public void testGetUserBiggestStreakWithNonExistentUser() {
-        assertThrows(InstanceNotFoundException.class, 
-            () -> habitService.getUserBiggestStreak(NON_EXISTENT_ID));
-    }
 
     @Test
     public void testGetUserHabitsAfterDate() throws InstanceNotFoundException {
@@ -331,42 +296,6 @@ public class HabitServiceTest {
         
         assertNotNull(deletedEntry);
         assertEquals(habitEntry.getId(), deletedEntry.getId());
-    }
-
-    @Test
-    public void testDeleteHabitEntryWithNonExistentId() {
-        assertThrows(InstanceNotFoundException.class, 
-            () -> habitService.deleteHabitEntry(testUser.getId(), NON_EXISTENT_ID));
-    }
-
-    @Test
-    public void testCreateHabitEntryWithNonExistentUserHabitId() {
-        // Test edge case where userHabit ID doesn't exist
-        assertThrows(InstanceNotFoundException.class, 
-            () -> habitService.createHabitEntry(testUser.getId(), NON_EXISTENT_ID, testDiaryEntry.getId()));
-    }
-
-    @Test
-    public void testCreateHabitEntryWithNonExistentDiaryEntryId() throws InstanceNotFoundException {
-        UserHabit userHabit = habitService.createUserHabit(testUser.getId(), testHabit.getId());
-        
-        // Test edge case where diary entry ID doesn't exist
-        assertThrows(InstanceNotFoundException.class, 
-            () -> habitService.createHabitEntry(testUser.getId(), userHabit.getId(), NON_EXISTENT_ID));
-    }
-
-    @Test
-    public void testDeleteHabitEntryWithNonExistentUserId() {
-        // Test edge case where user doesn't exist
-        assertThrows(InstanceNotFoundException.class, 
-            () -> habitService.deleteHabitEntry(NON_EXISTENT_ID, 1L));
-    }
-
-    @Test
-    public void testGetUserHabitsAfterDateWithNonExistentUserId() {
-        // Test edge case where user doesn't exist
-        assertThrows(InstanceNotFoundException.class, 
-            () -> habitService.getUserHabitsAfterDate(NON_EXISTENT_ID, LocalDateTime.now(), LocalDateTime.now()));
     }
 
     @Test

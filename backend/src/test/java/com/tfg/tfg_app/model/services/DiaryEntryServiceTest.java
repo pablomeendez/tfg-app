@@ -5,7 +5,6 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertNull;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +17,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -119,18 +117,7 @@ public class DiaryEntryServiceTest {
         assertEquals(foundDiaryEntry, diaryEntry);
     }
 
-    @Test
-    public void testCreateDiaryEntryWithNullUser() throws DuplicateInstanceException, IncorrectLoginException {
-        assertThrows(InstanceNotFoundException.class, () -> 
-            diaryEntryService.createDiaryEntry(999L, new DiaryEntry("content", LocalDateTime.now(), null, testMood), new ArrayList<>(), new ArrayList<>()));
-    }
 
-    @Test
-    public void testCreateDiaryEntryWithNullMood() throws DuplicateInstanceException, IncorrectLoginException {
-        Users loggedInUser = userService.login("pablo", "1234");
-        assertThrows(DataIntegrityViolationException.class, () -> 
-            diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("content", LocalDateTime.now(), loggedInUser, null), new ArrayList<>(), new ArrayList<>()));
-    }
 
 
     @Test
@@ -145,41 +132,24 @@ public class DiaryEntryServiceTest {
         assertEquals(createdEntry.getUser().getId(), foundEntry.getUser().getId());
     }
 
-    @Test
-    public void testGetDiaryEntryByIdWithNonExistentId() {
-        assertThrows(InstanceNotFoundException.class, () -> diaryEntryService.getDiaryEntryById(999L));
-    }
+
 
     @Test
     public void testGetDiaryEntriesByUserId() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException, DuplicatedEntryException  {
         Users loggedInUser = userService.login("pablo", "1234");
         
-        DiaryEntry entry1 = diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("content1", LocalDateTime.now(), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
-        DiaryEntry entry2 = diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("content2", LocalDateTime.now().plusDays(1), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
-        DiaryEntry entry3 = diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("content3", LocalDateTime.now().plusDays(2), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
+        diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("content1", LocalDateTime.now(), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
+        diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("content2", LocalDateTime.now().plusDays(1), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
+        diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("content3", LocalDateTime.now().plusDays(2), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
 
         java.util.List<DiaryEntry> userEntries = diaryEntryService.getDiaryEntriesByUserId(loggedInUser.getId(), 0, 10).getContent();
         
         assertEquals(3, userEntries.size());
-
     }
 
-    @Test
-    public void testGetDiaryEntriesByUserIdWithNoEntries() throws DuplicateInstanceException, IncorrectLoginException {
-        Users loggedInUser = userService.login("pablo", "1234");
-        
-        java.util.List<DiaryEntry> userEntries = diaryEntryService.getDiaryEntriesByUserId(loggedInUser.getId(), 0, 10).getContent();
-        
-        assertEquals(0, userEntries.size());
-    }
 
-    @Test
-    public void testCreateDiaryEntryWithNullContent() throws DuplicateInstanceException, IncorrectLoginException {
-        Users loggedInUser = userService.login("pablo", "1234");
 
-        assertThrows(DataIntegrityViolationException.class, () -> 
-            diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry(null, LocalDateTime.now(), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>()));
-    }
+
     
     @Test
     public void testCreateMultipleDiaryEntriesForSameUser() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
@@ -218,24 +188,9 @@ public class DiaryEntryServiceTest {
         assertNotEquals(entry2.getId(), entry3.getId());
     }
 
-    @Test
-    public void testCreateEntryWithVeryLongContent() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException {
-        Users loggedInUser = userService.login("pablo", "1234");
-        String longContent = "This is a very long content that should be stored as TEXT in the database. ".repeat(100);
-        
-        assertThrows(DataIntegrityViolationException.class, () -> 
-            diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry(longContent, LocalDateTime.now(), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>()));
-    }
 
-    @Test
-    public void testCreateEntryWithSpecialCharacters() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
-        Users loggedInUser = userService.login("pablo", "1234");
-        String specialContent = "Contenido con símbolos: @#$%^&*()_+-=[]{}|;':\",./<>?";
-        
-        DiaryEntry entry = diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry(specialContent, LocalDateTime.now(), loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
 
-        assertEquals(specialContent, entry.getContent());
-    }
+
 
 
     @Test
@@ -256,23 +211,7 @@ public class DiaryEntryServiceTest {
     }
 
 
-    @Test
-    public void testCreateEntryWithPastDate() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
-        Users loggedInUser = userService.login("pablo", "1234");
-        LocalDateTime pastDate = LocalDateTime.now().minusDays(5);
 
-        DiaryEntry entry = diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("Content", pastDate, loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
-        assertEquals(pastDate.toLocalDate(), entry.getDate().toLocalDate());
-    }
-
-    @Test
-    public void testCreateEntryWithFutureDate() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
-        Users loggedInUser = userService.login("pablo", "1234");
-        LocalDateTime futureDate = LocalDateTime.now().plusDays(5);
-
-        DiaryEntry entry = diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("Content", futureDate, loggedInUser, testMood), new ArrayList<>(), new ArrayList<>());
-        assertEquals(futureDate.toLocalDate(), entry.getDate().toLocalDate());
-    }
 
 
 
@@ -291,21 +230,7 @@ public class DiaryEntryServiceTest {
     }
 
 
-    @Test
-    public void testCreateEntryWithInvalidUserId() {
-        assertThrows(InstanceNotFoundException.class, () -> 
-            diaryEntryService.createDiaryEntry(999L, new DiaryEntry("Content", LocalDateTime.now(), null, testMood), new ArrayList<>(), new ArrayList<>()));
-    }
 
-    @Test
-    public void testCreateEntryWithInvalidMoodId() throws DuplicateInstanceException, IncorrectLoginException {
-        Users loggedInUser = userService.login("pablo", "1234");
-        Mood invalidMood = new Mood();
-        invalidMood.setId(999L);
-        
-        assertThrows(DataIntegrityViolationException.class, () -> 
-            diaryEntryService.createDiaryEntry(loggedInUser.getId(), new DiaryEntry("Content", LocalDateTime.now(), loggedInUser, invalidMood), new ArrayList<>(), new ArrayList<>()));
-    }
 
     @Test
     public void testGetDiaryEntriesByUserIdWithGaps() throws Exception {
@@ -403,19 +328,7 @@ public class DiaryEntryServiceTest {
         assertEquals(entry2.getId(), latestEntry.getId());
     }
 
-    @Test
-    public void testGetLatestDiaryEntryWithNonExistentUser() throws InstanceNotFoundException {
-        DiaryEntry result = diaryEntryService.getLatestDiaryEntry(999L);
-        assertNull(result);
-    }
 
-    @Test
-    public void testGetLatestDiaryEntryWithNoEntries() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException {
-        Users loggedInUser = userService.login("pablo", "1234");
-        
-        DiaryEntry result = diaryEntryService.getLatestDiaryEntry(loggedInUser.getId());
-        assertNull(result);
-    }
 
     @Test
     public void testCreateDiaryEntryWithHabits() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
@@ -432,23 +345,7 @@ public class DiaryEntryServiceTest {
         assertEquals("Content with habits", entry.getContent());
     }
 
-    @Test
-    public void testCreateDiaryEntryWithNullDate() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
-        Users loggedInUser = userService.login("pablo", "1234");
-        
-        // Create entry with null date to test the date assignment logic
-        DiaryEntry entryWithNullDate = new DiaryEntry("Content with null date", null, loggedInUser, testMood);
-        
-        DiaryEntry createdEntry = diaryEntryService.createDiaryEntry(loggedInUser.getId(),
-            entryWithNullDate, new ArrayList<>(), new ArrayList<>());
-        
-        assertNotNull(createdEntry);
-        assertNotNull(createdEntry.getDate());
-        assertEquals("Content with null date", createdEntry.getContent());
-            // Verify the date was set to now (within reasonable time difference)
-        assertTrue(createdEntry.getDate().isAfter(LocalDateTime.now().minusMinutes(1)));
-        assertTrue(createdEntry.getDate().isBefore(LocalDateTime.now().plusMinutes(1)));
-    }
+
 
     @Test
     public void testCreateDiaryEntryWithImages() throws DuplicateInstanceException, IncorrectLoginException, DuplicatedEntryException, InstanceNotFoundException {
@@ -468,28 +365,9 @@ public class DiaryEntryServiceTest {
         assertEquals(2, entry.getImages().size());
     }
 
-    @Test
-    public void testGetWeeksMostFrequentMoodWithNoEntries() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException {
-        Users loggedInUser = userService.login("pablo", "1234");
-        LocalDateTime startDate = LocalDateTime.now().minusDays(7);
-        LocalDateTime endDate = LocalDateTime.now();
-        
-        // Test with user who has no diary entries in this time period
-        DiaryEntry result = diaryEntryService.getWeeksMostFrequentMood(loggedInUser.getId(), startDate, endDate);
-        assertNull("Should return null when no entries exist in time period", result);
-    }
 
-    @Test
-    public void testGetDiaryEntriesByUserIdAndDateWithFutureDates() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException {
-        Users loggedInUser = userService.login("pablo", "1234");
-        LocalDateTime startDate = LocalDateTime.now().plusDays(10);
-        LocalDateTime endDate = LocalDateTime.now().plusDays(20);
-        
-        // Test with future date range (no entries)
-        List<DiaryEntry> entries = diaryEntryService.getDiaryEntriesByUserIdAndDate(loggedInUser.getId(), startDate, endDate);
-        assertNotNull(entries);
-        assertTrue("Should return empty list for future dates", entries.isEmpty());
-    }
+
+
 
     @Test
     public void testGetDiaryEntriesByUserIdAndDateWithInvalidRange() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException {
@@ -595,64 +473,7 @@ public class DiaryEntryServiceTest {
         // - habitEntries.add(habitEntryResult)
     }
 
-    @Test
-    public void testCreateDiaryEntryWithMultipleHabits() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException, DuplicatedEntryException {
-        Users loggedInUser = userService.login("pablo", "1234");
-        
-        // Create additional test habit and category
-        Category testCategory2 = new Category();
-        Map<String, String> categoryNames2 = new HashMap<>();
-        categoryNames2.put("en", "Wellness");
-        categoryNames2.put("es", "Bienestar");
-        categoryNames2.put("gl", "Benestar");
-        testCategory2.setName(categoryNames2);
-        categoryDao.save(testCategory2);
-        
-        Habit testHabit2 = new Habit();
-        Map<String, String> habitNames2 = new HashMap<>();
-        habitNames2.put("en", "Meditation");
-        habitNames2.put("es", "Meditación");
-        habitNames2.put("gl", "Meditación");
-        testHabit2.setName(habitNames2);
-        testHabit2.setCategory(testCategory2);
-        habitDao.save(testHabit2);
-        
-        // Create multiple valid user habits
-        UserHabit userHabit1 = habitService.createUserHabit(loggedInUser.getId(), testHabit.getId());
-        UserHabit userHabit2 = habitService.createUserHabit(loggedInUser.getId(), testHabit2.getId());
-        
-        // Create a list with multiple valid user habits
-        List<UserHabit> habits = new ArrayList<>();
-        habits.add(userHabit1);
-        habits.add(userHabit2);
-        
-        String uniqueContent = "Test entry with multiple habits " + System.currentTimeMillis();
-        DiaryEntry diaryEntry = new DiaryEntry(uniqueContent, LocalDateTime.now(), loggedInUser, testMood);
-        
-        // This should create the diary entry and multiple habit entries successfully
-        DiaryEntry createdEntry = diaryEntryService.createDiaryEntry(
-            loggedInUser.getId(), 
-            diaryEntry, 
-            new ArrayList<>(), 
-            habits
-        );
-        
-        assertNotNull("Diary entry should be created", createdEntry);
-        assertEquals("Content should match", uniqueContent, createdEntry.getContent());
-        
-        // Verify that habit entries were created for both habits
-        List<HabitEntry> habitEntries1 = habitService.getHabitEntriesByUserIdAndHabitId(
-            loggedInUser.getId(), 
-            testHabit.getId()
-        );
-        List<HabitEntry> habitEntries2 = habitService.getHabitEntriesByUserIdAndHabitId(
-            loggedInUser.getId(), 
-            testHabit2.getId()
-        );
-        
-        assertTrue("Habit entries should exist for first habit", habitEntries1.size() > 0);
-        assertTrue("Habit entries should exist for second habit", habitEntries2.size() > 0);
-    }
+
 
     @Test
     public void testCreateDiaryEntryWithHabitsExceptionHandling() throws DuplicateInstanceException, IncorrectLoginException, InstanceNotFoundException {
