@@ -152,22 +152,7 @@ tfg-app/
 
 ## ▶️ Running the Application
 
-### Option 1: Using Docker Compose (In progress)
-
-1. **Start all services**:
-   ```bash
-   docker-compose up -d
-   ```
-
-   This starts:
-   - Spring Boot backend on port 8080
-   - H2 in-memory database with automatic initialization
-
-2. **Access the application**:
-   - Backend API: `http://localhost:8080`
-   - H2 Console: `http://localhost:8080/h2-console`
-
-### Option 2: Local Development
+### Option 1: Local Development
 
 **Start the Backend**:
 ```bash
@@ -183,6 +168,21 @@ npx expo start
 ```
 
 Then scan the QR code with your phone or use an emulator.
+
+### Option 2: Using Docker Compose (In progress)
+
+1. **Start all services**:
+   ```bash
+   docker-compose up -d
+   ```
+
+   This starts:
+   - Spring Boot backend on port 8080
+   - H2 in-memory database with automatic initialization
+
+2. **Access the application**:
+   - Backend API: `http://localhost:8080`
+   - H2 Console: `http://localhost:8080/h2-console`
 
 ## 📚 API Documentation
 
@@ -235,7 +235,7 @@ Test coverage includes:
 
 ## 🐳 Deployment
 
-### Docker Build
+### Docker Build (In progress)
 
 **Backend**:
 ```bash
