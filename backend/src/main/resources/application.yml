@@ -38,6 +38,6 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 project:  
   jwt:
-    signKey: WzROun12eUiDvko3UrJ74gNeJz2TWEWPMTh6DxyE8HWXIf4hETUrkM4IUGqqHq66PuVS
-    expirationMinutes: 1440
+    signKey: ${PROJECT_JWT_SIGNKEY}
+    expirationMinutes: ${PROJECT_JWT_EXPIRATIONMINUTES:1440}
 
