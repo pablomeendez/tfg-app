@@ -1,4 +1,4 @@
-# TFG App - Personal Wellness Assistant
+# TFG App - Mobile application for emotional monitoring and habit tracking.
 
 A comprehensive full-stack application designed to help users track their habits, manage their daily moods, and receive personalized wellness guidance through an AI-powered assistant.
 
@@ -182,7 +182,6 @@ Then scan the QR code with your phone or use an emulator.
 
 2. **Access the application**:
    - Backend API: `http://localhost:8080`
-   - H2 Console: `http://localhost:8080/h2-console`
 
 ## 📚 API Documentation
 
@@ -250,7 +249,12 @@ docker-compose up -d
 
 ### Environment Configuration
 
-Create a `.env` file in the project root with necessary environment variables for your deployment environment.
+Create a `.env` file in the project root with necessary environment variables for your deployment environment. The file should consist of:
+
+```bash
+OPENAI_API_KEY=
+OPENAI_MODEL=
+```
 
 ## 📝 Key Features Explained
 
