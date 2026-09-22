@@ -1,4 +1,4 @@
-# TFG App - Mobile application for emotional monitoring and habit tracking.
+# Emotional Wellbeing and Habit Tracking
 
 A comprehensive full-stack application designed to help users track their habits, manage their daily moods, and receive personalized wellness guidance through an AI-powered assistant.
 
@@ -22,7 +22,7 @@ A comprehensive full-stack application designed to help users track their habits
 
 ## 🎯 Overview
 
-TFG App is a wellness application that combines habit tracking, mood management, and AI-powered personalized recommendations. Users can create and track daily habits, record their emotional states, earn achievements through trophies, and interact with an intelligent assistant that provides tailored wellness advice based on their activity and mood patterns.
+This wellness application combines habit tracking, mood management, and AI-powered personalized recommendations. Users can create and track daily habits, record their emotional states, earn achievements through trophies, and interact with an intelligent assistant that provides tailored wellness advice based on their activity and mood patterns.
 
 ## ✨ Features
 
