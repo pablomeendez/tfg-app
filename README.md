@@ -6,6 +6,7 @@ A comprehensive full-stack application designed to help users track their habits
 
 - [Overview](#overview)
 - [Features](#features)
+- [Screenshots](#screenshots)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
@@ -33,6 +34,16 @@ TFG App is a wellness application that combines habit tracking, mood management,
 - **Multi-language Support**: Available in Spanish (ES), English (EN), and Galician (GL)
 - **User Authentication**: Secure JWT-based authentication system
 - **Responsive Design**: Mobile-first React Native frontend with NativeWind styling
+
+## 📱 Screenshots
+
+| Home | Mood journal | Habits |
+|:---:|:---:|:---:|
+| <img src="images/Inicio.png" alt="Home screen with the latest journal entry and weekly summary" width="220"> | <img src="images/Formulario_diario_1.png" alt="New journal entry with mood, description, and photos" width="220"> | <img src="images/H%C3%A1bitos.png" alt="Habit list with categories and add actions" width="220"> |
+
+| Weekly summaries | Trophies | AI assistant |
+|:---:|:---:|:---:|
+| <img src="images/Resumenes_semanales.png" alt="Weekly summary with journal, habit, trophy, and mood statistics" width="220"> | <img src="images/Trofeos.png" alt="Trophy earned for a seven-day habit streak" width="220"> | <img src="images/Asistente_mensaje.png" alt="Conversation with the personal wellness assistant" width="220"> |
 
 ## 🛠️ Tech Stack
 
@@ -91,6 +102,7 @@ tfg-app/
 │   ├── package.json
 │   ├── metro.config.js
 │   └── tailwind.config.js
+├── images/                        # Frontend screenshots
 ├── compose.yml
 └── README.md
 ```
@@ -113,8 +125,10 @@ tfg-app/
 
 2. **Configure environment variables** in `.env`:
    ```env
-   OPENAI_API_KEY=your_openai_api_key
-   OPENAI_MODEL=gpt-3.5-turbo
+    OPENAI_API_KEY=(...)
+    OPENAI_MODEL=gpt-3.5-turbo
+    PROJECT_JWT_SIGNKEY=(...)
+    PROJECT_JWT_EXPIRATIONMINUTES=1440
    ```
 
 3. **Build the project**:
@@ -245,15 +259,6 @@ docker build -t tfg-app-backend .
 **Using Docker Compose**:
 ```bash
 docker-compose up -d
-```
-
-### Environment Configuration
-
-Create a `.env` file in the project root with necessary environment variables for your deployment environment. The file should consist of:
-
-```bash
-OPENAI_API_KEY=
-OPENAI_MODEL=
 ```
 
 ## 📝 Key Features Explained
